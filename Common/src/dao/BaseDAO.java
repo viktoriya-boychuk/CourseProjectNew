@@ -1,5 +1,8 @@
 package dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class BaseDAO {
     private Integer id;
     private String name;
@@ -18,5 +21,9 @@ public class BaseDAO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public interface Parcelable {
+        void parseResultSet(ResultSet resultSet) throws SQLException;
     }
 }
