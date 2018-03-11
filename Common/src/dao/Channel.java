@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Channel extends BaseDAO {
+    private static final String SELECT_ALL = "SELECT * FROM channels";
+
     private Date foundationDate;
     private Date destructionDate;
     private String owner;

@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Time;
 
 public class Schedule extends BaseDAO{
+    private static final String SELECT_ALL = "SELECT * FROM schedule";
+
     private Date date;
     private Time time;
 

@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Audience extends BaseDAO {
+    private static final String SELECT_ALL = "SELECT * FROM audience";
+
     private String ageCategory;
     private String description;
     private String emblem;

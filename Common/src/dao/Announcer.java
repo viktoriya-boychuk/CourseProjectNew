@@ -5,13 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Announcer extends BaseDAO {
+    private static final String SELECT_ALL = "SELECT * FROM announcers";
+
     private Integer careerBeginYear;
     private Integer careerEndYear;
     private Date birthDate;
     private String education;
     private String description;
-
-
 
     private enum Sex {male, female;}
     private Sex sex;

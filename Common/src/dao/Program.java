@@ -14,6 +14,7 @@ public class Program extends BaseDAO {
     private static final String KEY_DESCRIPTION = "pr_description";
     private static final String KEY_ORIGINALITY = "pr_own_idea";
     private static final String KEY_AUDIENCE_ID = "pr_au_id";
+    private static final String SELECT_ALL = "SELECT * FROM programs";
 
     private String category;
     private String genre;
