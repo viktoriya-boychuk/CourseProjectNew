@@ -3,7 +3,7 @@ package dao;
 import java.sql.Date;
 
 public class Announcer extends BaseDAO {
-	private Integer careerBeginYear;//Year
+	private Integer careerBeginYear;
 	private Integer careerEndYear;
 	private Date birthDate;
 	private String education;
@@ -61,8 +61,13 @@ public class Announcer extends BaseDAO {
 
 	@Override
 	public String toString() {
-		return "Announcer [careerBeginYear=" + careerBeginYear + ", careerEndYear=" + careerEndYear + ", birthDate="
-				+ birthDate + ", education=" + education + ", description=" + description + ", sex=" + sex + "]";
-	}	
-
+		return "Announcer{" +
+				"careerBeginYear=" + careerBeginYear +
+				", careerEndYear=" + careerEndYear +
+				", birthDate=" + birthDate +
+				", education='" + education + '\'' +
+				", description='" + description + '\'' +
+				", sex=" + sex +
+				'}';
+	}
 }
