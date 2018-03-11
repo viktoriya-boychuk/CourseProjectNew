@@ -6,6 +6,7 @@ public class Debug {
     public static void main(String[] args) {
         logger = new Logger();
 
+
     }
 
     public static Logger getLogger() {
