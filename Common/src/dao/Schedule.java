@@ -1,9 +1,11 @@
 package dao;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 
-public class Schedule {
+public class Schedule extends BaseDAO{
     private Date date;
     private Time time;
 
@@ -29,5 +31,10 @@ public class Schedule {
                 "date=" + date +
                 ", time=" + time +
                 '}';
+    }
+
+    @Override
+    public void parseResultSet(ResultSet resultSet) throws SQLException {
+
     }
 }

@@ -1,6 +1,8 @@
 package dao;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Channel extends BaseDAO {
     private Date foundationDate;
@@ -88,5 +90,10 @@ public class Channel extends BaseDAO {
                 ", frequency='" + frequency + '\'' +
                 ", satellite='" + satellite + '\'' +
                 '}';
+    }
+
+    @Override
+    public void parseResultSet(ResultSet resultSet) throws SQLException {
+
     }
 }

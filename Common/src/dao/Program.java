@@ -3,17 +3,17 @@ package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Program extends BaseDAO implements BaseDAO.Parcelable {
-    public static final String KEY_ID = "pr_id";
-    public static final String KEY_NAME = "pr_name";
-    public static final String KEY_CATEGORY = "pr_category";
-    public static final String KEY_GENRE = "pr_genre";
-    public static final String KEY_DURATION = "pr_duration";
-    public static final String KEY_COUNTRY = "pr_country";
-    public static final String KEY_AUTHOR = "pr_author/producer";
-    public static final String KEY_DESCRIPTION = "pr_description";
-    public static final String KEY_ORIGINALITY = "pr_own_idea";
-    public static final String KEY_AUDIENCE_ID = "pr_au_id";
+public class Program extends BaseDAO {
+    private static final String KEY_ID = "pr_id";
+    private static final String KEY_NAME = "pr_name";
+    private static final String KEY_CATEGORY = "pr_category";
+    private static final String KEY_GENRE = "pr_genre";
+    private static final String KEY_DURATION = "pr_duration";
+    private static final String KEY_COUNTRY = "pr_country";
+    private static final String KEY_AUTHOR = "pr_author/producer";
+    private static final String KEY_DESCRIPTION = "pr_description";
+    private static final String KEY_ORIGINALITY = "pr_own_idea";
+    private static final String KEY_AUDIENCE_ID = "pr_au_id";
 
     private String category;
     private String genre;

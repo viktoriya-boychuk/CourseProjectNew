@@ -1,5 +1,8 @@
 package dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Audience extends BaseDAO {
     private String ageCategory;
     private String description;
@@ -36,5 +39,10 @@ public class Audience extends BaseDAO {
                 ", description='" + description + '\'' +
                 ", emblem='" + emblem + '\'' +
                 '}';
+    }
+
+    @Override
+    public void parseResultSet(ResultSet resultSet) throws SQLException {
+
     }
 }
