@@ -13,23 +13,29 @@ import java.util.Date;
 
 //TODO: Transform logger into Singleton
 public class Logger {
-    private Path logPath;
+    private static Logger logger;
+    private static Path logPath;
 
-    public Logger() {
+    private Logger() {
         try {
             logPath = Paths.get("logs/server-log-" + getCurrentDate() + ".txt");
             if (!Files.exists(Paths.get("logs")))
                 Files.createDirectory(Paths.get("logs"));
 
             Files.createFile(logPath);
-            this.info("Log created", "Log has been created with a name \"server-log-"
-                    + getCurrentDate() + "\" in \"logs\" folder");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void write(String header, String message, String type) {
+    public static Logger initialize() {
+        if (logger == null) {
+            logger = new Logger();
+            return logger;
+        } else return logger;
+    }
+
+    public static void write(String header, String message, String type) {
         String line = "[" + type + "] [" + getCurrentDate() + "] " + header + ": " + message + "\n";
 
         System.out.println(line);
@@ -43,15 +49,15 @@ public class Logger {
         }
     }
 
-    public void error(String header, String message) {
+    public static void error(String header, String message) {
         write(header, message, "ERROR");
     }
 
-    public void info(String header, String message) {
+    public static void info(String header, String message) {
         write(header, message, "INFO");
     }
 
-    private String getCurrentDate() {
+    private static String getCurrentDate() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD HH-mm-ss");
         Date date = new Date();
 
