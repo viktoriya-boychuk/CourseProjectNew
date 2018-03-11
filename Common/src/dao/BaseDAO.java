@@ -1,6 +1,6 @@
 package dao;
 
-public abstract class BaseDAO implements Parcelable{
+public abstract class BaseDAO implements Parcelable, Queryable {
     private Integer id;
     private String name;
 
@@ -18,5 +18,11 @@ public abstract class BaseDAO implements Parcelable{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "id=" + id +
+                ", name=" + name + ", ";
     }
 }

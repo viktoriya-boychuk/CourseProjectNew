@@ -91,7 +91,8 @@ public class Program extends BaseDAO {
 
     @Override
     public String toString() {
-        return "Program{" +
+
+        return "Program{" + super.toString() +
                 "category='" + category + '\'' +
                 ", genre='" + genre + '\'' +
                 ", duration=" + duration +
@@ -115,5 +116,16 @@ public class Program extends BaseDAO {
         this.setDescription(resultSet.getString(KEY_DESCRIPTION));
         this.setOriginality(resultSet.getBoolean(KEY_ORIGINALITY));
         this.setAudienceID(resultSet.getInt(KEY_AUDIENCE_ID));
+    }
+
+    public static Program parse(ResultSet resultSet) throws SQLException {
+        Program program = new Program();
+        program.parseResultSet(resultSet);
+        return program;
+    }
+
+    @Override
+    public String getSelectAllQuery() {
+        return SELECT_ALL;
     }
 }

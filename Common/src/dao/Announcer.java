@@ -14,8 +14,8 @@ public class Announcer extends BaseDAO {
     private String description;
 
     private enum Sex {male, female;}
-    private Sex sex;
 
+    private Sex sex;
     public Integer getCareerBeginYear() {
         return careerBeginYear;
     }
@@ -79,5 +79,10 @@ public class Announcer extends BaseDAO {
     @Override
     public void parseResultSet(ResultSet resultSet) throws SQLException {
         //TODO: parse Announcer
+    }
+
+    @Override
+    public String getSelectAllQuery() {
+        return null;
     }
 }

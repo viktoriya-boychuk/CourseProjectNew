@@ -1,8 +1,10 @@
 package connection;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import dao.BaseDAO;
+import dao.Program;
+
+import java.sql.*;
+import java.util.ArrayList;
 
 public class SQLHelper {
     private static Connection con;
@@ -25,5 +27,10 @@ public class SQLHelper {
             instance = new SQLHelper();
         }
         return instance;
+    }
+
+    public static ResultSet getDataFor(BaseDAO baseDAO) throws SQLException {
+        Statement statement = con.createStatement();
+        return statement.executeQuery(baseDAO.getSelectAllQuery());
     }
 }

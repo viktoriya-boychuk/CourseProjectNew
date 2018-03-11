@@ -1,5 +1,10 @@
 import connection.SQLHelper;
+import dao.Program;
 import utils.Logger;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Debug {
 
@@ -12,6 +17,23 @@ public class Debug {
             sqlHelper = SQLHelper.getInstance();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            sqlHelper = null;
+        }
+        ArrayList<Program> programs = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = sqlHelper.getDataFor(new Program());
+
+            while (resultSet.next()) {
+                programs.add(Program.parse(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        for (Program program : programs) {
+            System.out.println(program.toString());
         }
     }
 }

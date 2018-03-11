@@ -47,4 +47,9 @@ public class Audience extends BaseDAO {
     public void parseResultSet(ResultSet resultSet) throws SQLException {
 
     }
+
+    @Override
+    public String getSelectAllQuery() {
+        return null;
+    }
 }
