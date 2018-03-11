@@ -1,28 +1,20 @@
 import utils.Logger;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Application {
     //TODO: Transform logger into Singleton
-    private static Logger logger;
 
     public static void main(String[] args) {
-        logger = new Logger();
-        try {
-            Process p = Runtime.getRuntime()
-                    .exec("cmd /c start cmd.exe /k \"java -jar CourseProjectServer.jar\"");
+        Logger.initialize();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.console().readLine();
 
 //        Attaching a small portion of code to the quitting of the application for it to log the time it got terminated
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            logger.info("Exit", "Application terminated");
+            Logger.info("Exit", "Application terminated");
         }));
-    }
-
-    public static Logger getLogger() {
-        return logger;
     }
 }
