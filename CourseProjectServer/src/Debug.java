@@ -2,15 +2,16 @@ import connection.SQLHelper;
 import utils.Logger;
 
 public class Debug {
-    private static Logger logger;
 
     public static void main(String[] args) {
-        logger = new Logger();
+        Logger.initialize();
+        Logger.info("Initialization", "Application started and log has been created in \"logs\" folder");
 
-        SQLHelper sqlHelper = new SQLHelper();
-    }
-
-    public static Logger getLogger() {
-        return logger;
+        SQLHelper sqlHelper;
+        try {
+            sqlHelper = SQLHelper.getInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
