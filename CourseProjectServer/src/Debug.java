@@ -1,3 +1,4 @@
+import connection.SQLHelper;
 import utils.Logger;
 
 public class Debug {
@@ -6,7 +7,7 @@ public class Debug {
     public static void main(String[] args) {
         logger = new Logger();
 
-
+        SQLHelper sqlHelper = new SQLHelper();
     }
 
     public static Logger getLogger() {
