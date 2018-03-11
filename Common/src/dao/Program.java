@@ -1,6 +1,20 @@
 package dao;
 
-public class Program extends BaseDAO {
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class Program extends BaseDAO implements BaseDAO.Parcelable {
+    public static final String KEY_ID = "pr_id";
+    public static final String KEY_NAME = "pr_name";
+    public static final String KEY_CATEGORY = "pr_category";
+    public static final String KEY_GENRE = "pr_genre";
+    public static final String KEY_DURATION = "pr_duration";
+    public static final String KEY_COUNTRY = "pr_country";
+    public static final String KEY_AUTHOR = "pr_author/producer";
+    public static final String KEY_DESCRIPTION = "pr_description";
+    public static final String KEY_ORIGINALITY = "pr_own_idea";
+    public static final String KEY_AUDIENCE_ID = "pr_au_id";
+
     private String category;
     private String genre;
     private Integer duration;
@@ -8,6 +22,7 @@ public class Program extends BaseDAO {
     private String authorOrProducer;
     private String description;
     private Boolean originality;
+    private Integer audienceID;
 
     public String getCategory() {
         return category;
@@ -65,6 +80,14 @@ public class Program extends BaseDAO {
         this.originality = originality;
     }
 
+    public Integer getAudienceID() {
+        return audienceID;
+    }
+
+    public void setAudienceID(Integer audienceID) {
+        this.audienceID = audienceID;
+    }
+
     @Override
     public String toString() {
         return "Program{" +
@@ -75,6 +98,21 @@ public class Program extends BaseDAO {
                 ", authorOrProducer='" + authorOrProducer + '\'' +
                 ", description='" + description + '\'' +
                 ", originality=" + originality +
+                ", audienceID=" + audienceID +
                 '}';
+    }
+
+    @Override
+    public void parseResultSet(ResultSet resultSet) throws SQLException {
+        this.setId(resultSet.getInt(KEY_ID));
+        this.setName(resultSet.getString(KEY_NAME));
+        this.setGenre(resultSet.getString(KEY_GENRE));
+        this.setCategory(resultSet.getString(KEY_CATEGORY));
+        this.setDuration(resultSet.getInt(KEY_DURATION));
+        this.setCountry(resultSet.getString(KEY_COUNTRY));
+        this.setAuthorOrProducer(resultSet.getString(KEY_AUTHOR));
+        this.setDescription(resultSet.getString(KEY_DESCRIPTION));
+        this.setOriginality(resultSet.getBoolean(KEY_ORIGINALITY));
+        this.setAudienceID(resultSet.getInt(KEY_AUDIENCE_ID));
     }
 }
