@@ -3,6 +3,7 @@ import utils.Logger;
 import java.io.IOException;
 
 public class Application {
+    //TODO: Transform logger into Singleton
     private static Logger logger;
 
     public static void main(String[] args) {

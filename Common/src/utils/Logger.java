@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+//TODO: Transform logger into Singleton
 public class Logger {
     private Path logPath;
 
