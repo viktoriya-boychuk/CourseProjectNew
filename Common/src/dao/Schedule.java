@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 
-public class Schedule extends BaseDAO{
+public class Schedule extends BaseDAO {
     private static final String SELECT_ALL = "SELECT * FROM schedule";
 
     private Date date;
@@ -42,6 +42,6 @@ public class Schedule extends BaseDAO{
 
     @Override
     public String getSelectAllQuery() {
-        return null;
+        return SELECT_ALL;
     }
 }

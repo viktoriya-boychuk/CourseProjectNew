@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Announcer extends BaseDAO {
+public class Announcer extends BaseDAO  {
     private static final String SELECT_ALL = "SELECT * FROM announcers";
 
     private Integer careerBeginYear;
@@ -16,10 +16,10 @@ public class Announcer extends BaseDAO {
     private enum Sex {male, female;}
 
     private Sex sex;
+
     public Integer getCareerBeginYear() {
         return careerBeginYear;
     }
-
     public void setCareerBeginYear(Integer careerBeginYear) {
         this.careerBeginYear = careerBeginYear;
     }
@@ -83,6 +83,6 @@ public class Announcer extends BaseDAO {
 
     @Override
     public String getSelectAllQuery() {
-        return null;
+        return SELECT_ALL;
     }
 }

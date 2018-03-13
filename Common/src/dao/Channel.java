@@ -101,6 +101,6 @@ public class Channel extends BaseDAO {
 
     @Override
     public String getSelectAllQuery() {
-        return null;
+        return SELECT_ALL;
     }
 }
