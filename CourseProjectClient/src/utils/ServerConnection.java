@@ -4,23 +4,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class ServerConnection {
     private Socket socket;
-    private Scanner scanner;
 
     public ServerConnection(InetAddress serverAddress, int serverPort) throws Exception {
         this.socket = new Socket(serverAddress, serverPort);
-        this.scanner = new Scanner(System.in);
     }
 
     public Socket getSocket() {
         return socket;
-    }
-
-    public Scanner getScanner() {
-        return scanner;
     }
 
     public void start() throws IOException {
