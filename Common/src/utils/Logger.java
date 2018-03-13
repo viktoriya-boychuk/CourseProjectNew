@@ -1,5 +1,6 @@
 package utils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -35,26 +36,65 @@ public class Logger {
         } else return logger;
     }
 
-    public static void write(String header, String message, String type) {
-        String line = "[" + type + "] [" + getCurrentDate() + "] " + header + ": " + message + "\n";
+    private static void write(String header, String message, String type) throws IOException {
+        String line = composeLine(header, message, type);
 
         System.out.println(line);
 
         ArrayList<String> lines = new ArrayList<>();
         lines.add(line);
+
+        Files.write(logPath, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+    }
+
+    private static void write(String header, BufferedReader bufferedReader, String type) throws IOException {
+        ArrayList<String> lines = new ArrayList<>();
+        Integer iterator = 0;
+        String line;
+        String lineToWrite;
+
+        while ((line = bufferedReader.readLine()) != null) {
+            if (iterator == 0) {
+                lineToWrite = composeLine(header, line, type);
+                iterator++;
+            } else
+                lineToWrite = composeHeadlessLine(line);
+            lines.add(lineToWrite);
+        }
+
+        Files.write(logPath, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+    }
+
+    public static void logError(String header, String message) {
         try {
-            Files.write(logPath, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+            write(header, message, "ERROR");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void error(String header, String message) {
-        write(header, message, "ERROR");
+    public static void logInfo(String header, String message) {
+        try {
+            write(header, message, "INFO");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void info(String header, String message) {
-        write(header, message, "INFO");
+    public static void logError(String header, BufferedReader bufferedReader) {
+        try {
+            write(header, bufferedReader, "INFO");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void logInfo(String header, BufferedReader bufferedReader) {
+        try {
+            write(header, bufferedReader, "INFO");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static String getCurrentDate() {
@@ -62,5 +102,13 @@ public class Logger {
         Date date = new Date();
 
         return dateFormat.format(date);
+    }
+
+    private static String composeLine(String header, String message, String type) {
+        return "[" + type + "]\t[" + getCurrentDate() + "]\t" + header + ":\t" + message + "\n";
+    }
+
+    private static String composeHeadlessLine(String message) {
+        return "\t\t\t" + message + "\n";
     }
 }
