@@ -1,10 +1,8 @@
 package connection;
 
 import dao.BaseDAO;
-import dao.Program;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class SQLHelper {
     private static Connection con;
@@ -14,10 +12,8 @@ public class SQLHelper {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/tv_programs";
-            con = DriverManager.getConnection(url, "root", "root");
-        } catch (ClassNotFoundException e) {
-            throw new Exception(e);
-        } catch (SQLException e) {
+            con = DriverManager.getConnection(url, "root", "VovkViktor2281488");
+        } catch (ClassNotFoundException | SQLException e) {
             throw new Exception(e);
         }
     }
@@ -29,8 +25,8 @@ public class SQLHelper {
         return instance;
     }
 
-    public static ResultSet getDataFor(BaseDAO baseDAO) throws SQLException {
+    public ResultSet getDataFor(Class<? extends BaseDAO> type) throws SQLException, IllegalAccessException, InstantiationException {
         Statement statement = con.createStatement();
-        return statement.executeQuery(baseDAO.getSelectAllQuery());
+        return statement.executeQuery(type.newInstance().getSelectAllQuery());
     }
 }
