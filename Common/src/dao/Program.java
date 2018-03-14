@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Program extends BaseDAO {
+    //TODO: Make every subclass of DAO like this one (keys, toJson() parseJson()
     private static final String KEY_ID = "pr_id";
     private static final String KEY_NAME = "pr_name";
     private static final String KEY_CATEGORY = "pr_category";
@@ -146,12 +147,30 @@ public class Program extends BaseDAO {
 
     @Override
     public void parseResultSet(ResultSet resultSet) throws SQLException {
-        parseData(resultSet.getInt(KEY_ID), resultSet.getString(KEY_NAME), resultSet.getString(KEY_GENRE), resultSet.getString(KEY_CATEGORY), resultSet.getInt(KEY_DURATION), resultSet.getString(KEY_COUNTRY), resultSet.getString(KEY_AUTHOR), resultSet.getString(KEY_DESCRIPTION), resultSet.getBoolean(KEY_ORIGINALITY), resultSet.getInt(KEY_AUDIENCE_ID));
+        parseData(resultSet.getInt(KEY_ID),
+                resultSet.getString(KEY_NAME),
+                resultSet.getString(KEY_GENRE),
+                resultSet.getString(KEY_CATEGORY),
+                resultSet.getInt(KEY_DURATION),
+                resultSet.getString(KEY_COUNTRY),
+                resultSet.getString(KEY_AUTHOR),
+                resultSet.getString(KEY_DESCRIPTION),
+                resultSet.getBoolean(KEY_ORIGINALITY),
+                resultSet.getInt(KEY_AUDIENCE_ID));
     }
 
     @Override
     public void parseJSON(JSONObject jsonObject) throws JSONException {
-        parseData(jsonObject.getInt(KEY_ID), jsonObject.getString(KEY_NAME), jsonObject.getString(KEY_GENRE), jsonObject.getString(KEY_CATEGORY), jsonObject.getInt(KEY_DURATION), jsonObject.getString(KEY_COUNTRY), jsonObject.getString(KEY_AUTHOR), jsonObject.getString(KEY_DESCRIPTION), jsonObject.getBoolean(KEY_ORIGINALITY), jsonObject.getInt(KEY_AUDIENCE_ID));
+        parseData(jsonObject.getInt(KEY_ID),
+                jsonObject.getString(KEY_NAME),
+                jsonObject.getString(KEY_GENRE),
+                jsonObject.getString(KEY_CATEGORY),
+                jsonObject.getInt(KEY_DURATION),
+                jsonObject.getString(KEY_COUNTRY),
+                jsonObject.getString(KEY_AUTHOR),
+                jsonObject.getString(KEY_DESCRIPTION),
+                jsonObject.getBoolean(KEY_ORIGINALITY),
+                jsonObject.getInt(KEY_AUDIENCE_ID));
     }
 
     private void parseData(int anInt, String string, String string2, String string3, int anInt2, String string4, String string5, String string6, boolean aBoolean, int anInt3) {
