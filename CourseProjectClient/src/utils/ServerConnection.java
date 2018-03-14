@@ -1,7 +1,6 @@
 package utils;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -20,8 +19,15 @@ public class ServerConnection {
         String input = "SIMPLE STRING TO TEST SERVER\n NEXT LINE \n ONE MORE LINE HERE";
 
         PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
-        out.println(input);
-        out.flush();
-        out.close();
+        out.write(input);
+        BufferedReader response = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+
+        String buffer;
+        StringBuilder message = null;
+        while ((buffer = response.readLine()) != null) {
+            message.append(buffer);
+        }
+        Logger.logInfo("Response from server:", message.toString());
     }
+
 }
