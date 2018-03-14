@@ -8,6 +8,6 @@ import java.sql.SQLException;
 
 public interface Parcelable {
     void parseResultSet(ResultSet resultSet) throws SQLException;
-    JSONObject toJSON() throws JSONException;
     void parseJSON(JSONObject jsonObject) throws JSONException;
+    JSONObject toJSON() throws JSONException;
 }

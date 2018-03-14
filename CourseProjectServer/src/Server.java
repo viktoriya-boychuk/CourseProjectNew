@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server implements Runnable {
-    public static final long DEFAULT_THREAD_DELAY = 400;
+    public static final long DEFAULT_THREAD_DELAY = 10;
     public static final Integer DEFAULT_SOCKET_PORT = 28365;
     private static long threadDelay;
     private static ExecutorService mExecutorService;
@@ -20,6 +20,7 @@ public class Server implements Runnable {
 
     public Server() {
         mExecutorService = Executors.newCachedThreadPool();
+        mTaskPool = new ArrayList<>();
         threadDelay = DEFAULT_THREAD_DELAY;
         try {
             mServerSocket = new CustomServerSocket(DEFAULT_SOCKET_PORT);
@@ -36,18 +37,19 @@ public class Server implements Runnable {
     public void run() {
         Logger.logInfo("Server started", "Socket is " + Server.getCurrentPort());
         while (!exit) {
+            //TODO: Thread buffer for TaskPool
             ArrayList<Runnable> toRemove = new ArrayList<>();
             if (!mTaskPool.isEmpty()) {
                 for (Runnable runnable : mTaskPool) {
                     addToTaskPool(runnable);
                     toRemove.add(runnable);
-                    try {
-                        Thread.sleep(threadDelay);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                 }
                 mTaskPool.removeAll(toRemove);
+            }
+            try {
+                Thread.sleep(threadDelay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         Logger.logInfo("Server", "Server stopped");
@@ -93,7 +95,7 @@ public class Server implements Runnable {
 
                     String buffer;
                     StringBuilder message = null;
-                    while ((buffer = in.readLine()) != null) {
+                    while ((buffer = in.readLine()) != "\0") {
                         message.append(buffer);
                     }
 

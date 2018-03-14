@@ -1,7 +1,10 @@
+import connection.SQLHelper;
 import dao.Program;
 import org.json.JSONObject;
 import utils.Logger;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -25,31 +28,9 @@ public class Debug {
         Server.start();
 
         handleTasks();
-
-//        SQLHelper sqlHelper = null;
-//        Server.finish();
-//        try {
-//            sqlHelper = SQLHelper.getInstance();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        ArrayList<Program> programs = new ArrayList<>();
-//
-//        try {
-//            ResultSet resultSet = sqlHelper.getDataFor(Program.class);
-//
-//            while (resultSet.next()) {
-//                programs.add(Program.parse(resultSet));
-//            }
-//        } catch (SQLException | IllegalAccessException | InstantiationException e) {
-//            e.printStackTrace();
-//        }
-//
-//        for (Program program : programs) {
-//            System.out.println(program.toString());
-//        }
     }
 
+    //TODO: Thread Handler class to avoid duplicate code
     private static void handleTasks() throws InterruptedException {
         while (true) {
             ArrayList<Runnable> toRemove = new ArrayList<>();
@@ -57,14 +38,46 @@ public class Debug {
                 for (Runnable runnable : mTaskPool) {
                     addToTaskPool(runnable);
                     toRemove.add(runnable);
-                    Thread.sleep(Server.DEFAULT_THREAD_DELAY);
                 }
                 mTaskPool.removeAll(toRemove);
+            }
+            try {
+                Thread.sleep(Server.DEFAULT_THREAD_DELAY);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
 
     public static void addToTaskPool(Runnable runnable) {
-        mTaskPool.add(runnable);
+        mExecutorService.submit(runnable);
+    }
+
+    private static void testSQLConnection() {
+        SQLHelper sqlHelper = null;
+        Server.finish();
+        try {
+            sqlHelper = SQLHelper.getInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ArrayList<Program> programs = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = sqlHelper.getDataFor(Program.class);
+
+            //TODO: create static factory parser method
+            while (resultSet.next()) {
+                Program program = new Program();
+                program.parseResultSet(resultSet);
+                programs.add(program/*Program.parseResultSet(resultSet)*/);
+            }
+        } catch (SQLException | IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
+
+        for (Program program : programs) {
+            System.out.println(program.toString());
+        }
     }
 }
