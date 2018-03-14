@@ -1,10 +1,13 @@
 package dao;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Announcer extends BaseDAO  {
+public class Announcer extends BaseDAO {
     private static final String SELECT_ALL = "SELECT * FROM announcers";
 
     private Integer careerBeginYear;
@@ -20,6 +23,7 @@ public class Announcer extends BaseDAO  {
     public Integer getCareerBeginYear() {
         return careerBeginYear;
     }
+
     public void setCareerBeginYear(Integer careerBeginYear) {
         this.careerBeginYear = careerBeginYear;
     }
@@ -84,5 +88,15 @@ public class Announcer extends BaseDAO  {
     @Override
     public String getSelectAllQuery() {
         return SELECT_ALL;
+    }
+
+    @Override
+    public JSONObject toJSON() throws JSONException {
+        return null;
+    }
+
+    @Override
+    public void parseJSON(JSONObject jsonObject) throws JSONException {
+
     }
 }

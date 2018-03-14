@@ -1,5 +1,8 @@
 package dao;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,5 +46,15 @@ public class Schedule extends BaseDAO {
     @Override
     public String getSelectAllQuery() {
         return SELECT_ALL;
+    }
+
+    @Override
+    public JSONObject toJSON() throws JSONException {
+        return null;
+    }
+
+    @Override
+    public void parseJSON(JSONObject jsonObject) throws JSONException {
+
     }
 }
