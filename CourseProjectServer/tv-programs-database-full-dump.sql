@@ -18,7 +18,8 @@
 --
 -- Table structure for table `announcers`
 --
-
+CREATE DATABASE IF NOT EXISTS tv_programs;
+USE tv_programs;
 DROP TABLE IF EXISTS `announcers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
