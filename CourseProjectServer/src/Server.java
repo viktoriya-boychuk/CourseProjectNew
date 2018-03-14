@@ -2,108 +2,115 @@ import utils.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server {
-    public static final Integer DEFAULT_SOCKET = 28365;
-    private static CustomServerSocket mServerSocket;
-    private ExecutorService mExecutorService;
+public class Server implements Runnable {
+    public static final long DEFAULT_THREAD_DELAY = 400;
+    public static final Integer DEFAULT_SOCKET_PORT = 28365;
+    private static long threadDelay;
+    private static ExecutorService mExecutorService;
     private static Server mServer;
+    private CustomServerSocket mServerSocket;
+    private ArrayList<Runnable> mTaskPool;
+    private Boolean exit = false;
 
-    public static ArrayList<Socket> mSocketList = new ArrayList<>();
-
-    private Server() {
+    public Server() {
         mExecutorService = Executors.newCachedThreadPool();
-        attachTask(new ClientRequestsListener());
+        threadDelay = DEFAULT_THREAD_DELAY;
+        try {
+            mServerSocket = new CustomServerSocket(DEFAULT_SOCKET_PORT);
+        } catch (IOException e) {
+            Logger.logError("Error creating socket", "Most likely the socket has been already occupied. Try starting the application with a different one");
+            e.printStackTrace();
+        }
+        addToTaskPool(new ClientRequestsListener());
         mServer = this;
+        mExecutorService.submit(mServer);
+    }
+
+    @Override
+    public void run() {
+        Logger.logInfo("Server started", "Socket is " + Server.getCurrentPort());
+        while (!exit) {
+            ArrayList<Runnable> toRemove = new ArrayList<>();
+            if (!mTaskPool.isEmpty()) {
+                for (Runnable runnable : mTaskPool) {
+                    addToTaskPool(runnable);
+                    toRemove.add(runnable);
+                    try {
+                        Thread.sleep(threadDelay);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                mTaskPool.removeAll(toRemove);
+            }
+        }
+        Logger.logInfo("Server", "Server stopped");
     }
 
     public static void start() {
         new Server();
     }
 
-    private static Server getServerInstance() {
-        return mServer;
+    public static void finish() {
+        mServer.stopServer();
     }
 
-    static ServerSocket getServerSocketInstance() {
-        if (mServerSocket == null) {
-            try {
-                mServerSocket = new CustomServerSocket(Server.DEFAULT_SOCKET);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return mServerSocket;
+    private void stopServer() {
+        this.exit = true;
     }
 
-    public static Integer getCurrentPort() {
-        return getServerSocketInstance().getLocalPort();
-    }
-
-    private void attachTask(Runnable runnable) {
+    public static void addToTaskPool(Runnable runnable) {
         mExecutorService.submit(runnable);
     }
 
-    public static void spawnHandler(String data) {
-        Logger.logInfo("Client Message", data);
-
-        // Обробка інфи тут
+    public static Server getServerInstance() {
+        return mServer;
     }
 
-    protected static String getStringFromInputStream(InputStream is) {
+    public static Integer getCurrentPort() {
+        return Server.getServerSocketInstance().getLocalPort();
+    }
 
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder();
+    public static CustomServerSocket getServerSocketInstance() {
+        return Server.getServerInstance().mServerSocket;
+    }
 
-        String line;
-        try {
+    public static class ClientRequestsListener implements Runnable {
 
-            br = new BufferedReader(new InputStreamReader(is));
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
+        @Override
+        public void run() {
+            while (true) {
                 try {
-                    br.close();
+                    Socket client = Server.getServerSocketInstance().accept();
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+                    String buffer;
+                    StringBuilder message = null;
+                    while ((buffer = in.readLine()) != null) {
+                        message.append(buffer);
+                    }
+
+                    Logger.logInfo("Received info:", message.toString());
                 } catch (IOException e) {
+                    Logger.logError("Server Socket", "Socket " + Server.getCurrentPort());
                     e.printStackTrace();
                 }
             }
         }
-
-        return sb.toString();
-
     }
 
-
-    public static class ClientRequestsListener implements Runnable {
-
-        public ClientRequestsListener() {
-        }
+    public static class RequestHandler implements Runnable {
 
         @Override
         public void run() {
-            try {
-                Server.getServerInstance().attachTask(new ClientRequestsListener());
-                Socket client = Server.getServerSocketInstance().accept();
-                String message = getStringFromInputStream(client.getInputStream());
 
-                Server.spawnHandler(message);
-            } catch (IOException e) {
-                Logger.logError("Server Socket", "Socket" + Server.getCurrentPort());
-                e.printStackTrace();
-            }
         }
     }
 }
