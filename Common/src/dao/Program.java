@@ -1,5 +1,8 @@
 package dao;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -24,6 +27,22 @@ public class Program extends BaseDAO {
     private String description;
     private Boolean originality;
     private Integer audienceID;
+
+    public Program() {
+    }
+
+    public Program(Integer id, String name, String category, String genre, Integer duration, String country, String authorOrProducer, String description, Boolean originality, Integer audienceID) {
+        this.setId(id);
+        this.setName(name);
+        this.category = category;
+        this.genre = genre;
+        this.duration = duration;
+        this.country = country;
+        this.authorOrProducer = authorOrProducer;
+        this.description = description;
+        this.originality = originality;
+        this.audienceID = audienceID;
+    }
 
     public String getCategory() {
         return category;
@@ -105,27 +124,46 @@ public class Program extends BaseDAO {
     }
 
     @Override
-    public void parseResultSet(ResultSet resultSet) throws SQLException {
-        this.setId(resultSet.getInt(KEY_ID));
-        this.setName(resultSet.getString(KEY_NAME));
-        this.setGenre(resultSet.getString(KEY_GENRE));
-        this.setCategory(resultSet.getString(KEY_CATEGORY));
-        this.setDuration(resultSet.getInt(KEY_DURATION));
-        this.setCountry(resultSet.getString(KEY_COUNTRY));
-        this.setAuthorOrProducer(resultSet.getString(KEY_AUTHOR));
-        this.setDescription(resultSet.getString(KEY_DESCRIPTION));
-        this.setOriginality(resultSet.getBoolean(KEY_ORIGINALITY));
-        this.setAudienceID(resultSet.getInt(KEY_AUDIENCE_ID));
-    }
-
-    public static Program parse(ResultSet resultSet) throws SQLException {
-        Program program = new Program();
-        program.parseResultSet(resultSet);
-        return program;
+    public String getSelectAllQuery() {
+        return SELECT_ALL;
     }
 
     @Override
-    public String getSelectAllQuery() {
-        return SELECT_ALL;
+    public JSONObject toJSON() throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(KEY_ID, this.getId());
+        jsonObject.put(KEY_NAME, this.getName());
+        jsonObject.put(KEY_CATEGORY, this.getCategory());
+        jsonObject.put(KEY_GENRE, this.getGenre());
+        jsonObject.put(KEY_DURATION, this.getDuration());
+        jsonObject.put(KEY_COUNTRY, this.getCountry());
+        jsonObject.put(KEY_AUTHOR, this.getAuthorOrProducer());
+        jsonObject.put(KEY_DESCRIPTION, this.getDescription());
+        jsonObject.put(KEY_ORIGINALITY, this.getOriginality());
+        jsonObject.put(KEY_AUDIENCE_ID, this.getAudienceID());
+        return jsonObject;
+    }
+
+    @Override
+    public void parseResultSet(ResultSet resultSet) throws SQLException {
+        parseData(resultSet.getInt(KEY_ID), resultSet.getString(KEY_NAME), resultSet.getString(KEY_GENRE), resultSet.getString(KEY_CATEGORY), resultSet.getInt(KEY_DURATION), resultSet.getString(KEY_COUNTRY), resultSet.getString(KEY_AUTHOR), resultSet.getString(KEY_DESCRIPTION), resultSet.getBoolean(KEY_ORIGINALITY), resultSet.getInt(KEY_AUDIENCE_ID));
+    }
+
+    @Override
+    public void parseJSON(JSONObject jsonObject) throws JSONException {
+        parseData(jsonObject.getInt(KEY_ID), jsonObject.getString(KEY_NAME), jsonObject.getString(KEY_GENRE), jsonObject.getString(KEY_CATEGORY), jsonObject.getInt(KEY_DURATION), jsonObject.getString(KEY_COUNTRY), jsonObject.getString(KEY_AUTHOR), jsonObject.getString(KEY_DESCRIPTION), jsonObject.getBoolean(KEY_ORIGINALITY), jsonObject.getInt(KEY_AUDIENCE_ID));
+    }
+
+    private void parseData(int anInt, String string, String string2, String string3, int anInt2, String string4, String string5, String string6, boolean aBoolean, int anInt3) {
+        this.setId(anInt);
+        this.setName(string);
+        this.setGenre(string2);
+        this.setCategory(string3);
+        this.setDuration(anInt2);
+        this.setCountry(string4);
+        this.setAuthorOrProducer(string5);
+        this.setDescription(string6);
+        this.setOriginality(aBoolean);
+        this.setAudienceID(anInt3);
     }
 }
