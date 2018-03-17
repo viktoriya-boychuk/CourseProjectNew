@@ -1,58 +1,39 @@
+import connection.SQLHelper;
+import dao.Program;
+import org.json.JSONArray;
 import utils.Logger;
+import utils.TaskHandler;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.sql.SQLException;
 
-public class Server implements Runnable {
-    public static final long DEFAULT_THREAD_DELAY = 10;
+public class Server {
     public static final Integer DEFAULT_SOCKET_PORT = 28365;
-    private static long threadDelay;
-    private static ExecutorService mExecutorService;
     private static Server mServer;
+    private SQLHelper mSQLHelper;
+    private static TaskHandler mTaskHandler;
     private CustomServerSocket mServerSocket;
-    private ArrayList<Runnable> mTaskPool;
-    private Boolean exit = false;
 
     public Server() {
-        mExecutorService = Executors.newCachedThreadPool();
-        mTaskPool = new ArrayList<>();
-        threadDelay = DEFAULT_THREAD_DELAY;
+
         try {
             mServerSocket = new CustomServerSocket(DEFAULT_SOCKET_PORT);
         } catch (IOException e) {
             Logger.logError("Error creating socket", "Most likely the socket has been already occupied. Try starting the application with a different one");
             e.printStackTrace();
         }
-        addToTaskPool(new ClientRequestsListener());
         mServer = this;
-        mExecutorService.submit(mServer);
-    }
-
-    @Override
-    public void run() {
-        Logger.logInfo("Server started", "Socket is " + Server.getCurrentPort());
-        while (!exit) {
-            //TODO: Thread buffer for TaskPool
-            ArrayList<Runnable> toRemove = new ArrayList<>();
-            if (!mTaskPool.isEmpty()) {
-                for (Runnable runnable : mTaskPool) {
-                    addToTaskPool(runnable);
-                    toRemove.add(runnable);
-                }
-                mTaskPool.removeAll(toRemove);
-            }
-            try {
-                Thread.sleep(threadDelay);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        mTaskHandler = new TaskHandler("Logger");
+        mTaskHandler.startTask(new ClientRequestsListener());
+        mTaskHandler.startInCurrentThread();
+        try {
+            mSQLHelper = SQLHelper.getInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        Logger.logInfo("Server", "Server stopped");
     }
 
     public static void start() {
@@ -64,11 +45,7 @@ public class Server implements Runnable {
     }
 
     private void stopServer() {
-        this.exit = true;
-    }
-
-    public static void addToTaskPool(Runnable runnable) {
-        mExecutorService.submit(runnable);
+        mTaskHandler.stop();
     }
 
     public static Server getServerInstance() {
@@ -83,28 +60,27 @@ public class Server implements Runnable {
         return Server.getServerInstance().mServerSocket;
     }
 
-    public static class ClientRequestsListener implements Runnable {
+    public class ClientRequestsListener implements Runnable {
 
         @Override
         public void run() {
-            while (true) {
+            while (!mTaskHandler.status()) {
                 try {
                     Socket client = Server.getServerSocketInstance().accept();
+                    Logger.logInfo("Client connected", client.getInetAddress().toString());
 
-                    BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                    PrintWriter out = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true);
 
-                    String buffer;
-                    StringBuilder message = null;
-                    while ((buffer = in.readLine()) != "\0") {
-                        message.append(buffer);
-                    }
-
-                    Logger.logInfo("Received info:", message.toString());
+                    JSONArray jsonArray = mSQLHelper.getJSONArrayFor(Program.class);
+                    out.println(jsonArray.toString());
                 } catch (IOException e) {
                     Logger.logError("Server Socket", "Socket " + Server.getCurrentPort());
                     e.printStackTrace();
+                } catch (IllegalAccessException | InstantiationException | SQLException e) {
+                    e.printStackTrace();
                 }
             }
+            Logger.logInfo("Server Thread", "The server doesn't listen anymore and has stopped");
         }
     }
 
