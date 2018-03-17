@@ -3,9 +3,11 @@ package dao;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class Announcer extends BaseDAO {
     private static final String KEY_ID = "an_id";
@@ -116,7 +118,7 @@ public class Announcer extends BaseDAO {
         jsonObject.put(KEY_CAREER_END, this.getCareerEndYear());
         jsonObject.put(KEY_BIRTH_DATE, this.getBirthDate());
         jsonObject.put(KEY_EDUCATION, this.getEducation());
-        jsonObject.put(KEY_DESCRIPTION, this.getDescription())
+        jsonObject.put(KEY_DESCRIPTION, this.getDescription());
         jsonObject.put(KEY_SEX, this.getSex());
         return jsonObject;
     }
@@ -136,18 +138,24 @@ public class Announcer extends BaseDAO {
 
     @Override
     public Announcer parseJSON(JSONObject jsonObject) throws JSONException {
-        parseData(jsonObject.getInt(KEY_ID),
-                jsonObject.getString(KEY_NAME),
-                jsonObject.getInt(KEY_CAREER_BEGIN),
-                jsonObject.getInt(KEY_CAREER_END),
-                jsonObject.getDate(KEY_BIRTH_DATE),
-                jsonObject.getString(KEY_EDUCATION),
-                jsonObject.getString(KEY_DESCRIPTION),
-                jsonObject.getString(KEY_SEX));
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+        try {
+            parseData(jsonObject.getInt(KEY_ID),
+                    jsonObject.getString(KEY_NAME),
+                    jsonObject.getInt(KEY_CAREER_BEGIN),
+                    jsonObject.getInt(KEY_CAREER_END),
+                    formatter.parse(jsonObject.getString(KEY_BIRTH_DATE)),
+                    jsonObject.getString(KEY_EDUCATION),
+                    jsonObject.getString(KEY_DESCRIPTION),
+                    jsonObject.getString(KEY_SEX));
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
         return this;
     }
 
-    private void parseData(int anInt, String string, int anInt2, int anInt3, Date date, String string2, String string3, Sex sex) {
+    private void parseData(int anInt, String string, int anInt2, int anInt3, Date date, String string2, String string3, String string4) {
         this.setId(anInt);
         this.setName(string);
         this.setCareerBeginYear(anInt2);
@@ -155,6 +163,9 @@ public class Announcer extends BaseDAO {
         this.setBirthDate(date);
         this.setEducation(string2);
         this.setDescription(string3);
-        this.setSex(sex);
+        switch (string4) {
+            case "male": this.setSex(Sex.male);
+            case "female": this.setSex(Sex.female);
+        }
     }
 }

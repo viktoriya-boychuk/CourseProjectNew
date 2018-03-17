@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Program extends BaseDAO {
-    //TODO: Make every subclass of DAO like this one (keys, toJson() parseJson()
     private static final String KEY_ID = "pr_id";
     private static final String KEY_NAME = "pr_name";
     private static final String KEY_CATEGORY = "pr_category";
@@ -111,7 +110,6 @@ public class Program extends BaseDAO {
 
     @Override
     public String toString() {
-
         return "Program{" + super.toString() +
                 "category='" + category + '\'' +
                 ", genre='" + genre + '\'' +
