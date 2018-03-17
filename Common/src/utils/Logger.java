@@ -16,6 +16,7 @@ import java.util.Date;
 public class Logger {
     private static Logger logger;
     private static Path logPath;
+    private static TaskHandler mTaskHandler;
 
     private Logger() {
         try {
@@ -24,6 +25,7 @@ public class Logger {
                 Files.createDirectory(Paths.get("logs"));
 
             Files.createFile(logPath);
+            mTaskHandler = new TaskHandler("Logger");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,8 +34,12 @@ public class Logger {
     public static Logger initialize() {
         if (logger == null) {
             logger = new Logger();
+            mTaskHandler.startInBackgroundThread();
             return logger;
-        } else return logger;
+        } else {
+
+            return logger;
+        }
     }
 
     private static void write(String header, String message, String type) throws IOException {
