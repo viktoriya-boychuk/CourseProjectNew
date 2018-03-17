@@ -1,6 +1,7 @@
 package connection;
 
 import dao.BaseDAO;
+import org.json.JSONArray;
 
 import java.sql.*;
 
@@ -25,8 +26,21 @@ public class SQLHelper {
         return instance;
     }
 
-    public ResultSet getDataFor(Class<? extends BaseDAO> type) throws SQLException, IllegalAccessException, InstantiationException {
+    public ResultSet getResultSetFor(Class<? extends BaseDAO> type) throws SQLException, IllegalAccessException, InstantiationException {
         Statement statement = con.createStatement();
         return statement.executeQuery(type.newInstance().getSelectAllQuery());
+    }
+
+    public JSONArray getJSONArrayFor(Class<? extends BaseDAO> type) throws SQLException, IllegalAccessException, InstantiationException {
+        Statement statement = con.createStatement();
+        ResultSet resultSet = statement.executeQuery(type.newInstance().getSelectAllQuery());
+
+        JSONArray jsonArray = new JSONArray();
+
+        while (resultSet.next()) {
+            jsonArray.put(type.newInstance().parseResultSet(resultSet));
+        }
+
+        return jsonArray;
     }
 }
