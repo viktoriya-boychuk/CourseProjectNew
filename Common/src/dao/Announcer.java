@@ -8,6 +8,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Announcer extends BaseDAO {
+    private static final String KEY_ID = "an_id";
+    private static final String KEY_NAME = "an_name";
+    private static final String KEY_CAREER_BEGIN = "an_career_begin_year";
+    private static final String KEY_CAREER_END = "an_career_end_year";
+    private static final String KEY_BIRTH_DATE = "an_birth_date";
+    private static final String KEY_EDUCATION = "an_education";
+    private static final String KEY_DESCRIPTION = "an_description";
+    private static final String KEY_SEX = "an_sex";
     private static final String SELECT_ALL = "SELECT * FROM announcers";
 
     private Integer careerBeginYear;
@@ -19,6 +27,20 @@ public class Announcer extends BaseDAO {
     private enum Sex {male, female;}
 
     private Sex sex;
+
+    public Announcer(){
+    }
+
+    public Announcer(Integer id, String name, Integer careerBegin, Integer careerEnd, Date birthDate, String education, String description, Sex sex){
+        this.setId(id);
+        this.setName(name);
+        this.careerBeginYear = careerBegin;
+        this.careerEndYear = careerEnd;
+        this.birthDate = birthDate;
+        this.education = education;
+        this.description = description;
+        this.sex = sex;
+    }
 
     public Integer getCareerBeginYear() {
         return careerBeginYear;
@@ -87,17 +109,52 @@ public class Announcer extends BaseDAO {
 
     @Override
     public JSONObject toJSON() throws JSONException {
-        return null;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(KEY_ID, this.getId());
+        jsonObject.put(KEY_NAME, this.getName());
+        jsonObject.put(KEY_CAREER_BEGIN, this.getCareerBeginYear());
+        jsonObject.put(KEY_CAREER_END, this.getCareerEndYear());
+        jsonObject.put(KEY_BIRTH_DATE, this.getBirthDate());
+        jsonObject.put(KEY_EDUCATION, this.getEducation());
+        jsonObject.put(KEY_DESCRIPTION, this.getDescription())
+        jsonObject.put(KEY_SEX, this.getSex());
+        return jsonObject;
     }
 
     @Override
     public Announcer parseResultSet(ResultSet resultSet) throws SQLException {
-        //TODO: parse Announcer
-        return null;
+        parseData(resultSet.getInt(KEY_ID),
+                resultSet.getString(KEY_NAME),
+                resultSet.getInt(KEY_CAREER_BEGIN),
+                resultSet.getInt(KEY_CAREER_END),
+                resultSet.getDate(KEY_BIRTH_DATE),
+                resultSet.getString(KEY_EDUCATION),
+                resultSet.getString(KEY_DESCRIPTION),
+                resultSet.getString(KEY_SEX));
+        return this;
     }
 
     @Override
     public Announcer parseJSON(JSONObject jsonObject) throws JSONException {
-        return null;
+        parseData(jsonObject.getInt(KEY_ID),
+                jsonObject.getString(KEY_NAME),
+                jsonObject.getInt(KEY_CAREER_BEGIN),
+                jsonObject.getInt(KEY_CAREER_END),
+                jsonObject.getDate(KEY_BIRTH_DATE),
+                jsonObject.getString(KEY_EDUCATION),
+                jsonObject.getString(KEY_DESCRIPTION),
+                jsonObject.getString(KEY_SEX));
+        return this;
+    }
+
+    private void parseData(int anInt, String string, int anInt2, int anInt3, Date date, String string2, String string3, Sex sex) {
+        this.setId(anInt);
+        this.setName(string);
+        this.setCareerBeginYear(anInt2);
+        this.setCareerEndYear(anInt3);
+        this.setBirthDate(date);
+        this.setEducation(string2);
+        this.setDescription(string3);
+        this.setSex(sex);
     }
 }
