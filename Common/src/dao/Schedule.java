@@ -39,11 +39,6 @@ public class Schedule extends BaseDAO {
     }
 
     @Override
-    public void parseResultSet(ResultSet resultSet) throws SQLException {
-
-    }
-
-    @Override
     public String getSelectAllQuery() {
         return SELECT_ALL;
     }
@@ -54,7 +49,12 @@ public class Schedule extends BaseDAO {
     }
 
     @Override
-    public void parseJSON(JSONObject jsonObject) throws JSONException {
+    public Schedule parseResultSet(ResultSet resultSet) throws SQLException {
+        return null;
+    }
 
+    @Override
+    public Schedule parseJSON(JSONObject jsonObject) throws JSONException {
+        return null;
     }
 }

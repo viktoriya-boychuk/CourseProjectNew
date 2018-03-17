@@ -146,7 +146,7 @@ public class Program extends BaseDAO {
     }
 
     @Override
-    public void parseResultSet(ResultSet resultSet) throws SQLException {
+    public Program parseResultSet(ResultSet resultSet) throws SQLException {
         parseData(resultSet.getInt(KEY_ID),
                 resultSet.getString(KEY_NAME),
                 resultSet.getString(KEY_GENRE),
@@ -157,10 +157,11 @@ public class Program extends BaseDAO {
                 resultSet.getString(KEY_DESCRIPTION),
                 resultSet.getBoolean(KEY_ORIGINALITY),
                 resultSet.getInt(KEY_AUDIENCE_ID));
+        return this;
     }
 
     @Override
-    public void parseJSON(JSONObject jsonObject) throws JSONException {
+    public Program parseJSON(JSONObject jsonObject) throws JSONException {
         parseData(jsonObject.getInt(KEY_ID),
                 jsonObject.getString(KEY_NAME),
                 jsonObject.getString(KEY_GENRE),
@@ -171,8 +172,9 @@ public class Program extends BaseDAO {
                 jsonObject.getString(KEY_DESCRIPTION),
                 jsonObject.getBoolean(KEY_ORIGINALITY),
                 jsonObject.getInt(KEY_AUDIENCE_ID));
+        return this;
     }
-
+    
     private void parseData(int anInt, String string, String string2, String string3, int anInt2, String string4, String string5, String string6, boolean aBoolean, int anInt3) {
         this.setId(anInt);
         this.setName(string);

@@ -1,5 +1,7 @@
 package dao;
 
+import java.sql.ResultSet;
+
 public abstract class BaseDAO implements Parcelable, Queryable {
     private Integer id;
     private String name;
@@ -24,5 +26,9 @@ public abstract class BaseDAO implements Parcelable, Queryable {
     public String toString() {
         return "id=" + id +
                 ", name=" + name + ", ";
+    }
+
+    public static BaseDAO parseResultSeta(ResultSet resultSet) {
+        return null;
     }
 }

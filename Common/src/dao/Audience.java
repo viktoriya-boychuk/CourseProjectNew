@@ -47,11 +47,6 @@ public class Audience extends BaseDAO {
     }
 
     @Override
-    public void parseResultSet(ResultSet resultSet) throws SQLException {
-
-    }
-
-    @Override
     public String getSelectAllQuery() {
         return SELECT_ALL;
     }
@@ -62,7 +57,12 @@ public class Audience extends BaseDAO {
     }
 
     @Override
-    public void parseJSON(JSONObject jsonObject) throws JSONException {
+    public Audience parseResultSet(ResultSet resultSet) throws SQLException {
+        return null;
+    }
 
+    @Override
+    public Audience parseJSON(JSONObject jsonObject) throws JSONException {
+        return null;
     }
 }

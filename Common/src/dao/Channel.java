@@ -98,11 +98,6 @@ public class Channel extends BaseDAO {
     }
 
     @Override
-    public void parseResultSet(ResultSet resultSet) throws SQLException {
-
-    }
-
-    @Override
     public String getSelectAllQuery() {
         return SELECT_ALL;
     }
@@ -113,7 +108,12 @@ public class Channel extends BaseDAO {
     }
 
     @Override
-    public void parseJSON(JSONObject jsonObject) throws JSONException {
+    public Channel parseResultSet(ResultSet resultSet) throws SQLException {
+        return null;
+    }
 
+    @Override
+    public Channel parseJSON(JSONObject jsonObject) throws JSONException {
+        return null;
     }
 }

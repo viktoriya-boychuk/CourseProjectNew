@@ -81,11 +81,6 @@ public class Announcer extends BaseDAO {
     }
 
     @Override
-    public void parseResultSet(ResultSet resultSet) throws SQLException {
-        //TODO: parse Announcer
-    }
-
-    @Override
     public String getSelectAllQuery() {
         return SELECT_ALL;
     }
@@ -96,7 +91,13 @@ public class Announcer extends BaseDAO {
     }
 
     @Override
-    public void parseJSON(JSONObject jsonObject) throws JSONException {
+    public Announcer parseResultSet(ResultSet resultSet) throws SQLException {
+        //TODO: parse Announcer
+        return null;
+    }
 
+    @Override
+    public Announcer parseJSON(JSONObject jsonObject) throws JSONException {
+        return null;
     }
 }
