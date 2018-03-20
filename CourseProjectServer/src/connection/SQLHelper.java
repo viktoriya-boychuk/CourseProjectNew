@@ -38,7 +38,7 @@ public class SQLHelper {
         JSONArray jsonArray = new JSONArray();
 
         while (resultSet.next()) {
-            jsonArray.put(type.newInstance().parseResultSet(resultSet));
+            jsonArray.put(type.newInstance().parseResultSet(resultSet).toJSON());
         }
 
         return jsonArray;
