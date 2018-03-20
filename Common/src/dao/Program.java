@@ -144,6 +144,11 @@ public class Program extends BaseDAO {
     }
 
     @Override
+    public String getObjectName() {
+        return "Program";
+    }
+
+    @Override
     public Program parseResultSet(ResultSet resultSet) throws SQLException {
         parseData(resultSet.getInt(KEY_ID),
                 resultSet.getString(KEY_NAME),

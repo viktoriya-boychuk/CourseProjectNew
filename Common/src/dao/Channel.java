@@ -159,6 +159,11 @@ public class Channel extends BaseDAO {
     }
 
     @Override
+    public String getObjectName() {
+        return "Channel";
+    }
+
+    @Override
     public Channel parseResultSet(ResultSet resultSet) throws SQLException {
         parseData(resultSet.getInt(KEY_ID),
                 resultSet.getString(KEY_NAME),

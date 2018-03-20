@@ -124,6 +124,11 @@ public class Announcer extends BaseDAO {
     }
 
     @Override
+    public String getObjectName() {
+        return "Announcer";
+    }
+
+    @Override
     public Announcer parseResultSet(ResultSet resultSet) throws SQLException {
         parseData(resultSet.getInt(KEY_ID),
                 resultSet.getString(KEY_NAME),

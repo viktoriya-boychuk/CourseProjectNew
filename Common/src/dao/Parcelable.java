@@ -7,7 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface Parcelable {
-    Parcelable parseResultSet(ResultSet resultSet) throws SQLException;
-    Parcelable parseJSON(JSONObject jsonObject) throws JSONException;
+    BaseDAO parseResultSet(ResultSet resultSet) throws SQLException;
+    BaseDAO parseJSON(JSONObject jsonObject) throws JSONException;
     JSONObject toJSON() throws JSONException;
+    String getObjectName();
 }

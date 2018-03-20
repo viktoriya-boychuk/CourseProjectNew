@@ -92,6 +92,11 @@ public class Schedule extends BaseDAO {
     }
 
     @Override
+    public String getObjectName() {
+        return "Schedule";
+    }
+
+    @Override
     public Schedule parseResultSet(ResultSet resultSet) throws SQLException {
         parseData(resultSet.getInt(KEY_ID),
                 resultSet.getDate(KEY_DATE),
