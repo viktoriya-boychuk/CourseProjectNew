@@ -1,5 +1,6 @@
 import connection.SQLHelper;
 import dao.Program;
+import org.json.JSONArray;
 import utils.Logger;
 import utils.TaskHandler;
 
@@ -28,6 +29,7 @@ public class Debug {
         }));
 
         Server.start();
+        mTaskHandler.addToTaskPool(Debug::testSQLConnection);
 
         mTaskHandler.startInCurrentThread();
     }
@@ -43,14 +45,9 @@ public class Debug {
         ArrayList<Program> programs = new ArrayList<>();
 
         try {
-            ResultSet resultSet = sqlHelper.getResultSetFor(Program.class);
+            JSONArray jsonArray = sqlHelper.getJSONArrayFor(Program.class);
 
-            //TODO: create static factory parser method
-            while (resultSet.next()) {
-                Program program = new Program();
-                program.parseResultSet(resultSet);
-                programs.add(program/*Program.parseResultSet(resultSet)*/);
-            }
+            Logger.logInfo("AAAAAAAAA", jsonArray.toString());
         } catch (SQLException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
