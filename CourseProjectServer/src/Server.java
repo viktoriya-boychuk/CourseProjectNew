@@ -1,7 +1,7 @@
 import connection.SQLHelper;
 import dao.Program;
-import org.json.JSONArray;
 import utils.Logger;
+import utils.Request;
 import utils.TaskHandler;
 
 import java.io.IOException;
@@ -21,19 +21,18 @@ public class Server {
 
         try {
             mServerSocket = new CustomServerSocket(DEFAULT_SOCKET_PORT);
+            mSQLHelper = SQLHelper.getInstance();
         } catch (IOException e) {
             Logger.logError("Error creating socket", "Most likely the socket has been already occupied. Try starting the application with a different one");
+            e.printStackTrace();
+        }catch (Exception e) {
             e.printStackTrace();
         }
         mServer = this;
         mTaskHandler = new TaskHandler("Logger");
         mTaskHandler.startTask(new ClientRequestsListener());
+
         mTaskHandler.startInCurrentThread();
-        try {
-            mSQLHelper = SQLHelper.getInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public static void start() {
@@ -71,8 +70,11 @@ public class Server {
 
                     PrintWriter out = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true);
 
-                    JSONArray jsonArray = mSQLHelper.getJSONArrayFor(Program.class);
-                    out.println(jsonArray.toString());
+
+                    String test = mSQLHelper.getJSONArrayFor(Program.class).toString();
+                    Logger.logInfo("Program table JSON is: ", mSQLHelper.getJSONArrayFor(Program.class).toString());
+                    Request request = new Request(Request.RequestType.POST, test);
+                    out.println(request.toString());
                 } catch (IOException e) {
                     Logger.logError("Server Socket", "Socket " + Server.getCurrentPort());
                     e.printStackTrace();
@@ -85,6 +87,11 @@ public class Server {
     }
 
     public static class RequestHandler implements Runnable {
+        private Request mRequest;
+
+        public RequestHandler(Request mRequest) {
+            this.mRequest = mRequest;
+        }
 
         @Override
         public void run() {
