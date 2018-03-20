@@ -1,8 +1,6 @@
 package utils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -19,6 +17,9 @@ public class ServerConnection {
 
     public void start() throws IOException {
         BufferedReader response = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+        PrintWriter requestWriter = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream()));
+//        Request request = new Request();
+
 
         String message = response.readLine();
 
