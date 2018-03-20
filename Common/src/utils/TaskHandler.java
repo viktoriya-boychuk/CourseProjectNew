@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 
 public class TaskHandler {
     private static final long DEFAULT_THREAD_DELAY = 10;
+    private static final long DEFAULT_THREAD_STANDBY_DELAY = 500;
     private Looper mLooper;
     private ExecutorService mExecutorService;
     private ArrayList<Runnable> mTaskPool;
@@ -21,7 +22,7 @@ public class TaskHandler {
         mTaskPool.add(runnable);
     }
 
-    private void addToTaskPool(Runnable runnable) {
+    public void addToTaskPool(Runnable runnable) {
         mExecutorService.submit(runnable);
     }
 
@@ -29,7 +30,7 @@ public class TaskHandler {
         Logger.logInfo("Thread stop", "Stopping" + getCurrentThreadName() + " thread");
         mExit = true;
         try {
-            Thread.sleep(2000);
+            Thread.sleep(DEFAULT_THREAD_STANDBY_DELAY);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
