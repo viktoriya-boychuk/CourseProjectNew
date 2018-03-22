@@ -32,7 +32,7 @@ public class Server {
         mTaskHandler = new TaskHandler("Logger");
         mTaskHandler.startTask(new ClientRequestsListener());
 
-        mTaskHandler.startInCurrentThread();
+        mTaskHandler.startInBackgroundThread();
     }
 
     public static void start() {
@@ -73,8 +73,8 @@ public class Server {
 
                     String test = mSQLHelper.getJSONArrayFor(Program.class).toString();
                     Logger.logInfo("Program table JSON is: ", mSQLHelper.getJSONArrayFor(Program.class).toString());
-                    Request request = new Request(Request.RequestType.POST, test);
-                    out.println(request.toString());
+//                    Request request = new Request(Request.RequestType.POST, test);
+//                    out.println(request.toString());
                 } catch (IOException e) {
                     Logger.logError("Server Socket", "Socket " + Server.getCurrentPort());
                     e.printStackTrace();

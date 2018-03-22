@@ -13,42 +13,32 @@ public class Request {
     private String KEY_BODY = "Request-Body";
 
     private RequestType mRequestType;
-    private String mData;
+    private ArrayList<BaseDAO> mData;
+    private JSONObject mJSONData;
     private String mDataType;
+    private String mDataString;
 
-    private Request() {
+    public Request(RequestType requestType, ArrayList<BaseDAO> data) {
+        this.mData = new ArrayList<>();
+        this.mData.addAll(data);
+        this.mDataType = data.get(0).getClass().getName();
+        mRequestType = requestType;
     }
 
-    public Request(RequestType type, String data) {
-        this.mRequestType = type;
-        this.mData = data;
-    }
-
-    public Request(RequestType type, ArrayList<BaseDAO> data) {
-        this.mRequestType = type;
-        this.addData(data);
-    }
-
-    public Request(RequestType requestType, Class<? extends BaseDAO> forClass) {
-        this.mRequestType = requestType;
-        this.mDataType = forClass.getName();
-    }
-
-    public RequestType getType() {
+    public RequestType getRequestType() {
         return mRequestType;
     }
 
-    public void setType(RequestType mType) {
-        this.mRequestType = mType;
-
+    public void setRequestType(RequestType mRequestType) {
+        this.mRequestType = mRequestType;
     }
 
-    public String getBody() {
-        return mData;
+    public String getDataString() {
+        return mDataString;
     }
 
-    private void setBody(String mBody) {
-        this.mData = mBody;
+    public void setDataString(String mDataString) {
+        this.mDataString = mDataString;
     }
 
     public String getDataType() {
@@ -59,34 +49,52 @@ public class Request {
         this.mDataType = mDataType;
     }
 
-    public void addData(ArrayList<BaseDAO> baseDAOList) {
-        JSONObject jsonObject = new JSONObject();
+    public void setData(ArrayList<BaseDAO> data) {
+        mData = new ArrayList<>();
         JSONArray jsonArray = new JSONArray();
-
-        for (BaseDAO object : baseDAOList) {
-            jsonArray.put(object.toJSON());
+        mData.addAll(data);
+        for (BaseDAO baseDAO : mData) {
+            JSONObject jsonObject = baseDAO.toJSON();
+            jsonArray.put(jsonObject);
         }
-        jsonObject.put(baseDAOList.get(0).getObjectName(), jsonArray);
+        mJSONData = new JSONObject();
+        mJSONData.put(mDataType, jsonArray);
+        mDataString = mJSONData.toString();
+    }
 
-        this.setBody(jsonObject.toString());
+    public void setData(String incomingString) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        mData = new ArrayList<>();
+        mJSONData = new JSONObject(incomingString.trim());
+        JSONArray jsonArray = new JSONArray(mJSONData.getJSONArray(mDataType).toString());
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            BaseDAO object = parseJSONObject(jsonObject);
+
+            mData.add(object);
+        }
+        mDataString = mJSONData.toString();
+    }
+
+    public ArrayList<BaseDAO> getData() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        if (mData == null) {
+            mData = new ArrayList<>();
+            JSONArray jsonArray = new JSONArray(new JSONObject(mDataString).get(mDataType));
+            for (int i = 0; i > jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                BaseDAO object = parseJSONObject(jsonObject);
+                mData.add(object);
+            }
+            return mData;
+        } else return mData;
+    }
+
+    private BaseDAO parseJSONObject(JSONObject jsonObject) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        return ((BaseDAO) Class.forName(this.getDataType()).newInstance()).parseJSON(jsonObject);
     }
 
     @Override
     public String toString() {
-        return new JSONObject().put(KEY_TYPE, this.mRequestType.toString()).put(KEY_BODY, mData).toString();
-    }
-
-    public ArrayList<BaseDAO> getData() {
-        ArrayList<BaseDAO> dataList = new ArrayList<>();
-        JSONArray jsonArray = new JSONArray(new JSONObject(mData).get(mDataType));
-        for(int i = 0; i>jsonArray.length(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            try {
-                BaseDAO object = ((BaseDAO) Class.forName(this.getDataType()).newInstance()).parseJSON(jsonObject);
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
-            }
-        }
-        return dataList;
+        return new JSONObject().put(KEY_TYPE, mRequestType).put(KEY_BODY, getDataString()).toString();
     }
 }

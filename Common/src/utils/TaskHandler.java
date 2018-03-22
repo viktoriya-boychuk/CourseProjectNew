@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 
 public class TaskHandler {
     private static final long DEFAULT_THREAD_DELAY = 10;
-    private static final long DEFAULT_THREAD_STANDBY_DELAY = 500;
+    private static final long DEFAULT_THREAD_STANDBY_DELAY = 250;
     private Looper mLooper;
     private ExecutorService mExecutorService;
     private ArrayList<Runnable> mTaskPool;
@@ -27,7 +27,7 @@ public class TaskHandler {
     }
 
     public void stop() {
-        Logger.logInfo("Thread stop", "Stopping" + getCurrentThreadName() + " thread");
+        Logger.logInfo("Thread stop", "Stopping " + getCurrentThreadName() + " thread");
         mExit = true;
         try {
             Thread.sleep(DEFAULT_THREAD_STANDBY_DELAY);
@@ -60,7 +60,7 @@ public class TaskHandler {
             this.mThreadName = mThreadName;
         }
 
-        public String getmThreadName() {
+        public String getThreadName() {
             return mThreadName;
         }
 
@@ -85,4 +85,6 @@ public class TaskHandler {
             Logger.logInfo("Thread stop", "Thread " + getCurrentThreadName() + " stopped");
         }
     }
+
+    public class TaskHandlerException extends Exception {}
 }
