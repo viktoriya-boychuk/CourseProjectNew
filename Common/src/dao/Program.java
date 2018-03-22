@@ -133,7 +133,7 @@ public class Program extends BaseDAO {
         jsonObject.put(KEY_ID, this.getId());
         jsonObject.put(KEY_NAME, this.getName());
         jsonObject.put(KEY_CATEGORY, this.getCategory());
-        jsonObject.put(KEY_GENRE, this.getGenre());
+        jsonObject.put(KEY_GENRE, (this.getGenre() == null) ? "null" : this.getGenre());
         jsonObject.put(KEY_DURATION, this.getDuration());
         jsonObject.put(KEY_COUNTRY, this.getCountry());
         jsonObject.put(KEY_AUTHOR, this.getAuthorOrProducer());
@@ -177,16 +177,16 @@ public class Program extends BaseDAO {
                 jsonObject.getInt(KEY_AUDIENCE_ID));
         return this;
     }
-    
+
     private void parseData(int anInt, String string, String string2, String string3, int anInt2, String string4, String string5, String string6, boolean aBoolean, int anInt3) {
         this.setId(anInt);
         this.setName(string);
-        this.setGenre(string2);
+        this.setGenre(string2 == null ? "null" : string2);
         this.setCategory(string3);
         this.setDuration(anInt2);
         this.setCountry(string4);
         this.setAuthorOrProducer(string5);
-        this.setDescription(string6);
+        this.setDescription(string6 == null ? "null" : string6);
         this.setOriginality(aBoolean);
         this.setAudienceID(anInt3);
     }
