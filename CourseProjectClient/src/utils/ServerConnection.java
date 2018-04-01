@@ -1,28 +1,74 @@
 package utils;
 
+import dao.BaseDAO;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
 public class ServerConnection {
-    private Socket socket;
+    private TaskHandler mTaskHandler;
+    public Socket mSocket;
 
     public ServerConnection(InetAddress serverAddress, int serverPort) throws Exception {
-        this.socket = new Socket(serverAddress, serverPort);
+        this.mSocket = new Socket(serverAddress, serverPort);
+
+        mTaskHandler = new TaskHandler("Client-Connection-Manager");
+
+        mTaskHandler.startInBackgroundThread();
     }
 
     public Socket getSocket() {
-        return socket;
+        return mSocket;
     }
 
-    public void start() throws IOException {
-        BufferedReader response = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-        PrintWriter requestWriter = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream()));
-//        Request request = new Request();
+//    public void start() throws IOException {
+//        BufferedReader response = new BufferedReader(new InputStreamReader(this.mSocket.getInputStream()));
+//        PrintWriter requestWriter = new PrintWriter(new OutputStreamWriter(this.mSocket.getOutputStream()), true);
+//        Request request = new Request(Program.class);
+//        request.setRequestType(Request.RequestType.GET);
+//
+//        requestWriter.println(request.toString() + "\n");
+//
+//        String message = response.readLine();
+//        Logger.logInfo("Response is here!", "OMFG! It's :" + message);
+//        Request actualResponse = new Request(message);
+//        Logger.logInfo("Hey!", "Parsing's done! The result is " + actualResponse.getDataString());
+//
+////        Logger.logInfo("Response from server:", message);
+//    }
 
+    public void requestData(Class<? extends BaseDAO> type, Receiver caller) {
+        Request request = new Request(type);
 
-        String message = response.readLine();
+        mTaskHandler.addToTaskPool(new RequestSender(request, caller));
+    }
 
-        Logger.logInfo("Response from server:", message);
+    public class RequestSender implements Runnable {
+        Request mRequest;
+        Receiver mCaller;
+
+        public RequestSender(Request request, Receiver caller) {
+            this.mRequest = request;
+            this.mCaller = caller;
+        }
+
+        @Override
+        public void run() {
+            try (
+                    BufferedReader response = new BufferedReader(new InputStreamReader(mSocket.getInputStream()));
+                    PrintWriter requestWriter = new PrintWriter(new OutputStreamWriter(mSocket.getOutputStream()), true);
+            ) {
+                requestWriter.println(mRequest.toString());
+
+                String message = response.readLine();
+
+                Request request = new Request(message);
+
+                mCaller.onReceive(request);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
