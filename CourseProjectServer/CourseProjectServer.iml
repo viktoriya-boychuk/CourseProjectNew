@@ -13,6 +13,5 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="mysql-connector-java-5.1.18-bin" level="project" />
     <orderEntry type="module" module-name="Common" />
-    <orderEntry type="library" name="Common" level="project" />
   </component>
 </module>
