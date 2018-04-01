@@ -2,15 +2,17 @@ package utils;
 
 import dao.BaseDAO;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class Request {
-    public enum RequestType {POST, GET, DELETE, UPDATE}
+    public enum RequestType {POST, GET, DELETE, UPDATE, NONE}
 
     private String KEY_TYPE = "Request-Type";
     private String KEY_BODY = "Request-Body";
+    private String KEY_DATATYPE = "Request-DataType";
 
     private RequestType mRequestType;
     private ArrayList<BaseDAO> mData;
@@ -25,8 +27,35 @@ public class Request {
         mRequestType = requestType;
     }
 
+    public Request(String incomingString) {
+        JSONObject jsonObject = new JSONObject(incomingString);
+        this.mDataType = jsonObject.getString(KEY_DATATYPE);
+        try {
+            this.mDataString = jsonObject.getJSONObject(KEY_BODY).toString();
+            try {
+                setData(mDataString);
+            } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        } catch (JSONException e) {
+            Logger.logInfo("No data in request", "Ignore only if request is GET");
+        }
+
+        try {
+            this.mRequestType = RequestType.valueOf(jsonObject.getString(KEY_TYPE));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public Request(Class<? extends BaseDAO> dataType) {
+        this.mRequestType = RequestType.GET;
+        this.mDataType = dataType.getName();
+    }
+
     public RequestType getRequestType() {
-        return mRequestType;
+        return (mRequestType != null) ? mRequestType : RequestType.NONE;
     }
 
     public void setRequestType(RequestType mRequestType) {
@@ -60,6 +89,7 @@ public class Request {
         mJSONData = new JSONObject();
         mJSONData.put(mDataType, jsonArray);
         mDataString = mJSONData.toString();
+        mDataType = data.get(0).getClass().getName();
     }
 
     public void setData(String incomingString) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
@@ -74,6 +104,7 @@ public class Request {
             mData.add(object);
         }
         mDataString = mJSONData.toString();
+        mDataType = mData.get(0).getClass().getName();
     }
 
     public ArrayList<BaseDAO> getData() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
@@ -95,6 +126,12 @@ public class Request {
 
     @Override
     public String toString() {
-        return new JSONObject().put(KEY_TYPE, mRequestType).put(KEY_BODY, getDataString()).toString();
+        JSONObject object = new JSONObject();
+        object.put(KEY_TYPE, mRequestType);
+        object.put(KEY_DATATYPE, mDataType);
+        object.put(KEY_BODY, mJSONData);
+
+        return object.toString();
+//        return new JSONObject().put(KEY_TYPE, mRequestType).put(KEY_DATATYPE, mDataType).put(KEY_BODY, getDataString()).toJSONString();
     }
 }
