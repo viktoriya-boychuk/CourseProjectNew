@@ -24,7 +24,7 @@ public class Debug {
             mTaskHandler.stop();
             Server.finish();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -32,7 +32,7 @@ public class Debug {
         }));
 
         Server.start();
-        mTaskHandler.addToTaskPool(Debug::testSQLConnection);
+//        mTaskHandler.addToTaskPool(Debug::testSQLConnection);
 
         mTaskHandler.startInCurrentThread();
     }
@@ -66,10 +66,6 @@ public class Debug {
                 entries.clear();
 
                 entries.addAll(request1.getData());
-
-                for (BaseDAO baseDAO : entries) {
-                    System.out.println(baseDAO.toJSON());
-                }
 
             } catch (SQLException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();
