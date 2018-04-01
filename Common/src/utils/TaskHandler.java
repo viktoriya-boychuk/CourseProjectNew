@@ -1,11 +1,15 @@
 package utils;
 
+import dao.BaseDAO;
+
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class TaskHandler {
-    private static final long DEFAULT_THREAD_DELAY = 10;
+    public static final long DEFAULT_THREAD_DELAY = 25;
     private static final long DEFAULT_THREAD_STANDBY_DELAY = 250;
     private Looper mLooper;
     private ExecutorService mExecutorService;
@@ -24,6 +28,10 @@ public class TaskHandler {
 
     public void addToTaskPool(Runnable runnable) {
         mExecutorService.submit(runnable);
+    }
+
+    public Future<ArrayList <BaseDAO>> addToTaskPool(Callable<ArrayList <BaseDAO>> callable) {
+        return mExecutorService.submit(callable);
     }
 
     public void stop() {
@@ -87,4 +95,6 @@ public class TaskHandler {
     }
 
     public class TaskHandlerException extends Exception {}
+
+
 }
