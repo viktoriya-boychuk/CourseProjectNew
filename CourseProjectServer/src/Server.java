@@ -1,21 +1,25 @@
 import connection.SQLHelper;
-import dao.Program;
+import dao.BaseDAO;
 import utils.Logger;
 import utils.Request;
 import utils.TaskHandler;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class Server {
     public static final Integer DEFAULT_SOCKET_PORT = 28365;
     private static Server mServer;
-    private SQLHelper mSQLHelper;
+    public SQLHelper mSQLHelper;
     private static TaskHandler mTaskHandler;
     private CustomServerSocket mServerSocket;
+    private static HashMap<Task, ArrayList<BaseDAO>> mWaitingList;
 
     public Server() {
 
@@ -25,12 +29,14 @@ public class Server {
         } catch (IOException e) {
             Logger.logError("Error creating socket", "Most likely the socket has been already occupied. Try starting the application with a different one");
             e.printStackTrace();
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         mServer = this;
+        mWaitingList = new HashMap<>();
         mTaskHandler = new TaskHandler("Logger");
         mTaskHandler.startTask(new ClientRequestsListener());
+        mTaskHandler.startTask(new Responder());
 
         mTaskHandler.startInBackgroundThread();
     }
@@ -59,6 +65,15 @@ public class Server {
         return Server.getServerInstance().mServerSocket;
     }
 
+    public static void addToWaitingList(Task task) {
+        mWaitingList.put(task, new ArrayList<>());
+    }
+
+    public void spawnHandler(Request request, Socket socket) {
+        RequestHandler requestHandler = new RequestHandler(request, socket);
+        requestHandler.setFuture(mTaskHandler.addToTaskPool(requestHandler));
+    }
+
     public class ClientRequestsListener implements Runnable {
 
         @Override
@@ -69,16 +84,15 @@ public class Server {
                     Logger.logInfo("Client connected", client.getInetAddress().toString());
 
                     PrintWriter out = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
+                    String test = in.readLine();
 
-                    String test = mSQLHelper.getJSONArrayFor(Program.class).toString();
-                    Logger.logInfo("Program table JSON is: ", mSQLHelper.getJSONArrayFor(Program.class).toString());
-//                    Request request = new Request(Request.RequestType.POST, test);
-//                    out.println(request.toString());
+                    Request receivedRequest = new Request(test);
+                    Logger.logInfo("Received request is", receivedRequest.toString());
+                    spawnHandler(receivedRequest, client);
                 } catch (IOException e) {
                     Logger.logError("Server Socket", "Socket " + Server.getCurrentPort());
-                    e.printStackTrace();
-                } catch (IllegalAccessException | InstantiationException | SQLException e) {
                     e.printStackTrace();
                 }
             }
@@ -86,16 +100,45 @@ public class Server {
         }
     }
 
-    public static class RequestHandler implements Runnable {
-        private Request mRequest;
-
-        public RequestHandler(Request mRequest) {
-            this.mRequest = mRequest;
-        }
+    private class Responder implements Runnable {
 
         @Override
         public void run() {
+            while (!mTaskHandler.status()) {
+                if (!mWaitingList.isEmpty()) {
+                    ArrayList<Task> toRemove = new ArrayList();
+                    for (Map.Entry<Task, ArrayList<BaseDAO>> entry : mWaitingList.entrySet()) {
+                        Future<ArrayList<BaseDAO>> future = entry.getKey().getFuture();
+                        Socket socket = entry.getKey().getSocket();
+                        Request request = entry.getKey().getRequest();
+                        ArrayList<BaseDAO> arrayList;
 
+                        if (future.isDone()) {
+                            Logger.logInfo("Job's done!", "Result is here!");
+                            try {
+                                arrayList = future.get();
+                                entry.setValue(arrayList);
+
+                                request.setData(arrayList);
+
+                                PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
+                                writer.println(request);
+                                toRemove.add(entry.getKey());
+                            } catch (InterruptedException | ExecutionException | IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    for (Task task : toRemove) {
+                        mWaitingList.remove(task);
+                    }
+                }
+                try {
+                    Thread.sleep(TaskHandler.DEFAULT_THREAD_DELAY);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
