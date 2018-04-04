@@ -1,5 +1,5 @@
 import dao.BaseDAO;
-import utils.Request;
+import utils.Protocol;
 
 import java.net.Socket;
 import java.util.ArrayList;
@@ -8,9 +8,9 @@ import java.util.concurrent.Future;
 public class Task {
     private Future<ArrayList<BaseDAO>> mFuture;
     private Socket mSocket;
-    private Request mRequest;
+    private Protocol mRequest;
 
-    public Task(Future<ArrayList<BaseDAO>> future, Socket socket, Request request) {
+    public Task(Future<ArrayList<BaseDAO>> future, Socket socket, Protocol request) {
         this.mFuture = future;
         this.mSocket = socket;
         this.mRequest = request;
@@ -32,11 +32,11 @@ public class Task {
         this.mSocket = mSocket;
     }
 
-    public Request getRequest() {
+    public Protocol getRequest() {
         return mRequest;
     }
 
-    public void setRequest(Request mRequest) {
+    public void setRequest(Protocol mRequest) {
         this.mRequest = mRequest;
     }
 }
