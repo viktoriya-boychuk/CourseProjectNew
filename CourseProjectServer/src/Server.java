@@ -1,7 +1,7 @@
 import connection.SQLHelper;
 import dao.BaseDAO;
 import utils.Logger;
-import utils.Request;
+import utils.Protocol;
 import utils.TaskHandler;
 
 import java.io.*;
@@ -9,7 +9,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -69,7 +68,7 @@ public class Server {
         mWaitingList.put(task, new ArrayList<>());
     }
 
-    public void spawnHandler(Request request, Socket socket) {
+    public void spawnHandler(Protocol request, Socket socket) {
         RequestHandler requestHandler = new RequestHandler(request, socket);
         requestHandler.setFuture(mTaskHandler.addToTaskPool(requestHandler));
     }
@@ -88,7 +87,7 @@ public class Server {
 
                     String test = in.readLine();
 
-                    Request receivedRequest = new Request(test);
+                    Protocol receivedRequest = new Protocol(test);
                     Logger.logInfo("Received request is", receivedRequest.toString());
                     spawnHandler(receivedRequest, client);
                 } catch (IOException e) {
@@ -110,7 +109,7 @@ public class Server {
                     for (Map.Entry<Task, ArrayList<BaseDAO>> entry : mWaitingList.entrySet()) {
                         Future<ArrayList<BaseDAO>> future = entry.getKey().getFuture();
                         Socket socket = entry.getKey().getSocket();
-                        Request request = entry.getKey().getRequest();
+                        Protocol request = entry.getKey().getRequest();
                         ArrayList<BaseDAO> arrayList;
 
                         if (future.isDone()) {
