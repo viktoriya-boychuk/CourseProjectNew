@@ -7,12 +7,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Request {
+public class Protocol {
     public enum RequestType {POST, GET, DELETE, UPDATE, NONE}
 
-    private String KEY_TYPE = "Request-Type";
-    private String KEY_BODY = "Request-Body";
-    private String KEY_DATATYPE = "Request-DataType";
+    private String KEY_TYPE = "Protocol-Type";
+    private String KEY_BODY = "Protocol-Body";
+    private String KEY_DATATYPE = "Protocol-DataType";
 
     private RequestType mRequestType;
     private ArrayList<BaseDAO> mData;
@@ -20,14 +20,14 @@ public class Request {
     private String mDataType;
     private String mDataString;
 
-    public Request(RequestType requestType, ArrayList<BaseDAO> data) {
+    public Protocol(RequestType requestType, ArrayList<BaseDAO> data) {
         this.mData = new ArrayList<>();
         this.mData.addAll(data);
         this.mDataType = data.get(0).getClass().getName();
         mRequestType = requestType;
     }
 
-    public Request(String incomingString) {
+    public Protocol(String incomingString) {
         JSONObject jsonObject = new JSONObject(incomingString);
         this.mDataType = jsonObject.getString(KEY_DATATYPE);
         try {
@@ -49,7 +49,7 @@ public class Request {
 
     }
 
-    public Request(Class<? extends BaseDAO> dataType) {
+    public Protocol(Class<? extends BaseDAO> dataType) {
         this.mRequestType = RequestType.GET;
         this.mDataType = dataType.getName();
     }
