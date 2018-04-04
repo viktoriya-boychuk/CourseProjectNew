@@ -4,10 +4,9 @@ import dao.Program;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.Logger;
-import utils.Request;
+import utils.Protocol;
 import utils.TaskHandler;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -48,10 +47,10 @@ public class Debug {
             try {
                 JSONArray jsonArray = sqlHelper.getJSONArrayFor(Program.class);
 
-                Request request1 = new Request(Request.RequestType.GET, entries);
-                Request request2 = new Request(Request.RequestType.GET, entries);
-                Request request3 = new Request(Request.RequestType.GET, entries);
-                Request request4 = new Request(Request.RequestType.GET, entries);
+                Protocol request1 = new Protocol(Protocol.RequestType.GET, entries);
+                Protocol request2 = new Protocol(Protocol.RequestType.GET, entries);
+                Protocol request3 = new Protocol(Protocol.RequestType.GET, entries);
+                Protocol request4 = new Protocol(Protocol.RequestType.GET, entries);
 
                 request1.setData(entries);
                 request2.setData(new JSONObject().put(Program.class.getName(), jsonArray).toString());
