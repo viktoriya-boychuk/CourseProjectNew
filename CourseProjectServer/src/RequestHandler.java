@@ -1,7 +1,7 @@
 import connection.SQLHelper;
 import dao.BaseDAO;
 import utils.Logger;
-import utils.Request;
+import utils.Protocol;
 
 import java.net.Socket;
 import java.util.ArrayList;
@@ -9,11 +9,11 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 public class RequestHandler implements Callable<ArrayList<BaseDAO>> {
-    private Request mRequest;
+    private Protocol mRequest;
     private Socket mSocket;
     private Future<ArrayList<BaseDAO>> mFuture;
 
-    public RequestHandler(Request request, Socket socket) {
+    public RequestHandler(Protocol request, Socket socket) {
         this.mRequest = request;
         this.mSocket = socket;
     }
