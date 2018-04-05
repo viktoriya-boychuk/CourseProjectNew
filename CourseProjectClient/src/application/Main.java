@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import utils.Logger;
-import utils.Request;
+import utils.Protocol;
 import utils.ServerConnection;
 
 import java.io.IOException;
@@ -46,7 +46,7 @@ public class Main extends Application implements Receiver {
     }
 
     @Override
-    public void onReceive(Request request) {
+    public void onReceive(Protocol request) {
         Logger.logInfo("received!", request.getDataString());
     }
 }

@@ -39,16 +39,16 @@ public class ServerConnection {
 //    }
 
     public void requestData(Class<? extends BaseDAO> type, Receiver caller) {
-        Request request = new Request(type);
+        Protocol request = new Protocol(type);
 
         mTaskHandler.addToTaskPool(new RequestSender(request, caller));
     }
 
     public class RequestSender implements Runnable {
-        Request mRequest;
+        Protocol mRequest;
         Receiver mCaller;
 
-        public RequestSender(Request request, Receiver caller) {
+        public RequestSender(Protocol request, Receiver caller) {
             this.mRequest = request;
             this.mCaller = caller;
         }
@@ -63,7 +63,7 @@ public class ServerConnection {
 
                 String message = response.readLine();
 
-                Request request = new Request(message);
+                Protocol request = new Protocol(message);
 
                 mCaller.onReceive(request);
             } catch (IOException e) {
