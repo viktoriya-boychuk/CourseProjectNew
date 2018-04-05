@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<VBox fx:id="leftSidebar" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="54.0" style="-fx-background-color: #eae5ff;" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="leftSidebarPane.LeftSidebarPaneController">
+   <children>
+      <JFXButton fx:id="btnExport" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" styleClass="menuButton" text="Експорт">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/printer.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="btnPrint" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" styleClass="menuButton" text="Друк">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/printer.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="btnPreview" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" styleClass="menuButton" text="Попередній&#10;перегляд">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/preview.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="btnSelections" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" styleClass="menuButton" text="Вибірки">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/funnel.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="btnHelp" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" styleClass="menuButton" text="Довідка">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/faq.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="btnAbout" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" styleClass="menuButton" text="Про програму...">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/info.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="btnClose" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" text="Вихід">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/close.png" />
+               </image>
+               <viewport>
+                  <Rectangle2D height="32.0" width="32.0" />
+               </viewport>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+   </children>
+</VBox>

@@ -1,0 +1,43 @@
+.button:hover {
+    -fx-background-color: #f9e8e4;
+}
+
+.label {
+    -fx-alignment: center;
+}
+
+.tooltip {
+    -fx-font: normal bold 12 Arial;
+    -fx-background-color: #eeeeee;
+    -fx-text-fill: black;
+}
+
+.text-field, .text-area, .combo-box, .radio-button, .check-box, .jfx-date-picker, .jfx-time-picker {
+    -fx-font: normal 12 Arial;
+    -jfx-focus-color: #38385f;
+    -jfx-selected-color: #38385f;
+    -jfx-checked-color: #38385f;
+    -jfx-default-color: #38385f;
+}
+
+.jfx-date-picker > .jfx-text-field, .jfx-time-picker > .jfx-text-field {
+    -jfx-label-float: true;
+}
+
+.jfx-button .jfx-rippler {
+    -jfx-rippler-fill: black;
+}
+
+.rightSidebarPane {
+    -fx-background-color: transparent;
+}
+
+.menuButton {
+    -fx-font: normal bold 14 Arial;
+}
+
+.choiceButton {
+    -fx-font: normal 12 Arial;
+    -fx-background-color: #FFC107;
+    -fx-border-color: black;
+}

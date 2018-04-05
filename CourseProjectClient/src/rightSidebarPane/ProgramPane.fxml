@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="programPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="241.0" styleClass="rightSidebarPane" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rightSidebarPane.ProgramPaneController">
+   <children>
+      <Label fx:id="programLabel" layoutX="6.0" layoutY="6.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" text="Label" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="name" labelFloat="true" layoutX="14.0" layoutY="44.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Назва" styleClass="text-field" stylesheets="@../mainPane/style.css">
+         <font>
+            <Font name="Arial Bold" size="31.0" />
+         </font></JFXTextField>
+      <JFXTextField fx:id="category" labelFloat="true" layoutX="14.0" layoutY="87.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Категорія (тип)" styleClass="text-field" stylesheets="@../mainPane/style.css">
+         <font>
+            <Font name="Arial Bold" size="31.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="genre" labelFloat="true" layoutX="14.0" layoutY="131.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Жанр" styleClass="text-field" stylesheets="@../mainPane/style.css">
+         <font>
+            <Font name="Arial Bold" size="31.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="duration" labelFloat="true" layoutX="14.0" layoutY="175.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Тривалість" styleClass="text-field" stylesheets="@../mainPane/style.css">
+         <font>
+            <Font name="Arial Bold" size="31.0" />
+         </font>
+      </JFXTextField>
+      <JFXComboBox fx:id="audience" editable="true" labelFloat="true" layoutX="14.0" layoutY="219.0" prefHeight="23.0" prefWidth="213.0" promptText="Аудиторія глядачів" />
+      <JFXTextField fx:id="country" labelFloat="true" layoutX="14.0" layoutY="262.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Країна походження" styleClass="text-field" stylesheets="@../mainPane/style.css">
+         <font>
+            <Font name="Arial Bold" size="31.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="author" labelFloat="true" layoutX="14.0" layoutY="307.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Автор/Продюсер" styleClass="text-field" stylesheets="@../mainPane/style.css">
+         <font>
+            <Font name="Arial Bold" size="31.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextArea fx:id="description" labelFloat="true" layoutX="14.0" layoutY="353.0" prefHeight="52.0" prefWidth="213.0" promptText="Опис" styleClass="text-field" stylesheets="@../mainPane/style.css" />
+      <JFXCheckBox fx:id="ownIdea" layoutX="73.0" layoutY="434.0" mnemonicParsing="false" text="Власна ідея?" />
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</AnchorPane>

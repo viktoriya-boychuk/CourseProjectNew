@@ -10,6 +10,6 @@
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Common" />
-    <orderEntry type="library" name="Common" level="project" />
+    <orderEntry type="library" name="jfoenix-8.0.1" level="project" />
   </component>
 </module>
