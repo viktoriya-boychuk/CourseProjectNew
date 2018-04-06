@@ -7,11 +7,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import utils.Logger;
 import utils.Protocol;
+import utils.Receiver;
 import utils.ServerConnection;
 
-import java.io.IOException;
 import java.net.InetAddress;
-import utils.Receiver;
 
 
 public class Main extends Application implements Receiver {
