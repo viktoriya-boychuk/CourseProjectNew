@@ -8,7 +8,7 @@
    <center>
       <AnchorPane fx:id="centralPane" prefHeight="750.0" prefWidth="1000.0" style="-fx-background-color: #eeeeee;" BorderPane.alignment="CENTER">
          <children>
-            <JFXTreeTableView layoutX="409.0" layoutY="217.0" prefHeight="200.0" prefWidth="200.0" />
+            <JFXTreeTableView fx:id="mTreeTable" layoutX="116.0" layoutY="98.0" prefHeight="319.0" prefWidth="624.0" />
          </children></AnchorPane>
    </center>
 </BorderPane>
