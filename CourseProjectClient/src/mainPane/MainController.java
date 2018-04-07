@@ -1,5 +1,6 @@
 package mainPane;
 
+import com.jfoenix.controls.JFXTreeTableView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,13 +21,14 @@ public class MainController implements Initializable {
     private BorderPane mainPane;
 
     @FXML
-    private AnchorPane centralPane;
+    private BorderPane centralPane;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         VBox top;
         VBox sidebar;
         BorderPane right;
+        JFXTreeTableView table;
         try {
             top = FXMLLoader.load(getClass().getResource("../topPane/TopPane.fxml"));
             mainPane.setTop(top);
@@ -34,6 +36,8 @@ public class MainController implements Initializable {
             mainPane.setLeft(sidebar);
             right = FXMLLoader.load(getClass().getResource("../rightSidebarPane/RightSidebarPane.fxml"));
             mainPane.setRight(right);
+            table = FXMLLoader.load(getClass().getResource("../tablePanes/AnnouncerTablePane.fxml"));
+            centralPane.setCenter(table);
         } catch (IOException e) {
             e.printStackTrace();
         }
