@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +18,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 public class AudiencePaneController implements Initializable {
 
@@ -62,6 +65,17 @@ public class AudiencePaneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Pattern namePattern = Pattern.compile("[0-9а-яА-яіІїЇєЄ\\-\\s']*");
+        TextFormatter nameFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
+            return namePattern.matcher(change.getControlNewText()).matches() ? change : null;
+        });
+        name.setTextFormatter(nameFormatter);
+
+        Pattern ageCategoryPattern = Pattern.compile("\\+?\\d{0,2}|\\d+\\+");
+        TextFormatter ageCategoryFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
+            return ageCategoryPattern.matcher(change.getControlNewText()).matches() ? change : null;
+        });
+        ageCategory.setTextFormatter(ageCategoryFormatter);
 
     }
 }

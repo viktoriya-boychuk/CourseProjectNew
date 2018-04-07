@@ -18,8 +18,8 @@
       <JFXComboBox fx:id="announcer" editable="true" labelFloat="true" layoutX="14.0" layoutY="46.0" prefHeight="23.0" prefWidth="213.0" promptText="Ведучий" styleClass="fields" />
       <JFXComboBox fx:id="program" editable="true" labelFloat="true" layoutX="14.0" layoutY="88.0" prefHeight="23.0" prefWidth="213.0" promptText="Телепередача" styleClass="fields" />
       <JFXTextField fx:id="announcerGratuity" labelFloat="true" layoutX="14.0" layoutY="129.0" prefHeight="23.0" prefWidth="213.0" promptText="Грошова винагорода" />
-      <JFXDatePicker fx:id="contractBeginDate" layoutX="14.0" layoutY="173.0" prefHeight="23.0" prefWidth="213.0" promptText="Дата початку контракту" />
-      <JFXDatePicker fx:id="contractEndDate" layoutX="14.0" layoutY="214.0" prefHeight="23.0" prefWidth="213.0" promptText="Дата кінця контракту" />
+      <JFXDatePicker fx:id="contractBeginDate" editable="false" layoutX="14.0" layoutY="173.0" prefHeight="23.0" prefWidth="213.0" promptText="Дата початку контракту" />
+      <JFXDatePicker fx:id="contractEndDate" editable="false" layoutX="14.0" layoutY="214.0" prefHeight="23.0" prefWidth="213.0" promptText="Дата кінця контракту" />
    </children>
    <opaqueInsets>
       <Insets />

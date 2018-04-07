@@ -23,8 +23,8 @@
          <font>
             <Font name="Arial Bold" size="31.0" />
          </font></JFXTextField>
-      <JFXDatePicker fx:id="destructionDate" layoutX="14.0" layoutY="129.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Дата закриття" stylesheets="@../mainPane/style.css" />
       <JFXDatePicker fx:id="foundationDate" layoutX="14.0" layoutY="86.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Дата заснування" stylesheets="@../mainPane/style.css" />
+      <JFXDatePicker fx:id="destructionDate" layoutX="14.0" layoutY="129.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Дата закриття" stylesheets="@../mainPane/style.css" />
       <JFXTextField fx:id="owner" labelFloat="true" layoutX="14.0" layoutY="171.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Власник" styleClass="text-field" stylesheets="@../mainPane/style.css">
          <font>
             <Font name="Arial Bold" size="31.0" />

@@ -22,7 +22,7 @@
          <font>
             <Font name="Arial Bold" size="31.0" />
          </font></JFXTextField>
-      <JFXDatePicker fx:id="birthDate" layoutX="14.0" layoutY="86.0" prefHeight="25.0" prefWidth="213.0" promptText="Дата народження" stylesheets="@../mainPane/style.css" />
+      <JFXDatePicker fx:id="birthDate" editable="false" layoutX="14.0" layoutY="86.0" prefHeight="25.0" prefWidth="213.0" promptText="Дата народження" stylesheets="@../mainPane/style.css" />
       <JFXComboBox fx:id="careerBeginYear" editable="true" labelFloat="true" layoutX="14.0" layoutY="128.0" prefHeight="23.0" prefWidth="213.0" promptText="Рік початку кар'єри" stylesheets="@../mainPane/style.css" visibleRowCount="5">
          <opaqueInsets>
             <Insets />
