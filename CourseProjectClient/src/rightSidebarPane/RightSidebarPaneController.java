@@ -29,7 +29,7 @@ public class RightSidebarPaneController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         AnchorPane replaceablePane;
         try {
-            replaceablePane = FXMLLoader.load(getClass().getResource("../rightSidebarPane/HostingPane.fxml"));
+            replaceablePane = FXMLLoader.load(getClass().getResource("../rightSidebarPane/ChannelPane.fxml"));
             rightSidebar.setCenter(replaceablePane);
         } catch (IOException e) {
             e.printStackTrace();
