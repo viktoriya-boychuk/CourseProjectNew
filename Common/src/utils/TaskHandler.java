@@ -1,23 +1,21 @@
 package utils;
 
 import dao.BaseDAO;
+import sun.nio.ch.ThreadPool;
 
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class TaskHandler {
     public static final long DEFAULT_THREAD_DELAY = 25;
     private static final long DEFAULT_THREAD_STANDBY_DELAY = 250;
     private Looper mLooper;
-    private ExecutorService mExecutorService;
+    private CustomExecutorService mExecutorService;
     private ArrayList<Runnable> mTaskPool;
     private Boolean mExit = false;
 
     public TaskHandler(String threadName) {
-        mExecutorService = Executors.newCachedThreadPool();
+        mExecutorService = new CustomExecutorService();
         mLooper = new Looper(threadName);
         mTaskPool = new ArrayList<>();
     }
@@ -30,7 +28,7 @@ public class TaskHandler {
         mExecutorService.submit(runnable);
     }
 
-    public Future<ArrayList <BaseDAO>> addToTaskPool(Callable<ArrayList <BaseDAO>> callable) {
+    public Future<ArrayList<BaseDAO>> addToTaskPool(Callable<ArrayList<BaseDAO>> callable) {
         return mExecutorService.submit(callable);
     }
 
@@ -94,7 +92,35 @@ public class TaskHandler {
         }
     }
 
-    public class TaskHandlerException extends Exception {}
+    class CustomExecutorService extends ThreadPoolExecutor {
 
+        public CustomExecutorService() {
+            super(5, 200,
+                    60L, TimeUnit.SECONDS,
+                    new ArrayBlockingQueue(1000),
+                    Executors.defaultThreadFactory(),
+                    new ThreadPoolExecutor.CallerRunsPolicy());
+        }
 
+        protected void afterExecute(Runnable r, Throwable t) {
+            super.afterExecute(r, t);
+            if (t == null && r instanceof Future<?>) {
+                try {
+                    Future<?> future = (Future<?>) r;
+                    if (future.isDone()) {
+                        future.get();
+                    }
+                } catch (CancellationException ce) {
+                    t = ce;
+                } catch (ExecutionException ee) {
+                    t = ee.getCause();
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt(); // ignore/reset
+                }
+            }
+            if (t != null) {
+                t.printStackTrace();
+            }
+        }
+    }
 }

@@ -117,8 +117,8 @@ public class Announcer extends BaseDAO {
         jsonObject.put(KEY_CAREER_BEGIN, this.getCareerBeginYear());
         jsonObject.put(KEY_CAREER_END, this.getCareerEndYear());
         jsonObject.put(KEY_BIRTH_DATE, this.getBirthDate());
-        jsonObject.put(KEY_EDUCATION, this.getEducation());
-        jsonObject.put(KEY_DESCRIPTION, this.getDescription());
+        jsonObject.put(KEY_EDUCATION, (this.getEducation() != null) ? this.getEducation() : " ");
+        jsonObject.put(KEY_DESCRIPTION, (this.getDescription()!= null) ? this.getDescription() : " ");
         jsonObject.put(KEY_SEX, this.getSex());
         return jsonObject;
     }
@@ -167,10 +167,10 @@ public class Announcer extends BaseDAO {
         this.setCareerEndYear(anInt3);
         this.setBirthDate(date);
         this.setEducation(string2);
-        this.setDescription(string3);
+        this.setDescription((string3 != null) ? string3 : "");
         switch (string4) {
-            case "male": this.setSex(Sex.male);
-            case "female": this.setSex(Sex.female);
+            case "чоловіча": this.setSex(Sex.male);
+            case "жіноча": this.setSex(Sex.female);
         }
     }
 }

@@ -55,19 +55,19 @@ public class ServerConnection {
 
         @Override
         public void run() {
+            Protocol request = null;
             try (
                     BufferedReader response = new BufferedReader(new InputStreamReader(mSocket.getInputStream()));
-                    PrintWriter requestWriter = new PrintWriter(new OutputStreamWriter(mSocket.getOutputStream()), true);
+                    PrintWriter requestWriter = new PrintWriter(new OutputStreamWriter(mSocket.getOutputStream()), true)
             ) {
                 requestWriter.println(mRequest.toString());
 
                 String message = response.readLine();
 
-                Protocol request = new Protocol(message);
-
+                request = new Protocol(message);
                 mCaller.onReceive(request);
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.logError("Exception", e.toString());
             }
         }
     }
