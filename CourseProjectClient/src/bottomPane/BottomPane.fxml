@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="bottomPane" prefHeight="63.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bottomPane.BottomPaneController">
+   <children>
+      <JFXButton fx:id="btnAdd" layoutX="132.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#addEntry" text="Додати" />
+      <JFXButton fx:id="btnEdit" layoutX="223.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#editEntry" text="Редагувати" />
+      <JFXButton fx:id="btnDelete" layoutX="300.0" layoutY="19.0" mnemonicParsing="false" onMouseClicked="#deleteEntry" text="Видалити" />
+   </children>
+</AnchorPane>

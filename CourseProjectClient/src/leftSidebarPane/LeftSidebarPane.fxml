@@ -25,26 +25,11 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="btnPrint" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="52.0" styleClass="menuButton" text="Друк">
+      <JFXButton fx:id="btnPrint" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#printTable" prefHeight="52.0" prefWidth="52.0" styleClass="menuButton" text="Друк">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/printer.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <font>
-            <Font name="Arial Bold" size="18.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </JFXButton>
-      <JFXButton fx:id="btnPreview" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="52.0" styleClass="menuButton" text="Попередній&#10;перегляд">
-         <graphic>
-            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/preview.png" />
                </image>
             </ImageView>
          </graphic>

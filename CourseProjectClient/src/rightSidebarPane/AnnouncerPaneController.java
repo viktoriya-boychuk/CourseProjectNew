@@ -1,16 +1,22 @@
 package rightSidebarPane;
 
 import com.jfoenix.controls.*;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 import utils.ChangeChecker;
+import utils.CustomPane;
 import utils.FieldsValidation;
+import utils.Logger;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -20,10 +26,11 @@ import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
+
 public class AnnouncerPaneController implements Initializable {
 
     @FXML
-    private AnchorPane announcerPane;
+    private CustomPane announcerPane;
 
     @FXML
     private Label announcerLabel;
@@ -49,6 +56,28 @@ public class AnnouncerPaneController implements Initializable {
     @FXML
     private JFXTextArea description;
 
+    @FXML
+    private JFXButton btnSave;
+
+    @FXML
+    private JFXButton btnCancel;
+
+    @FXML
+    void checkAndSave(MouseEvent event) {
+        //JFXSnackbar snackbar = new JFXSnackbar();
+        CustomPane b = (CustomPane) announcerPane.getParent();
+        String s = b.getId();
+        if (check())
+            //((BorderPane) announcerPane.getParent()).setRight(null);
+            b.setRight(new BorderPane());
+    }
+
+    @FXML
+    void checkAndCancel(MouseEvent event) {
+        if (cancel())
+            ((BorderPane) announcerPane.getParent()).setRight(null);
+    }
+
     private static AnchorPane announcerPanel;
     private static Label announcerTitle;
     private static JFXTextField nameField;
@@ -60,7 +89,7 @@ public class AnnouncerPaneController implements Initializable {
     private static JFXTextArea descriptionField;
 
     private static JFXSnackbar snackbar;
-    private static String mode;
+    private static String mode = "Редагувати";
 
     public static void setMode(String passedMode) {
         mode = passedMode;
@@ -83,7 +112,6 @@ public class AnnouncerPaneController implements Initializable {
     }
 
     private void setStaticValues(){
-        announcerPanel = announcerPane;
         nameField = name;
         birthDateField = birthDate;
         careerBeginYearField = careerBeginYear;
@@ -155,6 +183,10 @@ public class AnnouncerPaneController implements Initializable {
         sex.selectedToggleProperty().addListener(ChangeChecker.toggleListener);
         education.textProperty().addListener(ChangeChecker.textListener);
         description.textProperty().addListener(ChangeChecker.textListener);
+
+        Platform.runLater(() -> {
+            Logger.logInfo("String", announcerPane.getData().toString());
+        });
     }
 
     private ObservableList<Integer> getYearsList(Integer start) {
@@ -171,22 +203,22 @@ public class AnnouncerPaneController implements Initializable {
                 save();
                 return true;
             }
-            else
-                snackbar.show("Запис не містить змін!", 2000);
+//            else
+//                snackbar.show("Запис не містить змін!", 2000);
         }
         return false;
     }
 
     private static void save() {
-        if (mode.equals("Редагувати"))
-            snackbar.show("Запис успішно відредаговано!", 2000);
-        else snackbar.show("Запис успішно додано до бази даних!", 2000);
+//        if (mode.equals("Редагувати"))
+//            snackbar.show("Запис успішно відредаговано!", 2000);
+//        else snackbar.show("Запис успішно додано до бази даних!", 2000);
     }
 
     public static boolean cancel() {
         if ((!mode.equals("Редагувати") && ChangeChecker.hasChanged()) ||
                 (mode.equals("Редагувати") && ChangeChecker.hasChanged() && FieldsValidation.textFieldIsNotEmpty(nameField))) {
-            snackbar.show("Запис містить зміни! Збережіть їх!", 2000);
+//            snackbar.show("Запис містить зміни! Збережіть їх!", 2000);
             return false;
         }
         return true;

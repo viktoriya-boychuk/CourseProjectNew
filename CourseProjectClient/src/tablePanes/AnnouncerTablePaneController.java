@@ -13,8 +13,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import rightSidebarPane.BaseTable;
 import utils.Logger;
 import utils.Protocol;
 import utils.Receiver;
@@ -26,7 +28,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AnnouncerTablePaneController implements Initializable, Receiver {
+public class AnnouncerTablePaneController implements Initializable, Receiver, BaseTable {
     @FXML
     JFXTreeTableView<AnnouncerWrapped> announcerTable;
 
@@ -121,7 +123,12 @@ public class AnnouncerTablePaneController implements Initializable, Receiver {
         });
     }
 
+    @Override
     public Announcer getSelectedItem() {
+        SelectionModel a = announcerTable.getSelectionModel();
+        TreeItem<AnnouncerWrapped> b = announcerTable.getSelectionModel().getSelectedItem();
+        AnnouncerWrapped c = announcerTable.getSelectionModel().getSelectedItem().getValue();
+
         return announcerTable.getSelectionModel().getSelectedItem().getValue().getAnnouncer();
     }
 
