@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -53,20 +54,30 @@ public class MainController implements Initializable {
         VBox top;
         VBox sidebar;
         BorderPane right;
+        AnchorPane bottom;
         try {
             top = FXMLLoader.load(getClass().getResource("../topPane/TopPane.fxml"));
             mainPane.setTop(top);
             sidebar = FXMLLoader.load(getClass().getResource("../leftSidebarPane/LeftSidebarPane.fxml"));
             mainPane.setLeft(sidebar);
-//            right = FXMLLoader.load(getClass().getResource("../rightSidebarPane/RightSidebarPane.fxml"));
+//            right = FXMLLoader.load(getClass().getResource("../rightSidebarPane/AnnouncerPane.fxml"));
 //            mainPane.setRight(right);
 
-            mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/AnnouncerTablePane.fxml"));
+            tableLoader = new FXMLLoader(getClass().getResource("../tablePanes/AnnouncerTablePane.fxml"));
+            mTreeTable = tableLoader.load();
+
+            //AnnouncerTablePaneController announcerTablePaneController = ((AnnouncerTablePaneController) tableLoader.getController());
+            //announcerTablePaneController.getSelectedItem();
+
             centralPane.setCenter(mTreeTable);
             currentTable = mTreeTable;
+
+            bottom = FXMLLoader.load(getClass().getResource("../bottomPane/BottomPane.fxml"));
+            centralPane.setBottom(bottom);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     @FXML
@@ -105,32 +116,28 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
     }
-}
 
-class AnnouncerWrapped extends BaseWrapped<AnnouncerWrapped> {
-    StringProperty education;
+    @FXML
+    void hostingsButtonOnClick(MouseEvent event) {
+        try {
+            mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/HostingTablePane.fxml"));
+            centralPane.setCenter(mTreeTable);
+            currentTable = mTreeTable;
 
-    public AnnouncerWrapped(Announcer announcer) {
-        super(announcer);
-        this.education = new SimpleStringProperty(announcer.getEducation());
-    }
-
-    public static ObservableList<AnnouncerWrapped> wrap(ArrayList<? extends BaseDAO> announcers) {
-        List<AnnouncerWrapped> wrappedAnnouncers = new ArrayList<>();
-        for (BaseDAO announcer : announcers) {
-            AnnouncerWrapped wrappedAnnouncer = new AnnouncerWrapped((Announcer) announcer);
-            wrappedAnnouncers.add(wrappedAnnouncer);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return FXCollections.observableArrayList(wrappedAnnouncers);
     }
-}
 
-class BaseWrapped<T> extends RecursiveTreeObject<T> {
-    IntegerProperty id;
-    StringProperty name;
+    @FXML
+    void programButtonOnClick(MouseEvent event) {
+        try {
+            mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/ProgramTablePane.fxml"));
+            centralPane.setCenter(mTreeTable);
+            currentTable = mTreeTable;
 
-    public BaseWrapped(BaseDAO baseDAO) {
-        this.id = new SimpleIntegerProperty(baseDAO.getId());
-        this.name = new SimpleStringProperty(baseDAO.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
