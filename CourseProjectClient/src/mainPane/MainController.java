@@ -44,6 +44,8 @@ public class MainController implements Initializable {
     @FXML
     JFXButton buttonChannelsTable;
 
+    static JFXTreeTableView currentTable;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         VBox top;
@@ -59,6 +61,7 @@ public class MainController implements Initializable {
 
             mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/AnnouncerTablePane.fxml"));
             centralPane.setCenter(mTreeTable);
+            currentTable = mTreeTable;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,6 +72,8 @@ public class MainController implements Initializable {
         try {
             mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/AudienceTablePane.fxml"));
             centralPane.setCenter(mTreeTable);
+            currentTable = mTreeTable;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,6 +84,8 @@ public class MainController implements Initializable {
         try {
             mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/AnnouncerTablePane.fxml"));
             centralPane.setCenter(mTreeTable);
+            currentTable = mTreeTable;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -90,6 +97,8 @@ public class MainController implements Initializable {
         try {
             mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/ChannelTablePane.fxml"));
             centralPane.setCenter(mTreeTable);
+            currentTable = mTreeTable;
+
         } catch (IOException e) {
             e.printStackTrace();
         }

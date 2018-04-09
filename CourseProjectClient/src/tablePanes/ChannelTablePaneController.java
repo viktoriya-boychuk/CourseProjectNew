@@ -131,6 +131,7 @@ public class ChannelTablePaneController implements Initializable, Receiver {
             e.printStackTrace();
         }
         mServerConnection.requestData(Channel.class, this);
+
     }
 
     public Channel getSelectedItem() {
