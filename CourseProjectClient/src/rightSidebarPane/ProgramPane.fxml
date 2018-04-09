@@ -35,7 +35,7 @@
             <Font name="Arial Bold" size="31.0" />
          </font>
       </JFXTextField>
-      <JFXComboBox fx:id="audience" editable="true" labelFloat="true" layoutX="14.0" layoutY="219.0" prefHeight="23.0" prefWidth="213.0" promptText="Аудиторія глядачів" />
+      <JFXComboBox fx:id="audience" labelFloat="true" layoutX="14.0" layoutY="219.0" prefHeight="23.0" prefWidth="213.0" promptText="Аудиторія глядачів" />
       <JFXTextField fx:id="country" labelFloat="true" layoutX="14.0" layoutY="262.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Країна походження" styleClass="text-field" stylesheets="@../mainPane/style.css">
          <font>
             <Font name="Arial Bold" size="31.0" />

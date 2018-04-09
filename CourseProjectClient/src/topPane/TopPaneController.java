@@ -60,18 +60,18 @@ public class TopPaneController implements Initializable {
     }
 
     @FXML
+    void onPaneDoubleClick(MouseEvent event) {
+        if (event.getClickCount() == 2)
+            maximizeWindow(event);
+    }
+
+    @FXML
     void maximizeWindow(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         if (!stage.isMaximized()) {
             stage.setMaximized(true);
         } else
             stage.setMaximized(false);
-    }
-
-    @FXML
-    void onPaneDoubleClick(MouseEvent event) {
-        if (event.getClickCount() == 2)
-            maximizeWindow(event);
     }
 
     @FXML
@@ -89,11 +89,11 @@ public class TopPaneController implements Initializable {
     @FXML
     void openCloseMenuPane(MouseEvent event) {
         if (isExpand) {
-            LeftSidebarPaneController.getSidebar().setPrefWidth(54);
+            LeftSidebarPaneController.getSidebar().setPrefWidth(52);
             btnMenu.getTooltip().setText("Відкрити меню");
             isExpand = false;
         } else {
-            LeftSidebarPaneController.getSidebar().setPrefWidth(215);
+            LeftSidebarPaneController.getSidebar().setPrefWidth(180);
             btnMenu.getTooltip().setText("Закрити меню");
             isExpand = true;
         }

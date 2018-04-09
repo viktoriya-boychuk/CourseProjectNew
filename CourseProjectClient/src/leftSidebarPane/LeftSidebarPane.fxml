@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Rectangle2D?>
-<?import javafx.scene.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.JFXButton?>
-<VBox fx:id="leftSidebar" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="54.0" style="-fx-background-color: #eae5ff;" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="leftSidebarPane.LeftSidebarPaneController">
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="leftSidebar" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="52.0" style="-fx-background-color: #eae5ff;" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="leftSidebarPane.LeftSidebarPaneController">
    <children>
-      <JFXButton fx:id="btnExport" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" styleClass="menuButton" text="Експорт">
+      <JFXButton fx:id="btnExport" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="52.0" styleClass="menuButton" text="Експорт">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -23,7 +25,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="btnPrint" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" styleClass="menuButton" text="Друк">
+      <JFXButton fx:id="btnPrint" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="52.0" styleClass="menuButton" text="Друк">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -38,7 +40,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="btnPreview" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" styleClass="menuButton" text="Попередній&#10;перегляд">
+      <JFXButton fx:id="btnPreview" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="52.0" styleClass="menuButton" text="Попередній&#10;перегляд">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -53,7 +55,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="btnSelections" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" styleClass="menuButton" text="Вибірки">
+      <JFXButton fx:id="btnSelections" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="52.0" styleClass="menuButton" text="Вибірки">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -68,7 +70,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="btnHelp" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" styleClass="menuButton" text="Довідка">
+      <JFXButton fx:id="btnHelp" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#openInfoHelpWindow" prefHeight="52.0" prefWidth="52.0" styleClass="menuButton" text="Довідка">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -83,7 +85,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="btnAbout" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="20.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" styleClass="menuButton" text="Про програму...">
+      <JFXButton fx:id="btnAbout" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#openInfoHelpWindow" prefHeight="52.0" prefWidth="52.0" styleClass="menuButton" text="Про програму...">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -98,7 +100,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="btnClose" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0" text="Вихід">
+      <JFXButton fx:id="btnClose" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#closeWindow" prefHeight="52.0" prefWidth="52.0" styleClass="menuButton" text="Вихід">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
