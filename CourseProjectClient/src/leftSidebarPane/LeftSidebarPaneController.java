@@ -5,6 +5,7 @@ import infoHelpPane.InfoHelpPaneController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import mainPane.MainController;
 
 import java.awt.*;
 import java.io.IOException;
@@ -63,6 +65,17 @@ public class LeftSidebarPaneController implements Initializable {
     void closeWindow(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    void printTable(MouseEvent event){
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null && job.showPrintDialog(MainController.currentTable.getScene().getWindow())){
+            boolean success = job.printPage(MainController.currentTable);
+            if (success) {
+                job.endJob();
+            }
+        }
     }
 
     private static VBox leftSidebarPane;

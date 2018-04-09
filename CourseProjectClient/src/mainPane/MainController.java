@@ -15,8 +15,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import rightSidebarPane.AnnouncerPaneController;
+import tablePanes.AnnouncerTablePaneController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -44,24 +47,36 @@ public class MainController implements Initializable {
     @FXML
     JFXButton buttonChannelsTable;
 
-    static JFXTreeTableView currentTable;
+    public static JFXTreeTableView currentTable;
+
+    public static FXMLLoader tableLoader;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         VBox top;
         VBox sidebar;
         BorderPane right;
+        AnchorPane bottom;
         try {
             top = FXMLLoader.load(getClass().getResource("../topPane/TopPane.fxml"));
             mainPane.setTop(top);
             sidebar = FXMLLoader.load(getClass().getResource("../leftSidebarPane/LeftSidebarPane.fxml"));
             mainPane.setLeft(sidebar);
-//            right = FXMLLoader.load(getClass().getResource("../rightSidebarPane/RightSidebarPane.fxml"));
+//            right = FXMLLoader.load(getClass().getResource("../rightSidebarPane/AnnouncerPane.fxml"));
 //            mainPane.setRight(right);
 
-            mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/AnnouncerTablePane.fxml"));
+            tableLoader = new FXMLLoader(getClass().getResource("../tablePanes/AnnouncerTablePane.fxml"));
+            mTreeTable = tableLoader.load();
+
+            //AnnouncerTablePaneController announcerTablePaneController = ((AnnouncerTablePaneController) tableLoader.getController());
+            //announcerTablePaneController.getSelectedItem();
+
             centralPane.setCenter(mTreeTable);
             currentTable = mTreeTable;
+
+            bottom = FXMLLoader.load(getClass().getResource("../bottomPane/BottomPane.fxml"));
+            centralPane.setBottom(bottom);
         } catch (IOException e) {
             e.printStackTrace();
         }

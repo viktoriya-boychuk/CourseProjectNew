@@ -13,8 +13,8 @@ public class SQLHelper {
     private SQLHelper() throws ClassNotFoundException, SQLException {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/tv_programs";
-            con = DriverManager.getConnection(url, "viktor-vovk", "VovkViktor2281488");
-//        con = DriverManager.getConnection(url, "root", "root");
+//            con = DriverManager.getConnection(url, "viktor-vovk", "VovkViktor2281488");
+        con = DriverManager.getConnection(url, "root", "root");
             instance = this;
     }
 

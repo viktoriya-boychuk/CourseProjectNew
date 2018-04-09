@@ -11,38 +11,70 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="announcerPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="241.0" styleClass="rightSidebarPanes" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rightSidebarPane.AnnouncerPaneController">
-   <children>
-      <Label fx:id="announcerLabel" layoutX="6.0" layoutY="6.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" text="Label" textAlignment="RIGHT" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <font>
-            <Font name="Arial Bold" size="14.0" />
-         </font>
-      </Label>
-      <JFXTextField fx:id="name" labelFloat="true" layoutX="14.0" layoutY="44.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="ПІБ" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font></JFXTextField>
-      <JFXDatePicker fx:id="birthDate" editable="false" layoutX="14.0" layoutY="99.0" prefHeight="25.0" prefWidth="213.0" promptText="Дата народження" stylesheets="@../mainPane/style.css" />
-      <JFXComboBox fx:id="careerBeginYear" labelFloat="true" layoutX="14.0" layoutY="144.0" prefHeight="23.0" prefWidth="213.0" promptText="Рік початку кар'єри" stylesheets="@../mainPane/style.css" visibleRowCount="5">
+<?import javafx.scene.layout.BorderPane?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<?import utils.CustomPane?>
+<CustomPane fx:id="announcerPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="241.0" style="-fx-background-color: #eae5ff;" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rightSidebarPane.AnnouncerPaneController">
+   <center>
+      <AnchorPane fx:id="pane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="241.0" styleClass="rightSidebarPanes" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+         <children>
+            <Label fx:id="announcerLabel" layoutX="6.0" layoutY="6.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" text="Label" textAlignment="RIGHT" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="name" labelFloat="true" layoutX="14.0" layoutY="44.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="ПІБ" styleClass="text-field" stylesheets="@../mainPane/style.css">
+               <font>
+                  <Font name="Arial Bold" size="31.0" />
+               </font></JFXTextField>
+            <JFXDatePicker fx:id="birthDate" editable="false" layoutX="14.0" layoutY="99.0" prefHeight="25.0" prefWidth="213.0" promptText="Дата народження" stylesheets="@../mainPane/style.css" />
+            <JFXComboBox fx:id="careerBeginYear" labelFloat="true" layoutX="14.0" layoutY="144.0" prefHeight="23.0" prefWidth="213.0" promptText="Рік початку кар'єри" stylesheets="@../mainPane/style.css" visibleRowCount="5">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXComboBox>
+            <JFXComboBox fx:id="careerEndYear" labelFloat="true" layoutX="14.0" layoutY="186.0" prefHeight="23.0" prefWidth="213.0" promptText="Рік кінця кар'єри" stylesheets="@../mainPane/style.css" visibleRowCount="5">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXComboBox>
+            <Label layoutX="14.0" layoutY="230.0" styleClass="text-field" stylesheets="@../mainPane/style.css" text="Стать" />
+            <JFXRadioButton fx:id="sexMan" layoutX="14.0" layoutY="254.0" selected="true" stylesheets="@../mainPane/style.css" text="Чоловіча">
+               <toggleGroup>
+                  <ToggleGroup fx:id="sex" />
+               </toggleGroup></JFXRadioButton>
+            <JFXRadioButton fx:id="sexWoman" layoutX="121.0" layoutY="254.0" stylesheets="@../mainPane/style.css" text="Жіноча" toggleGroup="$sex" />
+            <JFXTextArea fx:id="education" labelFloat="true" layoutX="14.0" layoutY="294.0" prefHeight="52.0" prefWidth="213.0" promptText="Освіта" styleClass="text-field" stylesheets="@../mainPane/style.css" />
+            <JFXTextArea fx:id="description" labelFloat="true" layoutX="14.0" layoutY="376.0" prefHeight="52.0" prefWidth="213.0" promptText="Характеристика" styleClass="text-field" stylesheets="@../mainPane/style.css" />
+         </children>
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
-      </JFXComboBox>
-      <JFXComboBox fx:id="careerEndYear" labelFloat="true" layoutX="14.0" layoutY="186.0" prefHeight="23.0" prefWidth="213.0" promptText="Рік кінця кар'єри" stylesheets="@../mainPane/style.css" visibleRowCount="5">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </JFXComboBox>
-      <Label layoutX="14.0" layoutY="230.0" styleClass="text-field" stylesheets="@../mainPane/style.css" text="Стать" />
-      <JFXRadioButton fx:id="sexMan" layoutX="14.0" layoutY="254.0" selected="true" stylesheets="@../mainPane/style.css" text="Чоловіча">
-         <toggleGroup>
-            <ToggleGroup fx:id="sex" />
-         </toggleGroup></JFXRadioButton>
-      <JFXRadioButton fx:id="sexWoman" layoutX="121.0" layoutY="254.0" stylesheets="@../mainPane/style.css" text="Жіноча" toggleGroup="$sex" />
-      <JFXTextArea fx:id="education" labelFloat="true" layoutX="14.0" layoutY="294.0" prefHeight="52.0" prefWidth="213.0" promptText="Освіта" styleClass="text-field" stylesheets="@../mainPane/style.css" />
-      <JFXTextArea fx:id="description" labelFloat="true" layoutX="14.0" layoutY="376.0" prefHeight="52.0" prefWidth="213.0" promptText="Характеристика" styleClass="text-field" stylesheets="@../mainPane/style.css" />
-   </children>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
-</AnchorPane>
+      </AnchorPane>
+   </center>
+   <bottom>
+      <AnchorPane fx:id="bottomPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="72.0" prefWidth="241.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="24.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndSave" prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="10.0">
+               <graphic>
+                  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/diskette.png" />
+                     </image>
+                  </ImageView>
+               </graphic></JFXButton>
+            <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="152.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndCancel" prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="10.0">
+               <graphic>
+                  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/close.png" />
+                     </image>
+                  </ImageView>
+               </graphic></JFXButton>
+         </children>
+      </AnchorPane>
+   </bottom>
+</CustomPane>
