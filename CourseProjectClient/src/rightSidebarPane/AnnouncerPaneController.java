@@ -1,16 +1,16 @@
 package rightSidebarPane;
 
 import com.jfoenix.controls.*;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import utils.ChangeChecker;
+import utils.FieldsValidation;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -41,10 +41,7 @@ public class AnnouncerPaneController implements Initializable {
     private JFXComboBox careerEndYear;
 
     @FXML
-    private JFXRadioButton sexMan;
-
-    @FXML
-    private JFXRadioButton sexWoman;
+    private ToggleGroup sex;
 
     @FXML
     private JFXTextArea education;
@@ -52,9 +49,74 @@ public class AnnouncerPaneController implements Initializable {
     @FXML
     private JFXTextArea description;
 
+    private static AnchorPane announcerPanel;
+    private static Label announcerTitle;
+    private static JFXTextField nameField;
+    private static JFXDatePicker birthDateField;
+    private static JFXComboBox careerBeginYearField;
+    private static JFXComboBox careerEndYearField;
+    private static ToggleGroup sexField;
+    private static JFXTextArea educationField;
+    private static JFXTextArea descriptionField;
+
+    private static JFXSnackbar snackbar;
+    private static String mode;
+
+    public static void setMode(String passedMode) {
+        mode = passedMode;
+    }
+
+    public static void setAnnouncerTitle(String title) {
+        announcerTitle.setText(title);
+    }
+
+    private void setFieldsValues(String name, LocalDate birthDate, Integer careerBeginYear, Integer careerEndYear, String education, String description){
+        nameField.setText(name);
+        birthDateField.setValue(birthDate);
+        careerBeginYearField.setItems(getYearsList(careerBeginYear));
+        careerEndYearField.setItems(getYearsList(careerEndYear));
+        sexField = sex;
+        educationField.setText(education);
+        descriptionField.setText(description);
+
+        ChangeChecker.hasChanged(false);
+    }
+
+    private void setStaticValues(){
+        announcerPanel = announcerPane;
+        nameField = name;
+        birthDateField = birthDate;
+        careerBeginYearField = careerBeginYear;
+        careerEndYearField = careerEndYear;
+        sexField = sex;
+        educationField = education;
+        descriptionField = description;
+
+        snackbar = new JFXSnackbar();
+    }
+
+    private ChangeListener birthDateListener = (observable, oldValue, newValue) -> {
+        if (oldValue != newValue) {
+            careerBeginYear.setItems(getYearsList(birthDate.getValue().getYear()));
+            careerBeginYear.getSelectionModel().select(0);
+            careerEndYear.setItems(getYearsList(birthDate.getValue().getYear()));
+            careerEndYear.getSelectionModel().select(0);
+        }
+    };
+
+    private ChangeListener careerBeginYearListener = (observable, oldValue, newValue) -> {
+        if (newValue instanceof String) {
+            careerEndYear.getSelectionModel().select(0);
+            careerEndYear.setItems(getYearsList(Integer.parseInt((String) (newValue))));
+        }
+    };
+
     @Override
     public void initialize(URL location, ResourceBundle resources) throws ClassCastException {
-        Pattern namePattern = Pattern.compile("[а-яА-яіІїЇєЄ\\-\\s']*");
+        ChangeChecker.hasChanged(false);
+        setStaticValues();
+
+        Pattern namePattern = Pattern.compile("[а-яА-яіІїЇєЄ\\-\\s']{0,45}");
         TextFormatter nameFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return namePattern.matcher(change.getControlNewText()).matches() ? change : null;
         });
@@ -75,28 +137,58 @@ public class AnnouncerPaneController implements Initializable {
         };
         birthDate.setDayCellFactory(dayCellFactory);
 
-        birthDate.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue != newValue) {
-                careerBeginYear.setItems(getYearsList(((Integer) birthDate.getValue().getYear())));
-            }
-        });
+        birthDate.valueProperty().addListener(birthDateListener);
 
-        careerBeginYear.setItems(getYearsList(1950));
-        careerEndYear.setItems(getYearsList(1950));
-        careerBeginYear.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue instanceof String) {
-                careerEndYear.getSelectionModel().select(0);
-                careerEndYear.setItems(getYearsList(Integer.parseInt((String) (newValue))));
-            }
-        });
+        careerBeginYear.valueProperty().addListener(careerBeginYearListener);
 
+        birthDate.setValue(LocalDate.now());
+
+        education.setTextFormatter(new TextFormatter<String>(change ->
+                change.getControlNewText().length() <= 100 ? change : null));
+        description.setTextFormatter(new TextFormatter<String>(change ->
+                change.getControlNewText().length() <= 100 ? change : null));
+
+        name.textProperty().addListener(ChangeChecker.textListener);
+        birthDate.valueProperty().addListener(ChangeChecker.textListener);
+        careerBeginYear.valueProperty().addListener(ChangeChecker.valueListener);
+        careerEndYear.valueProperty().addListener(ChangeChecker.valueListener);
+        sex.selectedToggleProperty().addListener(ChangeChecker.toggleListener);
+        education.textProperty().addListener(ChangeChecker.textListener);
+        description.textProperty().addListener(ChangeChecker.textListener);
     }
 
     private ObservableList<Integer> getYearsList(Integer start) {
         ArrayList<Integer> years = new ArrayList<>();
-        for (int i = start; i <= Calendar.getInstance().get(Calendar.YEAR); i++) {
+        for (int i = (start < 1936 ? 1936 : start); i <= Calendar.getInstance().get(Calendar.YEAR); i++) {
             years.add(i);
         }
         return FXCollections.observableArrayList(years);
+    }
+
+    public static boolean check() {
+        if (FieldsValidation.textFieldIsNotEmpty(nameField)) {
+            if (ChangeChecker.hasChanged()) {
+                save();
+                return true;
+            }
+            else
+                snackbar.show("Запис не містить змін!", 2000);
+        }
+        return false;
+    }
+
+    private static void save() {
+        if (mode.equals("Редагувати"))
+            snackbar.show("Запис успішно відредаговано!", 2000);
+        else snackbar.show("Запис успішно додано до бази даних!", 2000);
+    }
+
+    public static boolean cancel() {
+        if ((!mode.equals("Редагувати") && ChangeChecker.hasChanged()) ||
+                (mode.equals("Редагувати") && ChangeChecker.hasChanged() && FieldsValidation.textFieldIsNotEmpty(nameField))) {
+            snackbar.show("Запис містить зміни! Збережіть їх!", 2000);
+            return false;
+        }
+        return true;
     }
 }

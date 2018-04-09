@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -18,7 +19,7 @@
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/close%20–%20копія.png" />
+                        <Image url="@../images/close123.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -30,8 +31,11 @@
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/close%20–%20копія.png" />
+                        <Image url="@../images/close123.png" />
                      </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
                   </ImageView>
                </graphic>
                <cursor>
@@ -42,7 +46,7 @@
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="32.0" onMouseClicked="#maximizeWindow" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/close%20–%20копія.png" />
+                        <Image url="@../images/close123.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -57,9 +61,9 @@
             </Label>
          </children>
       </AnchorPane>
-      <HBox fx:id="bottom" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="54.0" prefWidth="900.0" style="-fx-background-color: #eae5ff;">
+      <HBox fx:id="bottom" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="52.0" prefWidth="900.0" style="-fx-background-color: #eae5ff;">
          <children>
-            <JFXButton fx:id="btnMenu" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#openCloseMenuPane" prefHeight="54.0" prefWidth="54.0">
+            <JFXButton fx:id="btnMenu" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#openCloseMenuPane" prefHeight="52.0" prefWidth="52.0">
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                      <image>

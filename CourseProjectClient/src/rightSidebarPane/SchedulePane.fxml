@@ -15,8 +15,8 @@
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Label>
-      <JFXComboBox fx:id="channel" editable="true" labelFloat="true" layoutX="14.0" layoutY="46.0" prefHeight="23.0" prefWidth="213.0" promptText="Телеканал" styleClass="fields" />
-      <JFXComboBox fx:id="program" editable="true" labelFloat="true" layoutX="14.0" layoutY="88.0" prefHeight="23.0" prefWidth="213.0" promptText="Телепередача" styleClass="fields" />
+      <JFXComboBox fx:id="channel" labelFloat="true" layoutX="14.0" layoutY="46.0" prefHeight="23.0" prefWidth="213.0" promptText="Телеканал" styleClass="fields" />
+      <JFXComboBox fx:id="program" labelFloat="true" layoutX="14.0" layoutY="88.0" prefHeight="23.0" prefWidth="213.0" promptText="Телепередача" styleClass="fields" />
       <JFXDatePicker fx:id="date" editable="false" layoutX="14.0" layoutY="130.0" prefHeight="23.0" prefWidth="213.0" promptText="Дата" />
       <JFXTimePicker fx:id="time" layoutX="14.0" layoutY="171.0" prefHeight="23.0" prefWidth="213.0" promptText="Час" />
    </children>
