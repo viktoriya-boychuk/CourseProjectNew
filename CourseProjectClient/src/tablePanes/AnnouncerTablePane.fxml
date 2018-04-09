@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <?import com.jfoenix.controls.JFXTreeTableView?>
-<JFXTreeTableView xmlns="http://javafx.com/javafx"
-                  xmlns:fx="http://javafx.com/fxml"
-                  fx:controller="tablePanes.AnnouncerTablePaneController"
-                  prefHeight="400.0" prefWidth="600.0">
+
+
+<JFXTreeTableView fx:id="announcerTable" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121"
+                  xmlns:fx="http://javafx.com/fxml/1" fx:controller="tablePanes.AnnouncerTablePaneController">
 
 </JFXTreeTableView>

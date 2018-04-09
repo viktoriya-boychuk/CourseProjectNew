@@ -95,8 +95,8 @@ public class TaskHandler {
     class CustomExecutorService extends ThreadPoolExecutor {
 
         public CustomExecutorService() {
-            super(5, 200,
-                    60L, TimeUnit.SECONDS,
+            super(10, 200,
+                    500L, TimeUnit.SECONDS,
                     new ArrayBlockingQueue(1000),
                     Executors.defaultThreadFactory(),
                     new ThreadPoolExecutor.CallerRunsPolicy());

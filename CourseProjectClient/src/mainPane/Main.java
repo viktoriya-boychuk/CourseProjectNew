@@ -6,11 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.Logger;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        Logger.initialize();
         Parent mainPane = FXMLLoader.load(getClass().getResource("Main.fxml"));
         primaryStage.initStyle(StageStyle.UNDECORATED);
 

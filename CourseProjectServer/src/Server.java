@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -18,7 +19,7 @@ public class Server {
     public SQLHelper mSQLHelper;
     private static TaskHandler mTaskHandler;
     private CustomServerSocket mServerSocket;
-    private static HashMap<Task, ArrayList<BaseDAO>> mWaitingList;
+    private static ConcurrentHashMap<Task, ArrayList<BaseDAO>> mWaitingList;
 
     public Server() {
 
@@ -32,7 +33,7 @@ public class Server {
             e.printStackTrace();
         }
         mServer = this;
-        mWaitingList = new HashMap<>();
+        mWaitingList = new ConcurrentHashMap<>();
         mTaskHandler = new TaskHandler("Logger");
         mTaskHandler.startTask(new ClientRequestsListener());
         mTaskHandler.startTask(new Responder());
@@ -104,39 +105,44 @@ public class Server {
         @Override
         public void run() {
             while (!mTaskHandler.status()) {
-                if (!mWaitingList.isEmpty()) {
-                    ArrayList<Task> toRemove = new ArrayList();
-                    for (Map.Entry<Task, ArrayList<BaseDAO>> entry : mWaitingList.entrySet()) {
-                        Future<ArrayList<BaseDAO>> future = entry.getKey().getFuture();
-                        Socket socket = entry.getKey().getSocket();
-                        Protocol request = entry.getKey().getRequest();
-                        ArrayList<BaseDAO> arrayList;
+                    if (!mWaitingList.isEmpty()) {
+                        ArrayList<Task> toRemove = new ArrayList<>();
+                        for (Map.Entry<Task, ArrayList<BaseDAO>> entry : mWaitingList.entrySet()) {
+                            Future<ArrayList<BaseDAO>> future = entry.getKey().getFuture();
+                            Socket socket = entry.getKey().getSocket();
+                            Protocol request = entry.getKey().getRequest();
+                            ArrayList<BaseDAO> arrayList;
 
-                        if (future.isDone()) {
-                            Logger.logInfo("Job's done!", "Result is here!");
-                            try {
-                                arrayList = future.get();
-                                entry.setValue(arrayList);
+                            if (future != null && future.isDone()) {
+                                Logger.logInfo("Job's done!", "Result is here!");
+                                try {
+                                    arrayList = future.get();
+                                    entry.setValue(arrayList);
 
-                                request.setData(arrayList);
+                                    request.setData(arrayList);
 
-                                PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
-                                writer.println(request);
-                                toRemove.add(entry.getKey());
-                            } catch (InterruptedException | ExecutionException | IOException e) {
-                                e.printStackTrace();
+                                    PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
+                                    writer.println(request);
+                                    toRemove.add(entry.getKey());
+                                } catch (InterruptedException | ExecutionException | IOException e) {
+                                    e.printStackTrace();
+                                    toRemove.add(entry.getKey());
+                                } finally {
+                                    for (Task task : toRemove) {
+                                        mWaitingList.remove(task);
+                                    }
+                                }
                             }
                         }
+                        for (Task task : toRemove) {
+                            mWaitingList.remove(task);
+                        }
                     }
-                    for (Task task : toRemove) {
-                        mWaitingList.remove(task);
+                    try {
+                        Thread.sleep(TaskHandler.DEFAULT_THREAD_DELAY);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                }
-                try {
-                    Thread.sleep(TaskHandler.DEFAULT_THREAD_DELAY);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         }
     }

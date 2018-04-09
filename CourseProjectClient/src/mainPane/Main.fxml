@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
@@ -7,7 +8,12 @@
    <center>
       <BorderPane fx:id="centralPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eeeeee;" BorderPane.alignment="CENTER">
          <top>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" BorderPane.alignment="CENTER" />
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="buttonAudiencesTable" layoutX="24.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#audiencesButtonOnClick" text="Audiences" />
+                  <JFXButton fx:id="buttonAnnouncersTable" layoutX="107.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#announcersButtonOnClick" text="Announcers" />
+                  <JFXButton fx:id="buttonChannelsTable" layoutX="199.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#channelsButtonOnClick" text="Channels" />
+               </children></AnchorPane>
          </top></BorderPane>
    </center>
 </BorderPane>

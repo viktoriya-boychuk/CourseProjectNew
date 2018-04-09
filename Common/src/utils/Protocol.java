@@ -108,10 +108,10 @@ public class Protocol {
     }
 
     public ArrayList<BaseDAO> getData() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        if (mData == null) {
+        if (mData == null || mData.isEmpty()) {
             mData = new ArrayList<>();
-            JSONArray jsonArray = new JSONArray(new JSONObject(mDataString).get(mDataType));
-            for (int i = 0; i > jsonArray.length(); i++) {
+            JSONArray jsonArray = new JSONArray((new JSONObject(mDataString).get(mDataType).toString()));
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 BaseDAO object = parseJSONObject(jsonObject);
                 mData.add(object);

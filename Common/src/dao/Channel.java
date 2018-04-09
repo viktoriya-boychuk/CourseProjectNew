@@ -147,12 +147,12 @@ public class Channel extends BaseDAO {
         jsonObject.put(KEY_ID, this.getId());
         jsonObject.put(KEY_NAME, this.getName());
         jsonObject.put(KEY_FOUNDATION, this.getFoundationDate());
-        jsonObject.put(KEY_DESTRUCTION, this.getDestructionDate());
+        jsonObject.put(KEY_DESTRUCTION, (this.getDestructionDate() != null) ? this.getDestructionDate() : " ");
         jsonObject.put(KEY_OWNER, this.getOwner());
         jsonObject.put(KEY_LOGO, this.getLogo());
         jsonObject.put(KEY_AIRTIME, this.getAirtime());
         jsonObject.put(KEY_CITY, this.getCity());
-        jsonObject.put(KEY_DESCRIPTION, this.getDescription());
+        jsonObject.put(KEY_DESCRIPTION, (this.getDescription() != null) ? this.getDescription() : " ");
         jsonObject.put(KEY_FREQUENCY, this.getFrequency());
         jsonObject.put(KEY_SATELLITE, this.getSatellite());
         return jsonObject;
@@ -186,7 +186,7 @@ public class Channel extends BaseDAO {
             parseData(jsonObject.getInt(KEY_ID),
                     jsonObject.getString(KEY_NAME),
                     formatter.parse(jsonObject.getString(KEY_FOUNDATION)),
-                    formatter.parse(jsonObject.getString(KEY_DESTRUCTION)),
+                    (!jsonObject.getString(KEY_DESTRUCTION).equals(" ")) ? formatter.parse(jsonObject.getString(KEY_DESTRUCTION)) : formatter.parse("2150-01-01"),
                     jsonObject.getString(KEY_OWNER),
                     jsonObject.getString(KEY_LOGO),
                     jsonObject.getString(KEY_AIRTIME),

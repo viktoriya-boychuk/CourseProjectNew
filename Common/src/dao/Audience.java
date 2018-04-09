@@ -73,8 +73,8 @@ public class Audience extends BaseDAO {
         jsonObject.put(KEY_ID, this.getId());
         jsonObject.put(KEY_NAME, this.getName());
         jsonObject.put(KEY_CATEGORY, this.getAgeCategory());
-        jsonObject.put(KEY_DESCRIPTION, this.getDescription());
-        jsonObject.put(KEY_EMBLEM, this.getEmblem());
+        jsonObject.put(KEY_DESCRIPTION, (this.getDescription() != null) ? this.getDescription() : " ");
+        jsonObject.put(KEY_EMBLEM, (this.getEmblem() != null) ? this.getEmblem() : " ");
         return jsonObject;
     }
 

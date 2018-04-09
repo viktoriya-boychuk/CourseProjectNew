@@ -7,6 +7,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 public class ServerConnection {
+    public static final String DEFAULT_IP = "127.0.0.1";
+    public static final Integer DEFAULT_PORT = 28365;
     private TaskHandler mTaskHandler;
     public Socket mSocket;
 
