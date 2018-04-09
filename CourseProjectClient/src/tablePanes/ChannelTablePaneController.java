@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import dao.Announcer;
 import dao.Channel;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -16,7 +15,6 @@ import javafx.scene.control.TreeTableColumn;
 import utils.Protocol;
 import utils.Receiver;
 import utils.ServerConnection;
-import wrappedDAO.AnnouncerWrapped;
 import wrappedDAO.ChannelWrapped;
 
 import java.net.InetAddress;
@@ -39,7 +37,11 @@ public class ChannelTablePaneController implements Initializable, Receiver {
     private JFXTreeTableColumn<ChannelWrapped, String> frequencyColumn;
     private JFXTreeTableColumn<ChannelWrapped, String> satelliteColumn;
 
-    private ObservableList<ChannelWrapped> mWrappedChannels;
+    static private ObservableList<ChannelWrapped> mWrappedChannels;
+
+    public static ObservableList<ChannelWrapped> getWrappedData() {
+        return mWrappedChannels;
+    }
 
     private ServerConnection mServerConnection;
 
@@ -131,8 +133,7 @@ public class ChannelTablePaneController implements Initializable, Receiver {
             e.printStackTrace();
         }
         mServerConnection.requestData(Channel.class, this);
-
-    }
+        }
 
     public Channel getSelectedItem() {
         return channelTable.getSelectionModel().getSelectedItem().getValue().getChannel();
@@ -141,14 +142,14 @@ public class ChannelTablePaneController implements Initializable, Receiver {
     @Override
     public void onReceive(Protocol request) {
         Platform.runLater(() -> {
-            ObservableList<ChannelWrapped> channels = null;
             try {
-                channels = FXCollections.observableArrayList(ChannelWrapped.wrap(request.getData()));
+                //here
+                mWrappedChannels = FXCollections.observableArrayList(ChannelWrapped.wrap(request.getData()));
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();
             }
             // build tree
-            final TreeItem<ChannelWrapped> root = new RecursiveTreeItem<>(channels, RecursiveTreeObject::getChildren);
+            final TreeItem<ChannelWrapped> root = new RecursiveTreeItem<>(mWrappedChannels, RecursiveTreeObject::getChildren);
 
             channelTable.setRoot(root);
             channelTable.setShowRoot(false);
