@@ -1,14 +1,136 @@
 package tablePanes;
 
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import dao.Announcer;
+import dao.Hosting;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import utils.Protocol;
+import utils.Receiver;
+import utils.ServerConnection;
+import wrappedDAO.AnnouncerWrapped;
+import wrappedDAO.HostingWrapped;
 
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class
-HostingTablePaneController implements Initializable {
+HostingTablePaneController implements Initializable, Receiver {
+    @FXML
+    JFXTreeTableView<HostingWrapped> hostingTable;
+
+    private JFXTreeTableColumn<HostingWrapped, Integer> idColumn;
+    private JFXTreeTableColumn<HostingWrapped, String> contractBeginDateColumn;
+    private JFXTreeTableColumn<HostingWrapped, String> contractEndDateColumn;
+    private JFXTreeTableColumn<HostingWrapped, String> announcerGratuityColumn;
+    private JFXTreeTableColumn<HostingWrapped, Integer> announcerIDColumn;
+    private JFXTreeTableColumn<HostingWrapped, Integer> programIDColumn;
+
+    private static ObservableList<AnnouncerWrapped> mWrappedHostings;
+
+    private ServerConnection mServerConnection;
+
+    private static Hosting mSelectedHosting;
+
+    public static Hosting getSelectedHosting() {
+        return mSelectedHosting;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        idColumn = new JFXTreeTableColumn<>("ID");
+        idColumn.setPrefWidth(150);
+        idColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, Integer> param) -> {
+            if (idColumn.validateValue(param)) return param.getValue().getValue().idProperty().asObject();
+            else return idColumn.getComputedValue(param);
+        });
 
+        contractBeginDateColumn = new JFXTreeTableColumn<>("Contract Starts");
+        contractBeginDateColumn.setPrefWidth(150);
+        contractBeginDateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
+            if (contractBeginDateColumn.validateValue(param)) return param.getValue().getValue().contractBeginDateProperty();
+            else return contractBeginDateColumn.getComputedValue(param);
+        });
+
+        contractEndDateColumn = new JFXTreeTableColumn<>("Contract Ends");
+        contractEndDateColumn.setPrefWidth(150);
+        contractEndDateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
+            if (contractEndDateColumn.validateValue(param)) return param.getValue().getValue().contractEndDateProperty();
+            else return contractEndDateColumn.getComputedValue(param);
+        });
+
+        announcerGratuityColumn = new JFXTreeTableColumn<>("Gratuity");
+        announcerGratuityColumn.setPrefWidth(150);
+        announcerGratuityColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
+            if (announcerGratuityColumn.validateValue(param)) return param.getValue().getValue().announcerGratuityProperty();
+            else return announcerGratuityColumn.getComputedValue(param);
+        });
+
+        announcerIDColumn = new JFXTreeTableColumn<>("Announcer ID");
+        announcerIDColumn.setPrefWidth(150);
+        announcerIDColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, Integer> param) -> {
+            if (announcerIDColumn.validateValue(param)) return param.getValue().getValue().announcerIDProperty().asObject();
+            else return announcerIDColumn.getComputedValue(param);
+        });
+
+        programIDColumn = new JFXTreeTableColumn<>("Program ID");
+        programIDColumn.setPrefWidth(150);
+        programIDColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, Integer> param) -> {
+            if (programIDColumn.validateValue(param)) return param.getValue().getValue().programIDProperty().asObject();
+            else return programIDColumn.getComputedValue(param);
+        });
+
+        try {
+            mServerConnection = new ServerConnection(
+                    InetAddress.getByName(
+                            ServerConnection.DEFAULT_IP),
+                    ServerConnection.DEFAULT_PORT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mServerConnection.requestData(Hosting.class, this);
+
+        hostingTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null)
+                mSelectedHosting = newSelection.getValue().getHosting();
+        });
+    }
+
+    public Hosting getSelectedItem() {
+        return hostingTable.getSelectionModel().getSelectedItem().getValue().getHosting();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void onReceive(Protocol request) {
+        Platform.runLater(() -> {
+            ObservableList<HostingWrapped> hostings = null;
+            try {
+                hostings = FXCollections.observableArrayList(HostingWrapped.wrap(request.getData()));
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+                e.printStackTrace();
+            }
+            // build tree
+            final TreeItem<HostingWrapped> root = new RecursiveTreeItem<>(hostings, RecursiveTreeObject::getChildren);
+
+            hostingTable.setRoot(root);
+            hostingTable.setShowRoot(false);
+            hostingTable.setEditable(false);
+            hostingTable.getColumns().setAll(idColumn,
+                    contractBeginDateColumn,
+                    contractEndDateColumn,
+                    announcerGratuityColumn,
+                    announcerIDColumn,
+                    programIDColumn);
+        });
     }
 }

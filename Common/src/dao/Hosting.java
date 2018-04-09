@@ -104,7 +104,7 @@ public class Hosting extends BaseDAO {
         try {
             parseData(jsonObject.getInt(KEY_ID),
                     formatter.parse(jsonObject.getString(KEY_CONTRACT_BEGIN)),
-                    formatter.parse(jsonObject.getString(KEY_CONTRACT_END)),
+                    (!jsonObject.getString(KEY_CONTRACT_END).equals(" ")) ? formatter.parse(jsonObject.getString(KEY_CONTRACT_END)) : formatter.parse("2150-01-01"),
                     jsonObject.getDouble(KEY_GRATUITY),
                     jsonObject.getInt(KEY_ANNOUNCER_ID),
                     jsonObject.getInt(KEY_PROGRAM_ID));
@@ -120,7 +120,7 @@ public class Hosting extends BaseDAO {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(KEY_ID, this.getId());
         jsonObject.put(KEY_CONTRACT_BEGIN, this.getContractBeginDate());
-        jsonObject.put(KEY_CONTRACT_END, this.getContractEndDate());
+        jsonObject.put(KEY_CONTRACT_END, (this.getContractEndDate() != null) ? this.getContractEndDate() : " ");
         jsonObject.put(KEY_GRATUITY, this.getAnnouncerGratuity());
         jsonObject.put(KEY_ANNOUNCER_ID, this.getAnnouncerID());
         jsonObject.put(KEY_PROGRAM_ID, this.getProgramID());

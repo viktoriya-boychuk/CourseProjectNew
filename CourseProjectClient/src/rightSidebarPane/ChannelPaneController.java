@@ -13,8 +13,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import mainPane.MainController;
 import utils.ChangeChecker;
 import utils.FieldsValidation;
+import utils.Logger;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -131,6 +133,8 @@ public class ChannelPaneController implements Initializable {
 
     @FXML
     void chooseImage(MouseEvent event) {
+        Logger.logInfo("A", ((Channel) MainController.currentTable.getSelectionModel().getSelectedItem()).getDescription());
+
         String imageFile;
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Вибір зображення");
@@ -145,6 +149,7 @@ public class ChannelPaneController implements Initializable {
                 e.printStackTrace();
             }
         }
+
     }
 
     private ChangeListener foundationDateListener = (observable, oldValue, newValue) -> {

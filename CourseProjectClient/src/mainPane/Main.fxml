@@ -13,6 +13,8 @@
                   <JFXButton fx:id="buttonAudiencesTable" layoutX="24.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#audiencesButtonOnClick" text="Audiences" />
                   <JFXButton fx:id="buttonAnnouncersTable" layoutX="107.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#announcersButtonOnClick" text="Announcers" />
                   <JFXButton fx:id="buttonChannelsTable" layoutX="199.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#channelsButtonOnClick" text="Channels" />
+                  <JFXButton fx:id="buttonHostings" layoutX="274.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#hostingsButtonOnClick" text="Hostings" />
+                  <JFXButton fx:id="buttonProgramsTable" layoutX="347.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#programButtonOnClick" text="Button" />
                </children></AnchorPane>
          </top></BorderPane>
    </center>

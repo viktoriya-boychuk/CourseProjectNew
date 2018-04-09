@@ -38,7 +38,11 @@ public class AnnouncerTablePaneController implements Initializable, Receiver {
     private JFXTreeTableColumn<AnnouncerWrapped, String> educationColumn;
     private JFXTreeTableColumn<AnnouncerWrapped, String> descriptionColumn;
 
-    private ObservableList<AudienceWrapped> mWrappedAnnouncers;
+    private static ObservableList<AudienceWrapped> mWrappedAnnouncers;
+
+    public static ObservableList<AudienceWrapped> getWrappedData() {
+        return mWrappedAnnouncers;
+    }
 
     private ServerConnection mServerConnection;
 

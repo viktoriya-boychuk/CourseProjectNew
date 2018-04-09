@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dao.Channel;
+import dao.Program;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -143,7 +144,6 @@ public class ChannelTablePaneController implements Initializable, Receiver {
     public void onReceive(Protocol request) {
         Platform.runLater(() -> {
             try {
-                //here
                 mWrappedChannels = FXCollections.observableArrayList(ChannelWrapped.wrap(request.getData()));
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();
