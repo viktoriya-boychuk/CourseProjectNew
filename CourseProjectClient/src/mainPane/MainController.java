@@ -140,4 +140,16 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    void scheduleButtonOnClick(MouseEvent event) {
+        try {
+            mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/ScheduleTablePane.fxml"));
+            centralPane.setCenter(mTreeTable);
+            currentTable = mTreeTable;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import dao.Channel;
 import dao.Program;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -16,7 +15,6 @@ import javafx.scene.control.TreeTableColumn;
 import utils.Protocol;
 import utils.Receiver;
 import utils.ServerConnection;
-import wrappedDAO.ChannelWrapped;
 import wrappedDAO.ProgramWrapped;
 
 import java.net.InetAddress;
