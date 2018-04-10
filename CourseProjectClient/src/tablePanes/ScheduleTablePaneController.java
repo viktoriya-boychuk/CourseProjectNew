@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import rightSidebarPane.BaseTable;
 import utils.Protocol;
 import utils.Receiver;
 import utils.ServerConnection;
@@ -23,7 +24,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ScheduleTablePaneController implements Initializable, Receiver {
+public class ScheduleTablePaneController implements Initializable, Receiver, BaseTable {
     @FXML
     JFXTreeTableView<ScheduleWrapped> scheduleTable;
 
@@ -47,43 +48,36 @@ public class ScheduleTablePaneController implements Initializable, Receiver {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        idColumn = new JFXTreeTableColumn<>(" ");
+        idColumn = new JFXTreeTableColumn<>("№");
         idColumn.setPrefWidth(100);
         idColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ScheduleWrapped, Integer> param) -> {
             if (idColumn.validateValue(param)) return param.getValue().getValue().idProperty().asObject();
             else return idColumn.getComputedValue(param);
         });
 
-        nameColumn = new JFXTreeTableColumn<>(" ");
-        nameColumn.setPrefWidth(100);
-        nameColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ScheduleWrapped, String> param) -> {
-            if (nameColumn.validateValue(param)) return param.getValue().getValue().nameProperty();
-            else return nameColumn.getComputedValue(param);
-        });
-
-        dateColumn = new JFXTreeTableColumn<>(" ");
-        dateColumn.setPrefWidth(100);
+        dateColumn = new JFXTreeTableColumn<>("Дата");
+        //dateColumn.setPrefWidth(100);
         dateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ScheduleWrapped, String> param) -> {
             if (dateColumn.validateValue(param)) return param.getValue().getValue().dateProperty();
             else return dateColumn.getComputedValue(param);
         });
 
-        timeColumn = new JFXTreeTableColumn<>(" ");
-        timeColumn.setPrefWidth(100);
+        timeColumn = new JFXTreeTableColumn<>("Час");
+        //timeColumn.setPrefWidth(100);
         timeColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ScheduleWrapped, String> param) -> {
             if (timeColumn.validateValue(param)) return param.getValue().getValue().timeProperty();
             else return timeColumn.getComputedValue(param);
         });
 
-        channelIDColumn = new JFXTreeTableColumn<>(" ");
-        channelIDColumn.setPrefWidth(100);
+        channelIDColumn = new JFXTreeTableColumn<>("№ телеканалу");
+        //channelIDColumn.setPrefWidth(100);
         channelIDColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ScheduleWrapped, Integer> param) -> {
             if (channelIDColumn.validateValue(param)) return param.getValue().getValue().channelIDProperty().asObject();
             else return channelIDColumn.getComputedValue(param);
         });
 
-        programIDColumn = new JFXTreeTableColumn<>(" ");
-        programIDColumn.setPrefWidth(100);
+        programIDColumn = new JFXTreeTableColumn<>("№ телепередачі");
+        //programIDColumn.setPrefWidth(100);
         programIDColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ScheduleWrapped, Integer> param) -> {
             if (programIDColumn.validateValue(param)) return param.getValue().getValue().programIDProperty().asObject();
             else return programIDColumn.getComputedValue(param);
@@ -100,8 +94,14 @@ public class ScheduleTablePaneController implements Initializable, Receiver {
 
     }
 
+    @Override
     public Schedule getSelectedItem() {
         return scheduleTable.getSelectionModel().getSelectedItem().getValue().getSchedule();
+    }
+
+    @Override
+    public void onPostInitialize(Runnable runnable) {
+        Platform.runLater(runnable);
     }
 
     @Override
@@ -119,11 +119,14 @@ public class ScheduleTablePaneController implements Initializable, Receiver {
             scheduleTable.setShowRoot(false);
             scheduleTable.setEditable(false);
             scheduleTable.getColumns().setAll(idColumn,
-                    nameColumn,
-                    dateColumn,
-                    timeColumn,
                     channelIDColumn,
-                    programIDColumn);
+                    programIDColumn,
+                    dateColumn,
+                    timeColumn);
+
+            onPostInitialize(() -> {
+                scheduleTable.getSelectionModel().select(0);
+            });
         });
     }
 }
