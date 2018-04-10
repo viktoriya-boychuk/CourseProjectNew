@@ -6,7 +6,9 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import dao.Audience;
 import dao.BaseDAO;
+import dao.Channel;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -22,7 +24,10 @@ import utils.CustomPane;
 import utils.FieldsValidation;
 import utils.Logger;
 
+import javax.imageio.ImageIO;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -81,7 +86,12 @@ public class AudiencePaneController implements Initializable {
         ageCategory.setText(audience.getAgeCategory());
         description.setText(audience.getDescription());
         if (!audience.getEmblem().equals(""))
-            emblem.setImage(new Image(audience.getEmblem()));
+            try {
+                byte[] raw = java.util.Base64.getDecoder().decode(((Audience) audiencePane.getData()).getEmblem());
+                emblem.setImage(SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(raw)), null));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         ChangeChecker.hasChanged(false);
     }
@@ -108,9 +118,8 @@ public class AudiencePaneController implements Initializable {
         snackbar = new JFXSnackbar();
 
         Pattern namePattern = Pattern.compile("[0-9а-яА-яіІїЇєЄ\\-\\s']{0,45}");
-        TextFormatter nameFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
-            return namePattern.matcher(change.getControlNewText()).matches() ? change : null;
-        });
+        TextFormatter nameFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change
+                -> namePattern.matcher(change.getControlNewText()).matches() ? change : null);
         name.setTextFormatter(nameFormatter);
 
         name.focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -121,9 +130,8 @@ public class AudiencePaneController implements Initializable {
 
 //        Pattern ageCategoryPattern = Pattern.compile("\\+?\\d{0,2}|\\d+\\+");
         Pattern ageCategoryPattern = Pattern.compile("(\\+?\\d{0,2}|\\d+\\+)|[а-яА-яіІїЇєЄ+\\s']{0,15}");
-        TextFormatter ageCategoryFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
-            return ageCategoryPattern.matcher(change.getControlNewText()).matches() ? change : null;
-        });
+        TextFormatter ageCategoryFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change
+                -> ageCategoryPattern.matcher(change.getControlNewText()).matches() ? change : null);
         ageCategory.setTextFormatter(ageCategoryFormatter);
 
         ageCategory.focusedProperty().addListener((observable, oldValue, newValue) -> {

@@ -3,8 +3,10 @@ package dao;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 
 public class Audience extends BaseDAO {
     private static final String KEY_ID = "au_id";
@@ -85,11 +87,13 @@ public class Audience extends BaseDAO {
 
     @Override
     public Audience parseResultSet(ResultSet resultSet) throws SQLException {
+        Blob image = resultSet.getBlob(KEY_EMBLEM);
         parseData(resultSet.getInt(KEY_ID),
                 resultSet.getString(KEY_NAME),
                 resultSet.getString(KEY_CATEGORY),
                 resultSet.getString(KEY_DESCRIPTION),
-                resultSet.getString(KEY_EMBLEM));
+                (image != null) ? Base64.getEncoder().encodeToString(image.getBytes(1, (int) image.length()))
+        : "NO-IMAGE");
         return this;
     }
 

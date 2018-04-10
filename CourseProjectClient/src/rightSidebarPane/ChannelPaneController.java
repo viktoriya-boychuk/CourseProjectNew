@@ -1,10 +1,12 @@
 package rightSidebarPane;
 
 import com.jfoenix.controls.*;
+import com.sun.xml.internal.messaging.saaj.util.Base64;
 import dao.BaseDAO;
 import dao.Channel;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -19,7 +21,10 @@ import utils.CustomPane;
 import utils.FieldsValidation;
 import utils.Logger;
 
+import javax.imageio.ImageIO;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -94,11 +99,17 @@ public class ChannelPaneController implements Initializable {
     private void setFieldsValues(BaseDAO baseDAO) {
         Channel channel = (Channel) baseDAO;
 
+        byte[] raw = java.util.Base64.getDecoder().decode(((Channel) channelPane.getData()).getLogo());
+
         name.setText(channel.getName());
         foundationDate.setValue(channel.getFoundationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         destructionDate.setValue(channel.getDestructionDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         owner.setText(channel.getOwner());
-        //logo.setImage(new Image(channel.getLogo()));
+        try {
+            logo.setImage(SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(raw)), null));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         airtime.setText(channel.getAirtime());
         city.setText(channel.getCity());
         description.setText(channel.getDescription());
