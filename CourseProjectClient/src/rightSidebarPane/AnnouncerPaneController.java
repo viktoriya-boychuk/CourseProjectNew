@@ -1,16 +1,16 @@
 package rightSidebarPane;
 
 import com.jfoenix.controls.*;
+import dao.Announcer;
+import dao.BaseDAO;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 import utils.ChangeChecker;
@@ -20,11 +20,14 @@ import utils.Logger;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
+
+import static utils.CustomPane.Type.EDIT;
 
 
 public class AnnouncerPaneController implements Initializable {
@@ -64,12 +67,8 @@ public class AnnouncerPaneController implements Initializable {
 
     @FXML
     void checkAndSave(MouseEvent event) {
-        //JFXSnackbar snackbar = new JFXSnackbar();
-        CustomPane b = (CustomPane) announcerPane.getParent();
-        String s = b.getId();
         if (check())
-            //((BorderPane) announcerPane.getParent()).setRight(null);
-            b.setRight(new BorderPane());
+            ((BorderPane) announcerPane.getParent()).setRight(null);
     }
 
     @FXML
@@ -78,77 +77,52 @@ public class AnnouncerPaneController implements Initializable {
             ((BorderPane) announcerPane.getParent()).setRight(null);
     }
 
-    private static AnchorPane announcerPanel;
-    private static Label announcerTitle;
-    private static JFXTextField nameField;
-    private static JFXDatePicker birthDateField;
-    private static JFXComboBox careerBeginYearField;
-    private static JFXComboBox careerEndYearField;
-    private static ToggleGroup sexField;
-    private static JFXTextArea educationField;
-    private static JFXTextArea descriptionField;
-
     private static JFXSnackbar snackbar;
-    private static String mode = "Редагувати";
 
-    public static void setMode(String passedMode) {
-        mode = passedMode;
-    }
+    private void setFieldsValues(BaseDAO baseDAO){
+        Announcer announcer = (Announcer) baseDAO;
 
-    public static void setAnnouncerTitle(String title) {
-        announcerTitle.setText(title);
-    }
-
-    private void setFieldsValues(String name, LocalDate birthDate, Integer careerBeginYear, Integer careerEndYear, String education, String description){
-        nameField.setText(name);
-        birthDateField.setValue(birthDate);
-        careerBeginYearField.setItems(getYearsList(careerBeginYear));
-        careerEndYearField.setItems(getYearsList(careerEndYear));
-        sexField = sex;
-        educationField.setText(education);
-        descriptionField.setText(description);
+        name.setText(announcer.getName());
+        birthDate.setValue(announcer.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        careerBeginYear.setItems(getYearsList(announcer.getCareerBeginYear()));
+        careerEndYear.setItems(getYearsList(announcer.getCareerEndYear()));
+        sex = sex;//TODO: set sex
+        education.setText(announcer.getEducation());
+        description.setText(announcer.getDescription());
 
         ChangeChecker.hasChanged(false);
-    }
-
-    private void setStaticValues(){
-        nameField = name;
-        birthDateField = birthDate;
-        careerBeginYearField = careerBeginYear;
-        careerEndYearField = careerEndYear;
-        sexField = sex;
-        educationField = education;
-        descriptionField = description;
-
-        snackbar = new JFXSnackbar();
     }
 
     private ChangeListener birthDateListener = (observable, oldValue, newValue) -> {
         if (oldValue != newValue) {
             careerBeginYear.setItems(getYearsList(birthDate.getValue().getYear()));
             careerBeginYear.getSelectionModel().select(0);
-            careerEndYear.setItems(getYearsList(birthDate.getValue().getYear()));
-            careerEndYear.getSelectionModel().select(0);
+            //careerEndYear.setItems(getYearsList(birthDate.getValue().getYear()));
         }
     };
 
     private ChangeListener careerBeginYearListener = (observable, oldValue, newValue) -> {
         if (newValue instanceof String) {
-            careerEndYear.getSelectionModel().select(0);
+            //careerEndYear.getSelectionModel().select(0);
             careerEndYear.setItems(getYearsList(Integer.parseInt((String) (newValue))));
         }
     };
 
     @Override
     public void initialize(URL location, ResourceBundle resources) throws ClassCastException {
-        ChangeChecker.hasChanged(false);
-        setStaticValues();
+        snackbar = new JFXSnackbar();
 
         Pattern namePattern = Pattern.compile("[а-яА-яіІїЇєЄ\\-\\s']{0,45}");
         TextFormatter nameFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return namePattern.matcher(change.getControlNewText()).matches() ? change : null;
         });
         name.setTextFormatter(nameFormatter);
+
+        name.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                FieldsValidation.textFieldIsNotEmpty(name);
+            }
+        });
 
         Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
             public DateCell call(final DatePicker datePicker) {
@@ -177,15 +151,21 @@ public class AnnouncerPaneController implements Initializable {
                 change.getControlNewText().length() <= 100 ? change : null));
 
         name.textProperty().addListener(ChangeChecker.textListener);
-        birthDate.valueProperty().addListener(ChangeChecker.textListener);
+        birthDate.valueProperty().addListener(ChangeChecker.valueListener);
         careerBeginYear.valueProperty().addListener(ChangeChecker.valueListener);
         careerEndYear.valueProperty().addListener(ChangeChecker.valueListener);
         sex.selectedToggleProperty().addListener(ChangeChecker.toggleListener);
         education.textProperty().addListener(ChangeChecker.textListener);
         description.textProperty().addListener(ChangeChecker.textListener);
 
+        ChangeChecker.hasChanged(false);
+
         Platform.runLater(() -> {
             Logger.logInfo("String", announcerPane.getData().toString());
+            switch (announcerPane.getType()) {
+                case EDIT: setFieldsValues(announcerPane.getData()); announcerLabel.setText("Редагувати ведучого");break;
+                default: announcerLabel.setText("Додати ведучого"); break;
+            }
         });
     }
 
@@ -197,8 +177,8 @@ public class AnnouncerPaneController implements Initializable {
         return FXCollections.observableArrayList(years);
     }
 
-    public static boolean check() {
-        if (FieldsValidation.textFieldIsNotEmpty(nameField)) {
+    private boolean check() {
+        if (FieldsValidation.textFieldIsNotEmpty(name)) {
             if (ChangeChecker.hasChanged()) {
                 save();
                 return true;
@@ -209,15 +189,15 @@ public class AnnouncerPaneController implements Initializable {
         return false;
     }
 
-    private static void save() {
+    private void save() {
 //        if (mode.equals("Редагувати"))
 //            snackbar.show("Запис успішно відредаговано!", 2000);
 //        else snackbar.show("Запис успішно додано до бази даних!", 2000);
     }
 
-    public static boolean cancel() {
-        if ((!mode.equals("Редагувати") && ChangeChecker.hasChanged()) ||
-                (mode.equals("Редагувати") && ChangeChecker.hasChanged() && FieldsValidation.textFieldIsNotEmpty(nameField))) {
+    private boolean cancel() {
+        if ((!announcerPane.getType().equals(EDIT) && ChangeChecker.hasChanged()) ||
+                (announcerPane.getType().equals(EDIT) && ChangeChecker.hasChanged() && FieldsValidation.textFieldIsNotEmpty(name))) {
 //            snackbar.show("Запис містить зміни! Збережіть їх!", 2000);
             return false;
         }

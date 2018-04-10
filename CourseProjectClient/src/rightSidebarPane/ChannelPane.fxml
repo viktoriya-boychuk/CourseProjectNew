@@ -11,57 +11,94 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import utils.CustomPane?>
 
-<AnchorPane fx:id="channelPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="241.0" styleClass="rightSidebarPane" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rightSidebarPane.ChannelPaneController">
-   <children>
-      <Label fx:id="channelLabel" layoutX="6.0" layoutY="6.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" text="Label" textAlignment="RIGHT" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <font>
-            <Font name="Arial Bold" size="14.0" />
-         </font>
-      </Label>
-      <JFXTextField fx:id="name" labelFloat="true" layoutX="14.0" layoutY="44.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Назва" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font></JFXTextField>
-      <JFXDatePicker fx:id="foundationDate" layoutX="14.0" layoutY="97.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Дата заснування" stylesheets="@../mainPane/style.css" />
-      <JFXDatePicker fx:id="destructionDate" layoutX="14.0" layoutY="140.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Дата закриття" stylesheets="@../mainPane/style.css" />
-      <JFXTextField fx:id="owner" labelFloat="true" layoutX="14.0" layoutY="182.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Власник" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font>
-      </JFXTextField>
-      <JFXButton fx:id="btnChooseLogo" layoutX="46.0" layoutY="389.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#chooseImage" prefWidth="150.0" styleClass="choiceButton" text="Вибрати логотип">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></JFXButton>
-      <JFXTextField fx:id="airtime" labelFloat="true" layoutX="14.0" layoutY="429.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" promptText="Ефірний час" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="city" labelFloat="true" layoutX="127.0" layoutY="429.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" promptText="Місто" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextArea fx:id="description" labelFloat="true" layoutX="14.0" layoutY="486.0" prefHeight="52.0" prefWidth="213.0" promptText="Характеристика" styleClass="text-field" stylesheets="@../mainPane/style.css" />
-      <JFXTextField fx:id="frequency" labelFloat="true" layoutX="14.0" layoutY="561.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" promptText="Частота" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="satellite" labelFloat="true" layoutX="127.0" layoutY="561.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" promptText="Супутник" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font>
-      </JFXTextField>
-      <ImageView fx:id="logo" fitHeight="150.0" fitWidth="150.0" layoutX="46.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/close123.png" />
-         </image>
-      </ImageView>
-   </children>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
-</AnchorPane>
+<CustomPane fx:id="channelPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="665.0" prefWidth="241.0" style="-fx-background-color: #eae5ff;" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rightSidebarPane.ChannelPaneController">
+    <center>
+        <AnchorPane fx:id="pane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="241.0" styleClass="rightSidebarPane" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+            <children>
+                <Label fx:id="channelLabel" layoutX="6.0" layoutY="6.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" text="Label" textAlignment="RIGHT" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="Arial Bold" size="14.0" />
+                    </font>
+                </Label>
+                <JFXTextField fx:id="name" labelFloat="true" layoutX="14.0" layoutY="44.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Назва" styleClass="text-field" stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0" />
+                    </font>
+                </JFXTextField>
+                <JFXDatePicker fx:id="foundationDate" layoutX="14.0" layoutY="97.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Дата заснування" stylesheets="@../mainPane/style.css" />
+                <JFXDatePicker fx:id="destructionDate" layoutX="14.0" layoutY="140.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Дата закриття" stylesheets="@../mainPane/style.css" />
+                <JFXTextField fx:id="owner" labelFloat="true" layoutX="14.0" layoutY="182.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Власник" styleClass="text-field" stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0" />
+                    </font>
+                </JFXTextField>
+                <JFXButton fx:id="btnChooseLogo" layoutX="46.0" layoutY="389.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#chooseImage" prefWidth="150.0" styleClass="choiceButton" text="Вибрати логотип">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+                <JFXTextField fx:id="airtime" labelFloat="true" layoutX="14.0" layoutY="429.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" promptText="Ефірний час" styleClass="text-field" stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0" />
+                    </font>
+                </JFXTextField>
+                <JFXTextField fx:id="city" labelFloat="true" layoutX="127.0" layoutY="429.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" promptText="Місто" styleClass="text-field" stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0" />
+                    </font>
+                </JFXTextField>
+                <JFXTextArea fx:id="description" labelFloat="true" layoutX="14.0" layoutY="486.0" prefHeight="52.0" prefWidth="213.0" promptText="Характеристика" styleClass="text-field" stylesheets="@../mainPane/style.css" />
+                <JFXTextField fx:id="frequency" labelFloat="true" layoutX="14.0" layoutY="561.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" promptText="Частота" styleClass="text-field" stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0" />
+                    </font>
+                </JFXTextField>
+                <JFXTextField fx:id="satellite" labelFloat="true" layoutX="127.0" layoutY="561.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" promptText="Супутник" styleClass="text-field" stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0" />
+                    </font>
+                </JFXTextField>
+                <ImageView fx:id="logo" fitHeight="150.0" fitWidth="150.0" layoutX="46.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/close123.png" />
+                    </image>
+                </ImageView>
+            </children>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </AnchorPane>
+    </center>
+    <bottom>
+        <AnchorPane fx:id="bottomPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="72.0" prefWidth="241.0" CustomPane.alignment="CENTER">
+            <children>
+                <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="24.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndSave" prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="10.0">
+                    <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/diskette.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+                <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="152.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndCancel" prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="10.0">
+                    <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/close.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+            </children>
+        </AnchorPane>
+    </bottom>
+</CustomPane>

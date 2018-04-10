@@ -4,6 +4,9 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import dao.Audience;
+import dao.BaseDAO;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -12,10 +15,12 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import utils.ChangeChecker;
+import utils.CustomPane;
 import utils.FieldsValidation;
+import utils.Logger;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -24,10 +29,12 @@ import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
+import static utils.CustomPane.Type.EDIT;
+
 public class AudiencePaneController implements Initializable {
 
     @FXML
-    private AnchorPane audiencePane;
+    private CustomPane audiencePane;
 
     @FXML
     private Label audienceLabel;
@@ -47,42 +54,36 @@ public class AudiencePaneController implements Initializable {
     @FXML
     private JFXButton btnChooseEmblem;
 
-    private static AnchorPane audiencePanel;
-    private static Label audienceTitle;
-    private static JFXTextField nameField;
-    private static JFXTextField ageCategoryField;
-    private static JFXTextArea descriptionField;
-    private static ImageView emblemField;
+    @FXML
+    private JFXButton btnSave;
+
+    @FXML
+    private JFXButton btnCancel;
+
+    @FXML
+    void checkAndSave(MouseEvent event) {
+        if (check())
+            ((BorderPane) audiencePane.getParent()).setRight(null);
+    }
+
+    @FXML
+    void checkAndCancel(MouseEvent event) {
+        if (cancel())
+            ((BorderPane) audiencePane.getParent()).setRight(null);
+    }
 
     private static JFXSnackbar snackbar;
-    private static String mode;
 
-    public static void setMode(String passedMode) {
-        mode = passedMode;
-    }
+    private void setFieldsValues(BaseDAO baseDAO) {
+        Audience audience = (Audience) baseDAO;
 
-    public static void setAudienceTitle(String title) {
-        audienceTitle.setText(title);
-    }
-
-    private void setFieldsValues(String name, String ageCategory, String description, Image emblem){
-        nameField.setText(name);
-        ageCategoryField.setText(ageCategory);
-        descriptionField.setText(description);
-        emblemField.setImage(emblem);
+        name.setText(audience.getName());
+        ageCategory.setText(audience.getAgeCategory());
+        description.setText(audience.getDescription());
+        if (!audience.getEmblem().equals(""))
+            emblem.setImage(new Image(audience.getEmblem()));
 
         ChangeChecker.hasChanged(false);
-    }
-
-    private void setStaticValues(){
-        audiencePanel = audiencePane;
-        audienceTitle = audienceLabel;
-        nameField = name;
-        ageCategoryField = ageCategory;
-        descriptionField = description;
-        emblemField = emblem;
-
-        snackbar = new JFXSnackbar();
     }
 
     @FXML
@@ -104,9 +105,7 @@ public class AudiencePaneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setStaticValues();
-
-        ChangeChecker.hasChanged(false);
+        snackbar = new JFXSnackbar();
 
         Pattern namePattern = Pattern.compile("[0-9а-яА-яіІїЇєЄ\\-\\s']{0,45}");
         TextFormatter nameFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
@@ -114,28 +113,51 @@ public class AudiencePaneController implements Initializable {
         });
         name.setTextFormatter(nameFormatter);
 
-        ageCategoryField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        name.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                FieldsValidation.textFieldIsNotEmpty(ageCategoryField);
+                FieldsValidation.textFieldIsNotEmpty(name);
             }
         });
-        Pattern ageCategoryPattern = Pattern.compile("\\+?\\d{0,2}|\\d+\\+");
+
+//        Pattern ageCategoryPattern = Pattern.compile("\\+?\\d{0,2}|\\d+\\+");
+        Pattern ageCategoryPattern = Pattern.compile("(\\+?\\d{0,2}|\\d+\\+)|[а-яА-яіІїЇєЄ+\\s']{0,15}");
         TextFormatter ageCategoryFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return ageCategoryPattern.matcher(change.getControlNewText()).matches() ? change : null;
         });
         ageCategory.setTextFormatter(ageCategoryFormatter);
 
+        ageCategory.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                FieldsValidation.textFieldIsNotEmpty(ageCategory);
+            }
+        });
+
         description.setTextFormatter(new TextFormatter<String>(change ->
                 change.getControlNewText().length() <= 100 ? change : null));
+
+        ChangeChecker.hasChanged(false);
 
         name.textProperty().addListener(ChangeChecker.textListener);
         ageCategory.textProperty().addListener(ChangeChecker.textListener);
         emblem.imageProperty().addListener(ChangeChecker.valueListener);
         description.textProperty().addListener(ChangeChecker.textListener);
+
+        Platform.runLater(() -> {
+            Logger.logInfo("String", audiencePane.getData().toString());
+            switch (audiencePane.getType()) {
+                case EDIT:
+                    setFieldsValues(audiencePane.getData());
+                    audienceLabel.setText("Редагувати аудиторію");
+                    break;
+                default:
+                    audienceLabel.setText("Додати аудиторію");
+                    break;
+            }
+        });
     }
 
-    public static boolean check() {
-        if (FieldsValidation.textFieldIsNotEmpty(nameField) && FieldsValidation.textFieldIsNotEmpty(ageCategoryField)) {
+    private boolean check() {
+        if (FieldsValidation.textFieldIsNotEmpty(name) && FieldsValidation.textFieldIsNotEmpty(ageCategory)) {
             if (ChangeChecker.hasChanged()) {
                 save();
                 return true;
@@ -145,15 +167,15 @@ public class AudiencePaneController implements Initializable {
         return false;
     }
 
-    private static void save() {
-        if (mode.equals("Редагувати"))
-            snackbar.show("Запис успішно відредаговано!", 2000);
-        else snackbar.show("Запис успішно додано до бази даних!", 2000);
+    private void save() {
+//        if (mode.equals("Редагувати"))
+//            snackbar.show("Запис успішно відредаговано!", 2000);
+//        else snackbar.show("Запис успішно додано до бази даних!", 2000);
     }
 
-    public static boolean cancel() {
-        if ((!mode.equals("Редагувати") && ChangeChecker.hasChanged()) ||
-                (mode.equals("Редагувати") && ChangeChecker.hasChanged() && FieldsValidation.textFieldIsNotEmpty(nameField) && FieldsValidation.textFieldIsNotEmpty(ageCategoryField))) {
+    private boolean cancel() {
+        if ((!audiencePane.getType().equals(EDIT) && ChangeChecker.hasChanged()) ||
+                (audiencePane.getType().equals(EDIT) && ChangeChecker.hasChanged() && (FieldsValidation.textFieldIsNotEmpty(name) || FieldsValidation.textFieldIsNotEmpty(ageCategory)))) {
             snackbar.show("Запис містить зміни! Збережіть їх!", 2000);
             return false;
         }

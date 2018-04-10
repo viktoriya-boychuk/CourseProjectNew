@@ -1,7 +1,3 @@
-.button:hover {
-    -fx-background-color: #f9e8e4;
-}
-
 .label {
     -fx-alignment: center;
 }
@@ -40,4 +36,8 @@
     -fx-font: normal 12 Arial;
     -fx-background-color: #FFC107;
     -fx-border-color: black;
+}
+
+.someButton:hover {
+    -fx-background-color: #dcd6f5;
 }

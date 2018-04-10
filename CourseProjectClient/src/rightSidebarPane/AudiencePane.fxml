@@ -11,36 +11,97 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="audiencePane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="432.0" prefWidth="241.0" styleClass="rightSidebarPane" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rightSidebarPane.AudiencePaneController">
-   <children>
-      <Label fx:id="audienceLabel" layoutX="6.0" layoutY="6.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" text="Label" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <font>
-            <Font name="Arial Bold" size="14.0" />
-         </font>
-      </Label>
-      <JFXTextField fx:id="name" labelFloat="true" layoutX="14.0" layoutY="44.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Назва" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="ageCategory" labelFloat="true" layoutX="14.0" layoutY="102.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Вікова категорія" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font></JFXTextField>
-      <JFXTextArea fx:id="description" labelFloat="true" layoutX="14.0" layoutY="165.0" prefHeight="52.0" prefWidth="213.0" promptText="Характеристика" styleClass="text-field" stylesheets="@../mainPane/style.css" />
-      <ImageView fx:id="emblem" fitHeight="150.0" fitWidth="150.0" layoutX="46.0" layoutY="237.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/Записати1.JPG" />
-         </image></ImageView>
-      <JFXButton fx:id="btnChooseEmblem" layoutX="46.0" layoutY="394.0" mnemonicParsing="false" onMouseClicked="#chooseImage" prefHeight="25.0" prefWidth="150.0" styleClass="choiceButton" text="Вибрати позначку">
-         <font>
-            <Font name="Arial" size="12.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></JFXButton>
-   </children>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
-</AnchorPane>
+<?import utils.CustomPane?>
+<CustomPane fx:id="audiencePane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="520.0" prefWidth="241.0" style="-fx-background-color: #eae5ff;"
+            stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="rightSidebarPane.AudiencePaneController">
+    <center>
+        <AnchorPane fx:id="pane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="432.0" prefWidth="241.0"
+                    styleClass="rightSidebarPane" stylesheets="@../mainPane/style.css"
+                    xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+            <children>
+                <Label fx:id="audienceLabel" layoutX="6.0" layoutY="6.0" maxHeight="-Infinity" minHeight="-Infinity"
+                       prefHeight="25.0" text="Label" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="Arial Bold" size="14.0"/>
+                    </font>
+                </Label>
+                <JFXTextField fx:id="name" labelFloat="true" layoutX="14.0" layoutY="44.0" minWidth="-Infinity"
+                              prefHeight="25.0" prefWidth="213.0" promptText="Назва" styleClass="text-field"
+                              stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0"/>
+                    </font>
+                </JFXTextField>
+                <JFXTextField fx:id="ageCategory" labelFloat="true" layoutX="14.0" layoutY="102.0" minWidth="-Infinity"
+                              prefHeight="25.0" prefWidth="213.0" promptText="Вікова категорія" styleClass="text-field"
+                              stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0"/>
+                    </font>
+                </JFXTextField>
+                <JFXTextArea fx:id="description" labelFloat="true" layoutX="14.0" layoutY="165.0" prefHeight="52.0"
+                             prefWidth="213.0" promptText="Характеристика" styleClass="text-field"
+                             stylesheets="@../mainPane/style.css"/>
+                <ImageView fx:id="emblem" fitHeight="150.0" fitWidth="150.0" layoutX="46.0" layoutY="237.0"
+                           pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/Записати1.JPG"/>
+                    </image>
+                </ImageView>
+                <JFXButton fx:id="btnChooseEmblem" layoutX="46.0" layoutY="394.0" mnemonicParsing="false"
+                           onMouseClicked="#chooseImage" prefHeight="25.0" prefWidth="150.0" styleClass="choiceButton"
+                           text="Вибрати позначку">
+                    <font>
+                        <Font name="Arial" size="12.0"/>
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </JFXButton>
+            </children>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+        </AnchorPane>
+    </center>
+    <bottom>
+        <AnchorPane fx:id="bottomPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="72.0" prefWidth="241.0"
+                    CustomPane.alignment="CENTER">
+            <children>
+                <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="24.0" layoutY="26.0" minHeight="-Infinity"
+                           minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndSave" prefHeight="52.0"
+                           prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="25.0"
+                           AnchorPane.topAnchor="10.0">
+                    <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/diskette.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </JFXButton>
+                <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="152.0" layoutY="26.0" minHeight="-Infinity"
+                           minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndCancel"
+                           prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0"
+                           AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="10.0">
+                    <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/close.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
+                </JFXButton>
+            </children>
+        </AnchorPane>
+    </bottom>
+</CustomPane>

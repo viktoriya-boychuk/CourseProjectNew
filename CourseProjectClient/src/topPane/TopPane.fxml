@@ -15,7 +15,7 @@
    <children>
       <AnchorPane fx:id="top" maxHeight="-Infinity" minHeight="-Infinity" onMouseClicked="#onPaneDoubleClick" onMouseDragged="#dragWindow" onMousePressed="#onPanePressed" prefHeight="30.0" prefWidth="900.0" style="-fx-background-color: #917acb;">
          <children>
-            <JFXButton fx:id="btnClose" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="544.0" layoutY="9.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#closeWindow" prefHeight="30.0" prefWidth="30.0" ripplerFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+            <JFXButton fx:id="btnClose" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="544.0" layoutY="9.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#closeWindow" prefHeight="30.0" prefWidth="30.0" ripplerFill="WHITE" styleClass="someButton" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -27,7 +27,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton fx:id="btnMinimize" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="460.0" layoutY="9.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#minimizeWindow" prefHeight="30.0" prefWidth="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="0.0">
+            <JFXButton fx:id="btnMinimize" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="460.0" layoutY="9.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#minimizeWindow" prefHeight="30.0" prefWidth="30.0" styleClass="someButton" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="0.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -42,7 +42,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton fx:id="btnMaximize" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="502.0" layoutY="9.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#maximizeWindow" prefHeight="30.0" prefWidth="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="0.0">
+            <JFXButton fx:id="btnMaximize" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="502.0" layoutY="9.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#maximizeWindow" prefHeight="30.0" prefWidth="30.0" styleClass="someButton" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="0.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="32.0" onMouseClicked="#maximizeWindow" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -63,7 +63,7 @@
       </AnchorPane>
       <HBox fx:id="bottom" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="52.0" prefWidth="900.0" style="-fx-background-color: #eae5ff;">
          <children>
-            <JFXButton fx:id="btnMenu" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#openCloseMenuPane" prefHeight="52.0" prefWidth="52.0">
+            <JFXButton fx:id="btnMenu" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#openCloseMenuPane" prefHeight="52.0" prefWidth="52.0" styleClass="someButton">
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                      <image>

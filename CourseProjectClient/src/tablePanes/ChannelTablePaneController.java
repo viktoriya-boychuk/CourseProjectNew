@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dao.Channel;
-import dao.Program;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import rightSidebarPane.BaseTable;
 import utils.Protocol;
 import utils.Receiver;
 import utils.ServerConnection;
@@ -22,7 +22,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ChannelTablePaneController implements Initializable, Receiver {
+public class ChannelTablePaneController implements Initializable, Receiver, BaseTable {
     @FXML
     JFXTreeTableView<ChannelWrapped> channelTable;
 
@@ -48,78 +48,67 @@ public class ChannelTablePaneController implements Initializable, Receiver {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        idColumn = new JFXTreeTableColumn<>("ID");
-        idColumn.setPrefWidth(150);
+        idColumn = new JFXTreeTableColumn<>("№");
         idColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, Integer> param) -> {
             if (idColumn.validateValue(param))
                 return param.getValue().getValue().idProperty().asObject();
             else return idColumn.getComputedValue(param);
         });
-        nameColumn = new JFXTreeTableColumn<>("Name");
-        nameColumn.setPrefWidth(150);
+        nameColumn = new JFXTreeTableColumn<>("Назва");
         nameColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, String> param) -> {
             if (nameColumn.validateValue(param))
                 return param.getValue().getValue().nameProperty();
             else return nameColumn.getComputedValue(param);
         });
-        foundationDateColumn = new JFXTreeTableColumn<>("Found. Date");
-        foundationDateColumn.setPrefWidth(150);
+        foundationDateColumn = new JFXTreeTableColumn<>("Дата заснування");
         foundationDateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, String> param) -> {
             if (foundationDateColumn.validateValue(param))
                 return param.getValue().getValue().foundationDateProperty();
             else return foundationDateColumn.getComputedValue(param);
         });
-        destructionDateColumn = new JFXTreeTableColumn<>("Disc. Date");
-        destructionDateColumn.setPrefWidth(150);
+        destructionDateColumn = new JFXTreeTableColumn<>("Дата закриття");
         destructionDateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, String> param) -> {
             if (destructionDateColumn.validateValue(param))
                 return param.getValue().getValue().destructionDateProperty();
             else return destructionDateColumn.getComputedValue(param);
         });
-        ownerColumn = new JFXTreeTableColumn<>("Owner");
-        ownerColumn.setPrefWidth(150);
+        ownerColumn = new JFXTreeTableColumn<>("Власник");
         ownerColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, String> param) -> {
             if (ownerColumn.validateValue(param))
                 return param.getValue().getValue().ownerProperty();
             else return ownerColumn.getComputedValue(param);
         });
-        logoColumn = new JFXTreeTableColumn<>("Logo");
-        logoColumn.setPrefWidth(150);
+        logoColumn = new JFXTreeTableColumn<>("Логотип");
         logoColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, String> param) -> {
             if (logoColumn.validateValue(param))
                 return param.getValue().getValue().logoProperty();
             else return logoColumn.getComputedValue(param);
         });
-        airtimeColumn = new JFXTreeTableColumn<>("Airtime");
-        airtimeColumn.setPrefWidth(150);
+        airtimeColumn = new JFXTreeTableColumn<>("Ефірний час");
         airtimeColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, String> param) -> {
             if (airtimeColumn.validateValue(param))
                 return param.getValue().getValue().airtimeProperty();
             else return airtimeColumn.getComputedValue(param);
         });
-        cityColumn = new JFXTreeTableColumn<>("City");
-        cityColumn.setPrefWidth(150);
+        cityColumn = new JFXTreeTableColumn<>("Місто");
         cityColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, String> param) -> {
             if (cityColumn.validateValue(param))
                 return param.getValue().getValue().cityProperty();
             else return cityColumn.getComputedValue(param);
         });
-        descriptionColumn = new JFXTreeTableColumn<>("Description");
-        descriptionColumn.setPrefWidth(150);
+        descriptionColumn = new JFXTreeTableColumn<>("Опис");
         descriptionColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, String> param) -> {
             if (descriptionColumn.validateValue(param))
                 return param.getValue().getValue().descriptionProperty();
             else return descriptionColumn.getComputedValue(param);
         });
-        frequencyColumn = new JFXTreeTableColumn<>("Frequency");
-        frequencyColumn.setPrefWidth(150);
+        frequencyColumn = new JFXTreeTableColumn<>("Частота");
         frequencyColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, String> param) -> {
             if (frequencyColumn.validateValue(param))
                 return param.getValue().getValue().frequencyProperty();
             else return frequencyColumn.getComputedValue(param);
         });
-        satelliteColumn = new JFXTreeTableColumn<>("Satellite");
-        satelliteColumn.setPrefWidth(150);
+        satelliteColumn = new JFXTreeTableColumn<>("Супутник");
         satelliteColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, String> param) -> {
             if (satelliteColumn.validateValue(param))
                 return param.getValue().getValue().satelliteProperty();
@@ -134,10 +123,16 @@ public class ChannelTablePaneController implements Initializable, Receiver {
             e.printStackTrace();
         }
         mServerConnection.requestData(Channel.class, this);
-        }
+    }
 
+    @Override
     public Channel getSelectedItem() {
         return channelTable.getSelectionModel().getSelectedItem().getValue().getChannel();
+    }
+
+    @Override
+    public void onPostInitialize(Runnable runnable) {
+        Platform.runLater(runnable);
     }
 
     @Override
@@ -165,6 +160,10 @@ public class ChannelTablePaneController implements Initializable, Receiver {
                     descriptionColumn,
                     frequencyColumn,
                     satelliteColumn);
+
+            onPostInitialize(() -> {
+                channelTable.getSelectionModel().select(0);
+            });
         });
     }
 }

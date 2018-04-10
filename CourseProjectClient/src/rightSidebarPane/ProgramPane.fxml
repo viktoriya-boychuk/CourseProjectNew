@@ -1,55 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import utils.CustomPane?>
 
-<AnchorPane fx:id="programPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="241.0" styleClass="rightSidebarPane" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rightSidebarPane.ProgramPaneController">
-   <children>
-      <Label fx:id="programLabel" layoutX="6.0" layoutY="6.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" text="Label" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <font>
-            <Font name="Arial Bold" size="14.0" />
-         </font>
-      </Label>
-      <JFXTextField fx:id="name" labelFloat="true" layoutX="14.0" layoutY="44.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Назва" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font></JFXTextField>
-      <JFXTextField fx:id="category" labelFloat="true" layoutX="14.0" layoutY="87.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Категорія (тип)" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="genre" labelFloat="true" layoutX="14.0" layoutY="131.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Жанр" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="duration" labelFloat="true" layoutX="14.0" layoutY="175.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Тривалість" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font>
-      </JFXTextField>
-      <JFXComboBox fx:id="audience" labelFloat="true" layoutX="14.0" layoutY="219.0" prefHeight="23.0" prefWidth="213.0" promptText="Аудиторія глядачів" />
-      <JFXTextField fx:id="country" labelFloat="true" layoutX="14.0" layoutY="262.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Країна походження" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="author" labelFloat="true" layoutX="14.0" layoutY="307.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Автор/Продюсер" styleClass="text-field" stylesheets="@../mainPane/style.css">
-         <font>
-            <Font name="Arial Bold" size="31.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextArea fx:id="description" labelFloat="true" layoutX="14.0" layoutY="353.0" prefHeight="52.0" prefWidth="213.0" promptText="Опис" styleClass="text-field" stylesheets="@../mainPane/style.css" />
-      <JFXCheckBox fx:id="ownIdea" layoutX="73.0" layoutY="434.0" mnemonicParsing="false" text="Власна ідея?" />
-   </children>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
-</AnchorPane>
+<CustomPane fx:id="programPane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="612.0" prefWidth="241.0" style="-fx-background-color: #eae5ff;" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rightSidebarPane.ProgramPaneController">
+    <center>
+        <AnchorPane fx:id="pane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="241.0" styleClass="rightSidebarPane" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+            <children>
+                <Label fx:id="programLabel" layoutX="6.0" layoutY="6.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" text="Label" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="Arial Bold" size="14.0" />
+                    </font>
+                </Label>
+                <JFXTextField fx:id="name" labelFloat="true" layoutX="14.0" layoutY="44.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Назва" styleClass="text-field" stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0" />
+                    </font>
+                </JFXTextField>
+                <JFXTextField fx:id="category" labelFloat="true" layoutX="14.0" layoutY="98.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Категорія (тип)" styleClass="text-field" stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0" />
+                    </font>
+                </JFXTextField>
+                <JFXTextField fx:id="genre" labelFloat="true" layoutX="14.0" layoutY="152.0" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Жанр" styleClass="text-field" stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0" />
+                    </font>
+                </JFXTextField>
+                <JFXTextField fx:id="duration" labelFloat="true" layoutX="14.0" layoutY="193.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Тривалість" styleClass="text-field" stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0" />
+                    </font>
+                </JFXTextField>
+                <JFXComboBox fx:id="audience" labelFloat="true" layoutX="14.0" layoutY="246.0" prefHeight="23.0" prefWidth="213.0" promptText="Аудиторія глядачів" />
+                <JFXTextField fx:id="country" labelFloat="true" layoutX="14.0" layoutY="289.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Країна походження" styleClass="text-field" stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0" />
+                    </font>
+                </JFXTextField>
+                <JFXTextField fx:id="author" labelFloat="true" layoutX="14.0" layoutY="344.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Автор/Продюсер" styleClass="text-field" stylesheets="@../mainPane/style.css">
+                    <font>
+                        <Font name="Arial Bold" size="31.0" />
+                    </font>
+                </JFXTextField>
+                <JFXTextArea fx:id="description" labelFloat="true" layoutX="14.0" layoutY="403.0" prefHeight="52.0" prefWidth="213.0" promptText="Опис" styleClass="text-field" stylesheets="@../mainPane/style.css" />
+                <JFXCheckBox fx:id="ownIdea" layoutX="73.0" layoutY="484.0" mnemonicParsing="false" text="Власна ідея?" />
+            </children>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </AnchorPane>
+    </center>
+    <bottom>
+        <AnchorPane fx:id="bottomPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="72.0" prefWidth="241.0" CustomPane.alignment="CENTER">
+            <children>
+                <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="24.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndSave" prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="10.0">
+                    <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/diskette.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+                <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="152.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndCancel" prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="10.0">
+                    <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/close.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+            </children>
+        </AnchorPane>
+    </bottom>
+</CustomPane>

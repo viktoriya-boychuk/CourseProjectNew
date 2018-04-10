@@ -56,52 +56,45 @@ public class AnnouncerTablePaneController implements Initializable, Receiver, Ba
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        idColumn = new JFXTreeTableColumn<>("ID");
-        idColumn.setPrefWidth(150);
+        idColumn = new JFXTreeTableColumn<>("№");
         idColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, Integer> param) -> {
             if (idColumn.validateValue(param)) return param.getValue().getValue().idProperty().asObject();
             else return idColumn.getComputedValue(param);
         });
 
-        nameColumn = new JFXTreeTableColumn<>("Name");
-        nameColumn.setPrefWidth(150);
+        nameColumn = new JFXTreeTableColumn<>("ПІБ");
         nameColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, String> param) -> {
             if (nameColumn.validateValue(param)) return param.getValue().getValue().nameProperty();
             else return nameColumn.getComputedValue(param);
         });
 
-        careerBeginYearColumn = new JFXTreeTableColumn<>("Career Started");
-        careerBeginYearColumn.setPrefWidth(150);
+        careerBeginYearColumn = new JFXTreeTableColumn<>("Початок кар'єри");
         careerBeginYearColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, Integer> param) -> {
             if (careerBeginYearColumn.validateValue(param))
                 return param.getValue().getValue().careerBeginYearProperty().asObject();
             else return careerBeginYearColumn.getComputedValue(param);
         });
 
-        careerEndYearColumn = new JFXTreeTableColumn<>("Career Ended");
-        careerEndYearColumn.setPrefWidth(150);
+        careerEndYearColumn = new JFXTreeTableColumn<>("Кінець кар'єри");
         careerEndYearColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, Integer> param) -> {
             if (careerEndYearColumn.validateValue(param))
                 return param.getValue().getValue().careerEndYearProperty().asObject();
             else return careerEndYearColumn.getComputedValue(param);
         });
 
-        birthDateColumn = new JFXTreeTableColumn<>("Birth Date");
-        birthDateColumn.setPrefWidth(150);
+        birthDateColumn = new JFXTreeTableColumn<>("Дата народження");
         birthDateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, String> param) -> {
             if (birthDateColumn.validateValue(param)) return param.getValue().getValue().birthDateProperty();
             else return birthDateColumn.getComputedValue(param);
         });
 
-        educationColumn = new JFXTreeTableColumn<>("Education");
-        educationColumn.setPrefWidth(150);
+        educationColumn = new JFXTreeTableColumn<>("Освіта");
         educationColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, String> param) -> {
             if (educationColumn.validateValue(param)) return param.getValue().getValue().educationProperty();
             else return educationColumn.getComputedValue(param);
         });
 
-        descriptionColumn = new JFXTreeTableColumn<>("Description");
-        descriptionColumn.setPrefWidth(150);
+        descriptionColumn = new JFXTreeTableColumn<>("Характеристика");
         descriptionColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, String> param) -> {
             if (descriptionColumn.validateValue(param)) return param.getValue().getValue().descriptionProperty();
             else return descriptionColumn.getComputedValue(param);
@@ -121,15 +114,18 @@ public class AnnouncerTablePaneController implements Initializable, Receiver, Ba
             if (newSelection != null)
                 mSelectedAnnouncer = newSelection.getValue().getAnnouncer();
         });
+
+
     }
 
     @Override
     public Announcer getSelectedItem() {
-        SelectionModel a = announcerTable.getSelectionModel();
-        TreeItem<AnnouncerWrapped> b = announcerTable.getSelectionModel().getSelectedItem();
-        AnnouncerWrapped c = announcerTable.getSelectionModel().getSelectedItem().getValue();
-
         return announcerTable.getSelectionModel().getSelectedItem().getValue().getAnnouncer();
+    }
+
+    @Override
+    public void onPostInitialize(Runnable runnable) {
+        Platform.runLater(runnable);
     }
 
     @Override
@@ -148,6 +144,10 @@ public class AnnouncerTablePaneController implements Initializable, Receiver, Ba
             announcerTable.setShowRoot(false);
             announcerTable.setEditable(false);
             announcerTable.getColumns().setAll(idColumn, nameColumn, careerBeginYearColumn, careerEndYearColumn, birthDateColumn, educationColumn, descriptionColumn);
+
+            onPostInitialize(() -> {
+                announcerTable.getSelectionModel().select(0);
+            });
         });
     }
 }

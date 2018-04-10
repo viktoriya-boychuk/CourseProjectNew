@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import rightSidebarPane.BaseTable;
 import utils.Protocol;
 import utils.Receiver;
 import utils.ServerConnection;
@@ -23,7 +24,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AudienceTablePaneController implements Initializable, Receiver {
+public class AudienceTablePaneController implements Initializable, Receiver, BaseTable {
     @FXML
     JFXTreeTableView<AudienceWrapped> audienceTable;
 
@@ -49,45 +50,46 @@ public class AudienceTablePaneController implements Initializable, Receiver {
         }
         mServerConnection.requestData(Audience.class, this);
 
-        idColumn = new JFXTreeTableColumn<>("ID");
-        idColumn.setPrefWidth(100);
+        idColumn = new JFXTreeTableColumn<>("№");
         idColumn.setCellValueFactory((
                 TreeTableColumn.CellDataFeatures<AudienceWrapped, Integer> param) -> {
             if (idColumn.validateValue(param)) return param.getValue().getValue().idProperty().asObject();
             else return idColumn.getComputedValue(param);
         });
 
-        nameColumn = new JFXTreeTableColumn<>("Name");
-        nameColumn.setPrefWidth(200);
+        nameColumn = new JFXTreeTableColumn<>("Назва");
         nameColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AudienceWrapped, String> param) -> {
             if (nameColumn.validateValue(param)) return param.getValue().getValue().nameProperty();
             else return nameColumn.getComputedValue(param);
         });
 
-        ageCategoryColumn = new JFXTreeTableColumn<>("Age Category");
-        ageCategoryColumn.setPrefWidth(200);
+        ageCategoryColumn = new JFXTreeTableColumn<>("Вікова категорія");
         ageCategoryColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AudienceWrapped, String> param) -> {
             if (ageCategoryColumn.validateValue(param)) return param.getValue().getValue().ageCategoryProperty();
             else return ageCategoryColumn.getComputedValue(param);
         });
 
-        descriptionColumn = new JFXTreeTableColumn<>("Description");
-        descriptionColumn.setPrefWidth(200);
+        descriptionColumn = new JFXTreeTableColumn<>("Опис");
         descriptionColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AudienceWrapped, String> param) -> {
             if (descriptionColumn.validateValue(param)) return param.getValue().getValue().descriptionProperty();
             else return descriptionColumn.getComputedValue(param);
         });
 
-        emblemColumn = new JFXTreeTableColumn<>("Emblem");
-        emblemColumn.setPrefWidth(200);
+        emblemColumn = new JFXTreeTableColumn<>("Позначка");
         emblemColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AudienceWrapped, String> param) -> {
             if (emblemColumn.validateValue(param)) return param.getValue().getValue().emblemProperty();
             else return emblemColumn.getComputedValue(param);
         });
     }
 
+    @Override
     public Audience getSelectedItem() {
         return audienceTable.getSelectionModel().getSelectedItem().getValue().getAudience();
+    }
+
+    @Override
+    public void onPostInitialize(Runnable runnable) {
+        Platform.runLater(runnable);
     }
 
     @Override
@@ -107,8 +109,9 @@ public class AudienceTablePaneController implements Initializable, Receiver {
             audienceTable.setEditable(false);
             audienceTable.getColumns().setAll(idColumn, nameColumn, ageCategoryColumn, descriptionColumn, emblemColumn);
 
-            JFXTextField filterField = new JFXTextField();
-            Label size = new Label();
+            onPostInitialize(() -> {
+                audienceTable.getSelectionModel().select(0);
+            });
         });
     }
 }

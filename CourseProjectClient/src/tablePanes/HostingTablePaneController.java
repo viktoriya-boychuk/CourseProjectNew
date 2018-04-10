@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import rightSidebarPane.BaseTable;
 import utils.Protocol;
 import utils.Receiver;
 import utils.ServerConnection;
@@ -24,7 +25,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class
-HostingTablePaneController implements Initializable, Receiver {
+HostingTablePaneController implements Initializable, Receiver, BaseTable {
     @FXML
     JFXTreeTableView<HostingWrapped> hostingTable;
 
@@ -47,46 +48,50 @@ HostingTablePaneController implements Initializable, Receiver {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        idColumn = new JFXTreeTableColumn<>("ID");
-        idColumn.setPrefWidth(150);
+        idColumn = new JFXTreeTableColumn<>("№");
+        //idColumn.setPrefWidth(150);
         idColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, Integer> param) -> {
             if (idColumn.validateValue(param)) return param.getValue().getValue().idProperty().asObject();
             else return idColumn.getComputedValue(param);
         });
 
-        contractBeginDateColumn = new JFXTreeTableColumn<>("Contract Starts");
-        contractBeginDateColumn.setPrefWidth(150);
-        contractBeginDateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
-            if (contractBeginDateColumn.validateValue(param)) return param.getValue().getValue().contractBeginDateProperty();
-            else return contractBeginDateColumn.getComputedValue(param);
-        });
-
-        contractEndDateColumn = new JFXTreeTableColumn<>("Contract Ends");
-        contractEndDateColumn.setPrefWidth(150);
-        contractEndDateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
-            if (contractEndDateColumn.validateValue(param)) return param.getValue().getValue().contractEndDateProperty();
-            else return contractEndDateColumn.getComputedValue(param);
-        });
-
-        announcerGratuityColumn = new JFXTreeTableColumn<>("Gratuity");
-        announcerGratuityColumn.setPrefWidth(150);
-        announcerGratuityColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
-            if (announcerGratuityColumn.validateValue(param)) return param.getValue().getValue().announcerGratuityProperty();
-            else return announcerGratuityColumn.getComputedValue(param);
-        });
-
-        announcerIDColumn = new JFXTreeTableColumn<>("Announcer ID");
-        announcerIDColumn.setPrefWidth(150);
+        announcerIDColumn = new JFXTreeTableColumn<>("№ ведучого");
+        //announcerIDColumn.setPrefWidth(150);
         announcerIDColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, Integer> param) -> {
-            if (announcerIDColumn.validateValue(param)) return param.getValue().getValue().announcerIDProperty().asObject();
+            if (announcerIDColumn.validateValue(param))
+                return param.getValue().getValue().announcerIDProperty().asObject();
             else return announcerIDColumn.getComputedValue(param);
         });
 
-        programIDColumn = new JFXTreeTableColumn<>("Program ID");
-        programIDColumn.setPrefWidth(150);
+        programIDColumn = new JFXTreeTableColumn<>("№ програми");
+        //programIDColumn.setPrefWidth(150);
         programIDColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, Integer> param) -> {
             if (programIDColumn.validateValue(param)) return param.getValue().getValue().programIDProperty().asObject();
             else return programIDColumn.getComputedValue(param);
+        });
+
+        contractBeginDateColumn = new JFXTreeTableColumn<>("Початок контракту");
+        //contractBeginDateColumn.setPrefWidth(150);
+        contractBeginDateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
+            if (contractBeginDateColumn.validateValue(param))
+                return param.getValue().getValue().contractBeginDateProperty();
+            else return contractBeginDateColumn.getComputedValue(param);
+        });
+
+        contractEndDateColumn = new JFXTreeTableColumn<>("Кінець контракту");
+        //contractEndDateColumn.setPrefWidth(150);
+        contractEndDateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
+            if (contractEndDateColumn.validateValue(param))
+                return param.getValue().getValue().contractEndDateProperty();
+            else return contractEndDateColumn.getComputedValue(param);
+        });
+
+        announcerGratuityColumn = new JFXTreeTableColumn<>("Винагорода (грн.)");
+        //announcerGratuityColumn.setPrefWidth(150);
+        announcerGratuityColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
+            if (announcerGratuityColumn.validateValue(param))
+                return param.getValue().getValue().announcerGratuityProperty();
+            else return announcerGratuityColumn.getComputedValue(param);
         });
 
         try {
@@ -105,8 +110,14 @@ HostingTablePaneController implements Initializable, Receiver {
         });
     }
 
+    @Override
     public Hosting getSelectedItem() {
         return hostingTable.getSelectionModel().getSelectedItem().getValue().getHosting();
+    }
+
+    @Override
+    public void onPostInitialize(Runnable runnable) {
+        Platform.runLater(runnable);
     }
 
     @Override
@@ -126,11 +137,15 @@ HostingTablePaneController implements Initializable, Receiver {
             hostingTable.setShowRoot(false);
             hostingTable.setEditable(false);
             hostingTable.getColumns().setAll(idColumn,
+                    announcerIDColumn,
+                    programIDColumn,
                     contractBeginDateColumn,
                     contractEndDateColumn,
-                    announcerGratuityColumn,
-                    announcerIDColumn,
-                    programIDColumn);
+                    announcerGratuityColumn);
+
+            onPostInitialize(() -> {
+                hostingTable.getSelectionModel().select(0);
+            });
         });
     }
 }

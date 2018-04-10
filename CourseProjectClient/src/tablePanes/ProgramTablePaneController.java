@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import rightSidebarPane.BaseTable;
 import utils.Protocol;
 import utils.Receiver;
 import utils.ServerConnection;
@@ -23,7 +24,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ProgramTablePaneController implements Initializable, Receiver {
+public class ProgramTablePaneController implements Initializable, Receiver, BaseTable {
     @FXML
     JFXTreeTableView<ProgramWrapped> programTable;
 
@@ -50,49 +51,49 @@ public class ProgramTablePaneController implements Initializable, Receiver {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        idColumn = new JFXTreeTableColumn<>("ID");
+        idColumn = new JFXTreeTableColumn<>("№");
         idColumn.setPrefWidth(150);
         idColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProgramWrapped, Integer> param) -> {
             if (idColumn.validateValue(param)) return param.getValue().getValue().idProperty().asObject();
             else return idColumn.getComputedValue(param);
         });
 
-        nameColumn = new JFXTreeTableColumn<>("Name");
+        nameColumn = new JFXTreeTableColumn<>("Назва");
         nameColumn.setPrefWidth(150);
         nameColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProgramWrapped, String> param) -> {
             if (nameColumn.validateValue(param)) return param.getValue().getValue().nameProperty();
             else return nameColumn.getComputedValue(param);
         });
 
-        categoryColumn = new JFXTreeTableColumn<>("Category");
+        categoryColumn = new JFXTreeTableColumn<>("Тип");
         categoryColumn.setPrefWidth(150);
         categoryColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProgramWrapped, String> param) -> {
             if (categoryColumn.validateValue(param)) return param.getValue().getValue().categoryProperty();
             else return categoryColumn.getComputedValue(param);
         });
 
-        genreColumn = new JFXTreeTableColumn<>("Genre");
+        genreColumn = new JFXTreeTableColumn<>("Жанр");
         genreColumn.setPrefWidth(150);
         genreColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProgramWrapped, String> param) -> {
             if (genreColumn.validateValue(param)) return param.getValue().getValue().genreProperty();
             else return genreColumn.getComputedValue(param);
         });
 
-        durationColumn = new JFXTreeTableColumn<>("Duration");
+        durationColumn = new JFXTreeTableColumn<>("Тривалість");
         durationColumn.setPrefWidth(150);
         durationColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProgramWrapped, Integer> param) -> {
             if (durationColumn.validateValue(param)) return param.getValue().getValue().durationProperty().asObject();
             else return durationColumn.getComputedValue(param);
         });
 
-        countryColumn = new JFXTreeTableColumn<>("Country");
+        countryColumn = new JFXTreeTableColumn<>("Країна");
         countryColumn.setPrefWidth(150);
         countryColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProgramWrapped, String> param) -> {
             if (countryColumn.validateValue(param)) return param.getValue().getValue().countryProperty();
             else return countryColumn.getComputedValue(param);
         });
 
-        authorOrProducerColumn = new JFXTreeTableColumn<>("Author");
+        authorOrProducerColumn = new JFXTreeTableColumn<>("Автор/Режисер");
         authorOrProducerColumn.setPrefWidth(150);
         authorOrProducerColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProgramWrapped, String> param) -> {
             if (authorOrProducerColumn.validateValue(param))
@@ -100,14 +101,14 @@ public class ProgramTablePaneController implements Initializable, Receiver {
             else return authorOrProducerColumn.getComputedValue(param);
         });
 
-        descriptionColumn = new JFXTreeTableColumn<>("Description");
+        descriptionColumn = new JFXTreeTableColumn<>("Опис");
         descriptionColumn.setPrefWidth(150);
         descriptionColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProgramWrapped, String> param) -> {
             if (descriptionColumn.validateValue(param)) return param.getValue().getValue().descriptionProperty();
             else return descriptionColumn.getComputedValue(param);
         });
 
-        originalityColumn = new JFXTreeTableColumn<>("Originality");
+        originalityColumn = new JFXTreeTableColumn<>("Оригінальність");
         originalityColumn.setPrefWidth(150);
         originalityColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ProgramWrapped, String> param) -> {
             if (originalityColumn.validateValue(param)) return param.getValue().getValue().originalityProperty();
@@ -132,8 +133,14 @@ public class ProgramTablePaneController implements Initializable, Receiver {
         mServerConnection.requestData(Program.class, this);
     }
 
+    @Override
     public Program getSelectedItem() {
         return programTable.getSelectionModel().getSelectedItem().getValue().getProgram();
+    }
+
+    @Override
+    public void onPostInitialize(Runnable runnable) {
+        Platform.runLater(runnable);
     }
 
     @Override
@@ -160,6 +167,10 @@ public class ProgramTablePaneController implements Initializable, Receiver {
                     descriptionColumn,
                     originalityColumn,
                     audienceIDColumn);
+
+            onPostInitialize(() -> {
+                programTable.getSelectionModel().select(0);
+            });
         });
     }
 }

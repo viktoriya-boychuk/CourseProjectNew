@@ -68,6 +68,7 @@ public class ServerConnection {
 
                 request = new Protocol(message);
                 mCaller.onReceive(request);
+                mSocket.close();
             } catch (IOException e) {
                 Logger.logError("Exception", e.toString());
             }

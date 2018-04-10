@@ -43,14 +43,14 @@ public class RightSidebarPaneController implements Initializable {
     @FXML
     void checkAndSave(MouseEvent event) {
         JFXSnackbar snackbar = new JFXSnackbar();
-        if (ChannelPaneController.check())
-            ((BorderPane) rightSidebar.getParent()).setRight(null);
+//        if (ChannelPaneController.check())
+//            ((BorderPane) rightSidebar.getParent()).setRight(null);
     }
 
     @FXML
     void checkAndCancel(MouseEvent event) {
-        if (ChannelPaneController.cancel())
-            ((BorderPane) rightSidebar.getParent()).setRight(null);
+//        if (ChannelPaneController.cancel())
+//            ((BorderPane) rightSidebar.getParent()).setRight(null);
     }
 
     @Override
@@ -59,7 +59,6 @@ public class RightSidebarPaneController implements Initializable {
         try {
             replaceablePane = FXMLLoader.load(getClass().getResource("../rightSidebarPane/ChannelPane.fxml"));
             rightSidebar.setCenter(replaceablePane);
-            ChannelPaneController.setMode(mode);
         } catch (IOException e) {
             e.printStackTrace();
         }

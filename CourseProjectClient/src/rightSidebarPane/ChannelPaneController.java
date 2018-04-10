@@ -3,6 +3,7 @@ package rightSidebarPane;
 import com.jfoenix.controls.*;
 import dao.BaseDAO;
 import dao.Channel;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,11 +11,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import mainPane.MainController;
 import utils.ChangeChecker;
+import utils.CustomPane;
 import utils.FieldsValidation;
 import utils.Logger;
 
@@ -22,14 +23,17 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
+import static utils.CustomPane.Type.EDIT;
+
 public class ChannelPaneController implements Initializable {
 
     @FXML
-    private AnchorPane channelPane;
+    private CustomPane channelPane;
 
     @FXML
     private Label channelLabel;
@@ -67,74 +71,45 @@ public class ChannelPaneController implements Initializable {
     @FXML
     private JFXTextField satellite;
 
-    private static AnchorPane channelPanel;
-    private static Label channelTitle;
-    private static JFXTextField nameField;
-    private static JFXTextField ownerField;
-    private static ImageView logoField;
-    private static JFXTextField airtimeField;
-    private static JFXTextField cityField;
-    private static JFXTextArea descriptionField;
-    private static JFXTextField frequencyField;
-    private static JFXTextField satelliteField;
+    @FXML
+    private JFXButton btnSave;
+
+    @FXML
+    private JFXButton btnCancel;
+
+    @FXML
+    void checkAndSave(MouseEvent event) {
+        if (check())
+            ((BorderPane) channelPane.getParent()).setRight(null);
+    }
+
+    @FXML
+    void checkAndCancel(MouseEvent event) {
+        if (cancel())
+            ((BorderPane) channelPane.getParent()).setRight(null);
+    }
 
     private static JFXSnackbar snackbar;
-    private static String mode;
 
-    public static void setMode(String passedMode) {
-        mode = passedMode;
-    }
-
-    public static void setChannelTitle(String title) {
-        channelTitle.setText(title);
-    }
-
-    private void setFieldsValues(String name, String owner, Image logo, String airtime, String city, String description, String frequency, String satellite){
-        nameField.setText(name);
-        ownerField.setText(owner);
-        logoField.setImage(logo);
-        airtimeField.setText(airtime);
-        cityField.setText(city);
-        descriptionField.setText(description);
-        frequencyField.setText(frequency);
-        satelliteField.setText(satellite);
-
-        ChangeChecker.hasChanged(false);
-    }
-
-    private void setFieldsValues(BaseDAO baseDAO){
+    private void setFieldsValues(BaseDAO baseDAO) {
         Channel channel = (Channel) baseDAO;
-        nameField.setText(channel.getName());
-        ownerField.setText(channel.getOwner());
-        logoField.setImage(new Image(channel.getLogo()));
-        airtimeField.setText(channel.getAirtime());
-        cityField.setText(channel.getCity());
-        descriptionField.setText(channel.getDescription());
-        frequencyField.setText(channel.getFrequency());
-        satelliteField.setText((channel.getSatellite() != null) ? channel.getSatellite() : "no satellite");
+
+        name.setText(channel.getName());
+        foundationDate.setValue(channel.getFoundationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        destructionDate.setValue(channel.getDestructionDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        owner.setText(channel.getOwner());
+        //logo.setImage(new Image(channel.getLogo()));
+        airtime.setText(channel.getAirtime());
+        city.setText(channel.getCity());
+        description.setText(channel.getDescription());
+        frequency.setText(channel.getFrequency());
+        satellite.setText((channel.getSatellite() != null) ? channel.getSatellite() : "");
 
         ChangeChecker.hasChanged(false);
-    }
-
-    private void setStaticValues(){
-        channelPanel = channelPane;
-        channelTitle = channelLabel;
-        nameField = name;
-        ownerField = owner;
-        logoField = logo;
-        airtimeField = airtime;
-        cityField = city;
-        descriptionField = description;
-        frequencyField = frequency;
-        satelliteField = satellite;
-
-        snackbar = new JFXSnackbar();
     }
 
     @FXML
     void chooseImage(MouseEvent event) {
-        Logger.logInfo("A", ((Channel) MainController.currentTable.getSelectionModel().getSelectedItem()).getDescription());
-
         String imageFile;
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Вибір зображення");
@@ -173,13 +148,19 @@ public class ChannelPaneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setStaticValues();
+        snackbar = new JFXSnackbar();
 
         Pattern namePattern = Pattern.compile("[0-9а-яА-яіІїЇєЄ\\-\\s'!+:]{0,45}");
         TextFormatter nameFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return namePattern.matcher(change.getControlNewText()).matches() ? change : null;
         });
         name.setTextFormatter(nameFormatter);
+
+        name.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                FieldsValidation.textFieldIsNotEmpty(name);
+            }
+        });
 
         Callback<DatePicker, DateCell> dayCellFactoryFoundation = new Callback<DatePicker, DateCell>() {
             public DateCell call(final DatePicker datePicker) {
@@ -204,11 +185,23 @@ public class ChannelPaneController implements Initializable {
         });
         owner.setTextFormatter(ownerFormatter);
 
+        owner.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                FieldsValidation.textFieldIsNotEmpty(owner);
+            }
+        });
+
         Pattern airtimePattern = Pattern.compile("\\d{0,2}|\\d+/\\d?|\\d");
         TextFormatter airtimeFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return airtimePattern.matcher(change.getControlNewText()).matches() ? change : null;
         });
         airtime.setTextFormatter(airtimeFormatter);
+
+        airtime.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                FieldsValidation.textFieldIsNotEmpty(airtime);
+            }
+        });
 
         Pattern cityPattern = Pattern.compile("[а-яА-яіІїЇєЄ\\-\\s']{0,45}");
         TextFormatter cityFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
@@ -216,11 +209,23 @@ public class ChannelPaneController implements Initializable {
         });
         city.setTextFormatter(cityFormatter);
 
+        city.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                FieldsValidation.textFieldIsNotEmpty(city);
+            }
+        });
+
         Pattern frequencyPattern = Pattern.compile("[1-9]?|[1-9]\\d{0,4}|\\d+\\.\\d{0,2}");
         TextFormatter frequencyFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return frequencyPattern.matcher(change.getControlNewText()).matches() ? change : null;
         });
         frequency.setTextFormatter(frequencyFormatter);
+
+        frequency.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                FieldsValidation.textFieldIsNotEmpty(frequency);
+            }
+        });
 
         Pattern satellitePattern = Pattern.compile("[a-zA-Z0-9\\-\\s]{0,10}");
         TextFormatter satelliteFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
@@ -236,32 +241,48 @@ public class ChannelPaneController implements Initializable {
         description.textProperty().addListener(ChangeChecker.textListener);
         frequency.textProperty().addListener(ChangeChecker.textListener);
         satellite.textProperty().addListener(ChangeChecker.textListener);
+
+        ChangeChecker.hasChanged(false);
+
+        Platform.runLater(() -> {
+            Logger.logInfo("String", channelPane.getData().toString());
+            switch (channelPane.getType()) {
+                case EDIT:
+                    setFieldsValues(channelPane.getData());
+                    channelLabel.setText("Редагувати телеканал");
+                    break;
+                default:
+                    channelLabel.setText("Додати телеканал");
+                    break;
+            }
+        });
     }
 
-    public static boolean check() {
-        if (FieldsValidation.textFieldIsNotEmpty(nameField) && FieldsValidation.textFieldIsNotEmpty(ownerField) &&
-                FieldsValidation.textFieldIsNotEmpty(airtimeField) && FieldsValidation.textFieldIsNotEmpty(cityField) &&
-                FieldsValidation.textFieldIsNotEmpty(frequencyField)) {
+    private boolean check() {
+        if (FieldsValidation.textFieldIsNotEmpty(name) && FieldsValidation.textFieldIsNotEmpty(owner) &&
+                FieldsValidation.textFieldIsNotEmpty(airtime) && FieldsValidation.textFieldIsNotEmpty(city) &&
+                FieldsValidation.textFieldIsNotEmpty(frequency)) {
             if (ChangeChecker.hasChanged()) {
                 save();
                 return true;
-            } else
-                snackbar.show("Запис не містить змін!", 2000);
+            }
+//            else
+//                snackbar.show("Запис не містить змін!", 2000);
         }
         return false;
     }
 
-    private static void save() {
-        if (mode.equals("Редагувати"))
-            snackbar.show("Запис успішно відредаговано!", 2000);
-        else snackbar.show("Запис успішно додано до бази даних!", 2000);
+    private void save() {
+//        if (mode.equals("Редагувати"))
+//            snackbar.show("Запис успішно відредаговано!", 2000);
+//        else snackbar.show("Запис успішно додано до бази даних!", 2000);
     }
 
-    public static boolean cancel() {
-        if ((!mode.equals("Редагувати") && ChangeChecker.hasChanged()) ||
-                (mode.equals("Редагувати") && ChangeChecker.hasChanged() && FieldsValidation.textFieldIsNotEmpty(nameField) && FieldsValidation.textFieldIsNotEmpty(ownerField) &&
-                        FieldsValidation.textFieldIsNotEmpty(airtimeField) && FieldsValidation.textFieldIsNotEmpty(cityField) && FieldsValidation.textFieldIsNotEmpty(frequencyField))) {
-            snackbar.show("Запис містить зміни! Збережіть їх!", 2000);
+    private boolean cancel() {
+        if ((!channelPane.getType().equals(EDIT) && ChangeChecker.hasChanged()) ||
+                (channelPane.getType().equals(EDIT) && ChangeChecker.hasChanged() && (FieldsValidation.textFieldIsNotEmpty(name) || FieldsValidation.textFieldIsNotEmpty(owner) ||
+                        FieldsValidation.textFieldIsNotEmpty(airtime) || FieldsValidation.textFieldIsNotEmpty(city) || FieldsValidation.textFieldIsNotEmpty(frequency)))) {
+            //snackbar.show("Запис містить зміни! Збережіть їх!", 2000);
             return false;
         }
         return true;
