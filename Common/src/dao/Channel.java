@@ -1,8 +1,11 @@
 package dao;
 
+import javafx.scene.image.Image;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Blob;
+import java.util.Base64;
 import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -165,12 +168,13 @@ public class Channel extends BaseDAO {
 
     @Override
     public Channel parseResultSet(ResultSet resultSet) throws SQLException {
+        Blob image = resultSet.getBlob(KEY_LOGO);
         parseData(resultSet.getInt(KEY_ID),
                 resultSet.getString(KEY_NAME),
                 resultSet.getDate(KEY_FOUNDATION),
                 resultSet.getDate(KEY_DESTRUCTION),
                 resultSet.getString(KEY_OWNER),
-                resultSet.getString(KEY_LOGO),
+                Base64.getEncoder().encodeToString(image.getBytes(1, (int) image.length())),
                 resultSet.getString(KEY_AIRTIME),
                 resultSet.getString(KEY_CITY),
                 resultSet.getString(KEY_DESCRIPTION),
@@ -201,13 +205,13 @@ public class Channel extends BaseDAO {
         return this;
     }
 
-    private void parseData(int anInt, String string, Date date, Date date2, String string2, String string3, String string4, String string5, String string6, String string7, String string8) {
+    private void parseData(int anInt, String string, Date date, Date date2, String string2, String image, String string4, String string5, String string6, String string7, String string8) {
         this.setId(anInt);
         this.setName(string);
         this.setFoundationDate(date);
         this.setDestructionDate(date2);
         this.setOwner(string2);
-        this.setLogo(string3);
+        this.setLogo(image);
         this.setAirtime(string4);
         this.setCity(string5);
         this.setDescription(string6);

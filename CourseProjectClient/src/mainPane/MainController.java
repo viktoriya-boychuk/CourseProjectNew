@@ -73,7 +73,8 @@ public class MainController implements Initializable {
     @FXML
     void audiencesButtonOnClick(MouseEvent event) {
         try {
-            mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/AudienceTablePane.fxml"));
+            tableLoader = new FXMLLoader(getClass().getResource("../tablePanes/AudienceTablePane.fxml"));
+            mTreeTable = tableLoader.load();
             centralPane.setCenter(mTreeTable);
             currentTable = mTreeTable;
 
@@ -85,7 +86,8 @@ public class MainController implements Initializable {
     @FXML
     void announcersButtonOnClick(MouseEvent event) {
         try {
-            mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/AnnouncerTablePane.fxml"));
+            tableLoader = new FXMLLoader(getClass().getResource("../tablePanes/AnnouncerTablePane.fxml"));
+            mTreeTable = tableLoader.load();
             centralPane.setCenter(mTreeTable);
             currentTable = mTreeTable;
 
@@ -98,7 +100,8 @@ public class MainController implements Initializable {
     @FXML
     void channelsButtonOnClick(MouseEvent event) {
         try {
-            mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/ChannelTablePane.fxml"));
+            tableLoader = new FXMLLoader(getClass().getResource("../tablePanes/ChannelTablePane.fxml"));
+            mTreeTable = tableLoader.load();
             centralPane.setCenter(mTreeTable);
             currentTable = mTreeTable;
 
@@ -110,7 +113,8 @@ public class MainController implements Initializable {
     @FXML
     void hostingsButtonOnClick(MouseEvent event) {
         try {
-            mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/HostingTablePane.fxml"));
+            tableLoader = new FXMLLoader(getClass().getResource("../tablePanes/HostingTablePane.fxml"));
+            mTreeTable = tableLoader.load();
             centralPane.setCenter(mTreeTable);
             currentTable = mTreeTable;
 
@@ -122,7 +126,8 @@ public class MainController implements Initializable {
     @FXML
     void programButtonOnClick(MouseEvent event) {
         try {
-            mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/ProgramTablePane.fxml"));
+            tableLoader = new FXMLLoader(getClass().getResource("../tablePanes/ProgramTablePane.fxml"));
+            mTreeTable = tableLoader.load();
             centralPane.setCenter(mTreeTable);
             currentTable = mTreeTable;
 
@@ -134,7 +139,8 @@ public class MainController implements Initializable {
     @FXML
     void scheduleButtonOnClick(MouseEvent event) {
         try {
-            mTreeTable = FXMLLoader.load(getClass().getResource("../tablePanes/ScheduleTablePane.fxml"));
+            tableLoader = new FXMLLoader(getClass().getResource("../tablePanes/ScheduleTablePane.fxml"));
+            mTreeTable = tableLoader.load();
             centralPane.setCenter(mTreeTable);
             currentTable = mTreeTable;
 
