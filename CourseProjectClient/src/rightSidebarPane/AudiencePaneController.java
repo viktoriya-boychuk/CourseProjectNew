@@ -92,7 +92,7 @@ public class AudiencePaneController implements Initializable {
         name.setText(audience.getName());
         ageCategory.setText(audience.getAgeCategory());
         description.setText(audience.getDescription());
-        if (!audience.getEmblem().equals(""))
+        if (!audience.getEmblem().equals("NO-IMAGE"))
             try {
                 byte[] raw = java.util.Base64.getDecoder().decode(((Audience) audiencePane.getData()).getEmblem());
                 emblem.setImage(SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(raw)), null));

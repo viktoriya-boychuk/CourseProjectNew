@@ -256,6 +256,12 @@ public class ChannelPaneController implements Initializable {
         });
         satellite.setTextFormatter(satelliteFormatter);
 
+        satellite.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                FieldsValidation.textFieldIsNotEmpty(satellite);
+            }
+        });
+
         name.textProperty().addListener(ChangeChecker.textListener);
         owner.textProperty().addListener(ChangeChecker.textListener);
         logo.imageProperty().addListener(ChangeChecker.valueListener);
@@ -304,7 +310,8 @@ public class ChannelPaneController implements Initializable {
     private boolean cancel() {
         if ((!channelPane.getType().equals(EDIT) && ChangeChecker.hasChanged()) ||
                 (channelPane.getType().equals(EDIT) && ChangeChecker.hasChanged() && (FieldsValidation.textFieldIsNotEmpty(name) || FieldsValidation.textFieldIsNotEmpty(owner) ||
-                        FieldsValidation.textFieldIsNotEmpty(airtime) || FieldsValidation.textFieldIsNotEmpty(city) || FieldsValidation.textFieldIsNotEmpty(frequency)))) {
+                        FieldsValidation.textFieldIsNotEmpty(airtime) || FieldsValidation.textFieldIsNotEmpty(city) || FieldsValidation.textFieldIsNotEmpty(frequency) ||
+                        FieldsValidation.textFieldIsNotEmpty(satellite)))) {
             snackbar.show("Запис містить зміни! Збережіть їх або\nскасуйте, натиснувши ще раз \"Скасувати\"!", 2000);
             return false;
         }

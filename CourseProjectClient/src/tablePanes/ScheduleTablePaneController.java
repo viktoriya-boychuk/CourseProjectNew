@@ -37,6 +37,8 @@ public class ScheduleTablePaneController implements Initializable, Receiver, Bas
 
     private static ObservableList<ScheduleWrapped> mWrappedSchedules;
 
+    private ArrayList<? extends BaseDAO> mSchedules;
+
     private ServerConnection mServerConnection;
 
     private static Schedule mSelectedSchedule;
@@ -96,7 +98,7 @@ public class ScheduleTablePaneController implements Initializable, Receiver, Bas
 
     @Override
     public ArrayList<? extends BaseDAO> getCurrentList() {
-        return null;
+        return mSchedules;
     }
 
     @Override
@@ -108,6 +110,7 @@ public class ScheduleTablePaneController implements Initializable, Receiver, Bas
     public void onReceive(Protocol request) {
         Platform.runLater(() -> {
             try {
+                mSchedules = request.getData();
                 mWrappedSchedules = FXCollections.observableArrayList(ScheduleWrapped.wrap(request.getData()));
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();

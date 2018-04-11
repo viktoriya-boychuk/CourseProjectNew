@@ -40,6 +40,8 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
 
     private static ObservableList<AnnouncerWrapped> mWrappedHostings;
 
+    private ArrayList<? extends BaseDAO> mHostings;
+
     private ServerConnection mServerConnection;
 
     private static Hosting mSelectedHosting;
@@ -80,7 +82,6 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
         contractEndDateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
             if (contractEndDateColumn.validateValue(param)) {
                 StringProperty value = param.getValue().getValue().contractEndDateProperty();
-
                 return value;
             }
             else return contractEndDateColumn.getComputedValue(param);
@@ -116,7 +117,7 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
 
     @Override
     public ArrayList<? extends BaseDAO> getCurrentList() {
-        return null;
+        return mHostings;
     }
 
     @Override
@@ -130,6 +131,7 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
         Platform.runLater(() -> {
             ObservableList<HostingWrapped> hostings = null;
             try {
+                mHostings = request.getData();
                 hostings = FXCollections.observableArrayList(HostingWrapped.wrap(request.getData()));
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();

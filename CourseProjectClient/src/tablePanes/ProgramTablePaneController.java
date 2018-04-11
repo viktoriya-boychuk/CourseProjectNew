@@ -41,6 +41,8 @@ public class ProgramTablePaneController implements Initializable, Receiver, Base
 
     private static ObservableList<ProgramWrapped> mWrappedPrograms;
 
+    private ArrayList<? extends BaseDAO> mPrograms;
+
     private ServerConnection mServerConnection;
 
     private static Program mSelectedProgram;
@@ -130,7 +132,7 @@ public class ProgramTablePaneController implements Initializable, Receiver, Base
 
     @Override
     public ArrayList<? extends BaseDAO> getCurrentList() {
-        return null;
+        return mPrograms;
     }
 
     @Override
@@ -142,6 +144,7 @@ public class ProgramTablePaneController implements Initializable, Receiver, Base
     public void onReceive(Protocol request) {
         Platform.runLater(() -> {
             try {
+                mPrograms = request.getData();
                 mWrappedPrograms = FXCollections.observableArrayList(ProgramWrapped.wrap(request.getData()));
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();

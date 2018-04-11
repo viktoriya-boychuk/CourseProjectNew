@@ -10,6 +10,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,11 +33,12 @@ public class ChannelWrapped extends RecursiveTreeObject<ChannelWrapped> {
     public ChannelWrapped(BaseDAO baseDAO) {
         Channel channel = (Channel) baseDAO;
         mChannel = channel;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.YYYY");
 
         this.id = new SimpleIntegerProperty(channel.getId());
         this.name = new SimpleStringProperty(channel.getName());
-        this.foundationDate = new SimpleStringProperty(channel.getFoundationDate().toString());
-        this.destructionDate = new SimpleStringProperty((channel.getDestructionDate() != null ) ? channel.getDestructionDate().toString() : " ");
+        this.foundationDate = new SimpleStringProperty(formatter.format(channel.getFoundationDate()));
+        this.destructionDate = new SimpleStringProperty((channel.getDestructionDate().getYear() == 249) ? "" : formatter.format(channel.getDestructionDate()));
         this.owner = new SimpleStringProperty(channel.getOwner());
         this.logo = new SimpleStringProperty(channel.getLogo());
         this.airtime = new SimpleStringProperty(channel.getAirtime());

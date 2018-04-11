@@ -1,6 +1,7 @@
 package topPane;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -46,6 +47,12 @@ public class TopPaneController implements Initializable {
     @FXML
     private JFXButton btnMenu;
 
+    private static HBox bottomPanel;
+
+    public static HBox getBottomPanel() {
+        return bottomPanel;
+    }
+
     @FXML
     void onPanePressed(MouseEvent event) {
         xOffset = event.getSceneX();
@@ -87,8 +94,8 @@ public class TopPaneController implements Initializable {
 
     @FXML
     void closeWindow(MouseEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
+        Platform.exit();
+        System.exit(0);
     }
 
     @FXML
@@ -105,6 +112,7 @@ public class TopPaneController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
+        bottomPanel = bottom;
         btnClose.setTooltip(new Tooltip("Закрити"));
         btnMaximize.setTooltip(new Tooltip("Збільшити"));
         btnMinimize.setTooltip(new Tooltip("Згорнути"));

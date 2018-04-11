@@ -10,6 +10,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +29,13 @@ public class AnnouncerWrapped  extends RecursiveTreeObject<AnnouncerWrapped> {
     public AnnouncerWrapped(BaseDAO baseDAO) {
         Announcer announcer = (Announcer) baseDAO;
         mAnnouncer = announcer;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.YYYY");
 
         this.id = new SimpleIntegerProperty(announcer.getId());
         this.name = new SimpleStringProperty(announcer.getName());
         this.careerBeginYear = new SimpleStringProperty(Integer.toString(announcer.getCareerBeginYear()));
         this.careerEndYear = new SimpleStringProperty(Integer.toString(announcer.getCareerEndYear()));
-        this.birthDate = new SimpleStringProperty(announcer.getBirthDate().toString());
+        this.birthDate = new SimpleStringProperty(formatter.format(announcer.getBirthDate()));
         this.sex = new SimpleStringProperty(announcer.getSex());
         this.education = new SimpleStringProperty(announcer.getEducation());
         this.description = new SimpleStringProperty(announcer.getDescription());
