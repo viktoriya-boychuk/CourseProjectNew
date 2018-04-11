@@ -11,11 +11,11 @@ public class SQLHelper {
     private static SQLHelper instance;
 
     private SQLHelper() throws ClassNotFoundException, SQLException {
-            Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/tv_programs";
-            con = DriverManager.getConnection(url, "viktor-vovk", "VovkViktor2281488");
+        Class.forName("com.mysql.jdbc.Driver");
+        String url = "jdbc:mysql://localhost:3306/tv_programs";
+        con = DriverManager.getConnection(url, "viktor-vovk", "VovkViktor2281488");
 //        con = DriverManager.getConnection(url, "root", "root");
-            instance = this;
+        instance = this;
     }
 
     public static synchronized SQLHelper getInstance() throws Exception {
@@ -36,7 +36,7 @@ public class SQLHelper {
 
         ArrayList<BaseDAO> arrayList = new ArrayList<>();
 
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             arrayList.add(type.newInstance().parseResultSet(resultSet));
         }
         //TEST
@@ -62,7 +62,11 @@ public class SQLHelper {
 
     public void insertArrayList(ArrayList<? extends BaseDAO> list) throws SQLException, IllegalAccessException, InstantiationException {
         Statement statement = con.createStatement();
-        BaseDAO baseDAO = list.get(0);
-        statement.executeUpdate(baseDAO.getInsertQuery());
+
+        for (BaseDAO baseDAO : list) {
+            baseDAO = list.get(0);
+            statement.executeUpdate(baseDAO.getInsertQuery());
+        }
+
     }
 }

@@ -121,10 +121,10 @@ public class Announcer extends BaseDAO {
         Integer sex = 0;
         switch (this.getSexEnum()) {
             case MALE:
-                sex = 0;
+                sex = 1;
                 break;
             case FEMALE:
-                sex = 1;
+                sex = 2;
                 break;
         }
         return String.format(INSERT,
