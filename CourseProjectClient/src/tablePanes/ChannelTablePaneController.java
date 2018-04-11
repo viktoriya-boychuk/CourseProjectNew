@@ -46,6 +46,8 @@ public class ChannelTablePaneController implements Initializable, Receiver, Base
         return mWrappedChannels;
     }
 
+    private ArrayList<? extends BaseDAO> mChannels;
+
     private ServerConnection mServerConnection;
 
     @Override
@@ -79,12 +81,6 @@ public class ChannelTablePaneController implements Initializable, Receiver, Base
             if (ownerColumn.validateValue(param))
                 return param.getValue().getValue().ownerProperty();
             else return ownerColumn.getComputedValue(param);
-        });
-        logoColumn = new JFXTreeTableColumn<>("Логотип");
-        logoColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, String> param) -> {
-            if (logoColumn.validateValue(param))
-                return param.getValue().getValue().logoProperty();
-            else return logoColumn.getComputedValue(param);
         });
         airtimeColumn = new JFXTreeTableColumn<>("Ефірний час");
         airtimeColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ChannelWrapped, String> param) -> {
@@ -134,7 +130,7 @@ public class ChannelTablePaneController implements Initializable, Receiver, Base
 
     @Override
     public ArrayList<? extends BaseDAO> getCurrentList() {
-        return null;
+        return mChannels;
     }
 
     @Override
@@ -146,6 +142,7 @@ public class ChannelTablePaneController implements Initializable, Receiver, Base
     public void onReceive(Protocol request) {
         Platform.runLater(() -> {
             try {
+                mChannels = request.getData();
                 mWrappedChannels = FXCollections.observableArrayList(ChannelWrapped.wrap(request.getData()));
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();
@@ -161,7 +158,6 @@ public class ChannelTablePaneController implements Initializable, Receiver, Base
                     foundationDateColumn,
                     destructionDateColumn,
                     ownerColumn,
-                    logoColumn,
                     airtimeColumn,
                     cityColumn,
                     descriptionColumn,

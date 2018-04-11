@@ -1,6 +1,10 @@
 package leftSidebarPane;
 
+import com.aspose.words.Document;
+import com.aspose.words.DocumentBuilder;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXSnackbar;
+import dao.BaseDAO;
 import infoHelpPane.InfoHelpPaneController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,10 +14,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mainPane.MainController;
+import rightSidebarPane.BaseTable;
+import topPane.TopPaneController;
+import utils.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -67,14 +75,26 @@ public class LeftSidebarPaneController implements Initializable {
     }
 
     @FXML
-    void export(MouseEvent event){
-        
+    void export(MouseEvent event) {
+        try {
+            Document document = new Document();
+            DocumentBuilder builder = new DocumentBuilder(document);
+            for (BaseDAO line : ((BaseTable) MainController.tableLoader.getController()).getCurrentList()) {
+                builder.write(line.toString() + "\n\n");
+            }
+            document.save("export " + ((BaseTable) MainController.tableLoader.getController()).getCurrentList().get(0).getClass().getCanonicalName() + " " + Logger.getCurrentDate() + ".docx");
+            JFXSnackbar snackbar = new JFXSnackbar(TopPaneController.getBottomPanel());
+            snackbar.show("Дані успішно експортовано!", 2000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
-    void printTable(MouseEvent event){
+    void printTable(MouseEvent event) {
         PrinterJob job = PrinterJob.createPrinterJob();
-        if (job != null && job.showPrintDialog(MainController.currentTable.getScene().getWindow())){
+        if (job != null && job.showPrintDialog(MainController.currentTable.getScene().getWindow())) {
             boolean success = job.printPage(MainController.currentTable);
             if (success) {
                 job.endJob();

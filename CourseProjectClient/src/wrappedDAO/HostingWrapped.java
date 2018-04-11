@@ -30,7 +30,7 @@ public class HostingWrapped extends RecursiveTreeObject<HostingWrapped> {
     public HostingWrapped(BaseDAO baseDAO) {
         Hosting hosting = (Hosting) baseDAO;
         mHosting = hosting;
-        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.YYYY");
 
         this.id = new SimpleIntegerProperty(hosting.getId());
         this.name = new SimpleStringProperty(hosting.getName());

@@ -36,6 +36,8 @@ public class AudienceTablePaneController implements Initializable, Receiver, Bas
 
     private ObservableList<AudienceWrapped> mWrappedAudiences;
 
+    private ArrayList<? extends BaseDAO> mAudience;
+
     private ServerConnection mServerConnection;
 
     @Override
@@ -74,12 +76,6 @@ public class AudienceTablePaneController implements Initializable, Receiver, Bas
             if (descriptionColumn.validateValue(param)) return param.getValue().getValue().descriptionProperty();
             else return descriptionColumn.getComputedValue(param);
         });
-
-        emblemColumn = new JFXTreeTableColumn<>("Позначка");
-        emblemColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AudienceWrapped, String> param) -> {
-            if (emblemColumn.validateValue(param)) return param.getValue().getValue().emblemProperty();
-            else return emblemColumn.getComputedValue(param);
-        });
     }
 
     @Override
@@ -89,7 +85,7 @@ public class AudienceTablePaneController implements Initializable, Receiver, Bas
 
     @Override
     public ArrayList<? extends BaseDAO> getCurrentList() {
-        return null;
+        return mAudience;
     }
 
     @Override
@@ -102,6 +98,7 @@ public class AudienceTablePaneController implements Initializable, Receiver, Bas
         Platform.runLater(() -> {
             ObservableList<AudienceWrapped> announcers = null;
             try {
+                mAudience = request.getData();
                 announcers = FXCollections.observableArrayList(AudienceWrapped.wrap(request.getData()));
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();
@@ -112,7 +109,7 @@ public class AudienceTablePaneController implements Initializable, Receiver, Bas
             audienceTable.setRoot(root);
             audienceTable.setShowRoot(false);
             audienceTable.setEditable(false);
-            audienceTable.getColumns().setAll(idColumn, nameColumn, ageCategoryColumn, descriptionColumn, emblemColumn);
+            audienceTable.getColumns().setAll(idColumn, nameColumn, ageCategoryColumn, descriptionColumn);
 
             onPostInitialize(() -> {
                 audienceTable.getSelectionModel().select(0);
