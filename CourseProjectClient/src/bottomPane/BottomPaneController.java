@@ -11,14 +11,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import mainPane.MainController;
 import rightSidebarPane.BaseTable;
-import utils.CustomPane;
-import utils.Logger;
+import utils.*;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BottomPaneController implements Initializable {
+public class BottomPaneController implements Initializable, Receiver {
     @FXML
     HBox bottomPane;
 
@@ -43,6 +43,13 @@ public class BottomPaneController implements Initializable {
 
     @FXML
     void deleteEntry(MouseEvent event) {
+        try {
+            ServerConnection serverConnection = new ServerConnection(InetAddress.getByName(ServerConnection.DEFAULT_IP), 28365);
+
+            serverConnection.deleteData(((BaseTable) MainController.tableLoader.getController()).getSelectedItem(), this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -84,5 +91,10 @@ public class BottomPaneController implements Initializable {
         btnAdd.setTooltip(new Tooltip("Додати запис"));
         btnEdit.setTooltip(new Tooltip("Редагувати запис"));
         btnDelete.setTooltip(new Tooltip("Видалити запис"));
+    }
+
+    @Override
+    public void onReceive(Protocol request) {
+
     }
 }

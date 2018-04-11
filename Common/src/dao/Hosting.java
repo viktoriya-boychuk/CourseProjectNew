@@ -142,6 +142,11 @@ public class Hosting extends BaseDAO {
         return null;
     }
 
+    @Override
+    public String getDeleteQuery() {
+        return null;
+    }
+
     private void parseData(Integer anInt, Date date, Date date2, Double aDouble, Integer anInt2, Integer anInt3) {
         this.setId(anInt);
         this.setContractBeginDate(date);

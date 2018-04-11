@@ -18,17 +18,10 @@ public class Announcer extends BaseDAO {
     private static final String KEY_EDUCATION = "an_education";
     private static final String KEY_DESCRIPTION = "an_description";
     private static final String KEY_SEX = "an_sex";
+
     private static final String SELECT_ALL = "SELECT * FROM announcers";
-    private static final String INSERT = "INSERT INTO `tv_programs`.`announcers`" +
-            "VALUES\n" +
-            "(null,\n" +
-            "'%s',\n" +
-            "%d,\n" +
-            "%d,\n" +
-            "'%s',\n" +
-            "'%s',\n" +
-            "'%s',\n" +
-            "'%d');\n";
+    private static final String INSERT = "INSERT INTO `tv_programs`.`announcers` VALUES (null,'%s',%d,%d,'%s','%s','%s','%d')";
+    private static final String DELETE = "DELETE FROM `tv_programs`.`announcers` WHERE `announcers`.`an_id` = %d";
 
     private Integer careerBeginYear;
     private Integer careerEndYear;
@@ -118,6 +111,8 @@ public class Announcer extends BaseDAO {
 
     @Override
     public String getInsertQuery() {
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+
         Integer sex = 0;
         switch (this.getSexEnum()) {
             case MALE:
@@ -129,17 +124,24 @@ public class Announcer extends BaseDAO {
         }
         return String.format(INSERT,
                 this.getName(), this.getCareerBeginYear(), this.getCareerEndYear(),
-                this.getBirthDate(), this.getEducation(), this.getDescription(), sex);
+                formatter.format(this.getBirthDate()), this.getEducation(), this.getDescription(), sex);
+    }
+
+    @Override
+    public String getDeleteQuery() {
+        return String.format(DELETE, this.getId());
     }
 
     @Override
     public JSONObject toJSON() throws JSONException {
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(KEY_ID, this.getId());
         jsonObject.put(KEY_NAME, this.getName());
         jsonObject.put(KEY_CAREER_BEGIN, this.getCareerBeginYear());
         jsonObject.put(KEY_CAREER_END, this.getCareerEndYear());
-        jsonObject.put(KEY_BIRTH_DATE, this.getBirthDate());
+        jsonObject.put(KEY_BIRTH_DATE, formatter.format(this.getBirthDate()));
         jsonObject.put(KEY_EDUCATION, (this.getEducation() != null) ? this.getEducation() : " ");
         jsonObject.put(KEY_DESCRIPTION, (this.getDescription() != null) ? this.getDescription() : " ");
         jsonObject.put(KEY_SEX, this.getSex());

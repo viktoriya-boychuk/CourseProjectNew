@@ -85,7 +85,7 @@ public class AnnouncerPaneController implements Initializable, Receiver {
 
                 announcer.setId(15);
                 announcer.setName("test");
-                announcer.setBirthDate(birthDate.getValue());
+                announcer.setBirthDate(Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
                 announcer.setCareerBeginYear(1995);
                 announcer.setCareerEndYear(1998);
                 announcer.setSex(Announcer.Sex.MALE);
