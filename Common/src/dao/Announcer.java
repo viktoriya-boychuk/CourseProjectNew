@@ -19,6 +19,16 @@ public class Announcer extends BaseDAO {
     private static final String KEY_DESCRIPTION = "an_description";
     private static final String KEY_SEX = "an_sex";
     private static final String SELECT_ALL = "SELECT * FROM announcers";
+    private static final String INSERT = "INSERT INTO `tv_programs`.`announcers`" +
+            "VALUES\n" +
+            "(null,\n" +
+            "'%s',\n" +
+            "%d,\n" +
+            "%d,\n" +
+            "'%s',\n" +
+            "'%s',\n" +
+            "'%s',\n" +
+            "'%d');\n";
 
     private Integer careerBeginYear;
     private Integer careerEndYear;
@@ -30,10 +40,10 @@ public class Announcer extends BaseDAO {
 
     private Sex sex;
 
-    public Announcer(){
+    public Announcer() {
     }
 
-    public Announcer(Integer id, String name, Integer careerBegin, Integer careerEnd, Date birthDate, String education, String description, Sex sex){
+    public Announcer(Integer id, String name, Integer careerBegin, Integer careerEnd, Date birthDate, String education, String description, Sex sex) {
         this.setId(id);
         this.setName(name);
         this.careerBeginYear = careerBegin;
@@ -107,6 +117,22 @@ public class Announcer extends BaseDAO {
     }
 
     @Override
+    public String getInsertQuery() {
+        Integer sex = 0;
+        switch (this.getSexEnum()) {
+            case MALE:
+                sex = 0;
+                break;
+            case FEMALE:
+                sex = 1;
+                break;
+        }
+        return String.format(INSERT,
+                this.getName(), this.getCareerBeginYear(), this.getCareerEndYear(),
+                this.getBirthDate(), this.getEducation(), this.getDescription(), sex);
+    }
+
+    @Override
     public JSONObject toJSON() throws JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(KEY_ID, this.getId());
@@ -115,7 +141,7 @@ public class Announcer extends BaseDAO {
         jsonObject.put(KEY_CAREER_END, this.getCareerEndYear());
         jsonObject.put(KEY_BIRTH_DATE, this.getBirthDate());
         jsonObject.put(KEY_EDUCATION, (this.getEducation() != null) ? this.getEducation() : " ");
-        jsonObject.put(KEY_DESCRIPTION, (this.getDescription()!= null) ? this.getDescription() : " ");
+        jsonObject.put(KEY_DESCRIPTION, (this.getDescription() != null) ? this.getDescription() : " ");
         jsonObject.put(KEY_SEX, this.getSex());
         return jsonObject;
     }
@@ -150,8 +176,7 @@ public class Announcer extends BaseDAO {
                     jsonObject.getString(KEY_EDUCATION),
                     jsonObject.getString(KEY_DESCRIPTION),
                     jsonObject.getString(KEY_SEX));
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return this;
@@ -166,10 +191,18 @@ public class Announcer extends BaseDAO {
         this.setEducation(string2);
         this.setDescription((string3 != null) ? string3 : "");
         switch (string4) {
-            case "MALE": this.setSex(Sex.MALE); break;
-            case "FEMALE": this.setSex(Sex.FEMALE); break;
-            case "чоловіча": this.setSex(Sex.MALE); break;
-            case "жіноча": this.setSex(Sex.FEMALE); break;
+            case "MALE":
+                this.setSex(Sex.MALE);
+                break;
+            case "FEMALE":
+                this.setSex(Sex.FEMALE);
+                break;
+            case "чоловіча":
+                this.setSex(Sex.MALE);
+                break;
+            case "жіноча":
+                this.setSex(Sex.FEMALE);
+                break;
         }
     }
 }

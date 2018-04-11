@@ -210,10 +210,16 @@ public class AnnouncerPaneController implements Initializable {
         return false;
     }
 
+    @FXML
+    void saveButtonOnClick(MouseEvent event) {
+
+    }
+
     private void save() {
 //        if (mode.equals("Редагувати"))
 //            snackbar.show("Запис успішно відредаговано!", 2000);
 //        else snackbar.show("Запис успішно додано до бази даних!", 2000);
+
     }
 
     private boolean cancel() {
