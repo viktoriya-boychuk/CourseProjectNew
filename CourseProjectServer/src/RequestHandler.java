@@ -37,6 +37,14 @@ public class RequestHandler implements Callable<ArrayList<BaseDAO>> {
                 }
                 break;
             case POST:
+                task = new Task(mFuture, mSocket, mRequest);
+                Server.addToWaitingList(task);
+
+                try {
+                    mRequest.getData();
+                } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 Logger.logInfo("POST", "This is post request");
                 break;
             case DELETE:

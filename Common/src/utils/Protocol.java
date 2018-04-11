@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Protocol {
-    public enum RequestType {POST, GET, DELETE, UPDATE, NONE}
+    public enum RequestType {POST, GET, DELETE, UPDATE, GET_COLUMN, NONE}
 
     private String KEY_TYPE = "Protocol-Type";
     private String KEY_BODY = "Protocol-Body";

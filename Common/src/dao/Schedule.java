@@ -81,6 +81,11 @@ public class Schedule extends BaseDAO {
     }
 
     @Override
+    public String getInsertQuery() {
+        return null;
+    }
+
+    @Override
     public JSONObject toJSON() throws JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(KEY_ID, this.getId());

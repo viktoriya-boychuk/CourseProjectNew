@@ -35,43 +35,4 @@ public class Debug {
 
         mTaskHandler.startInCurrentThread();
     }
-
-    private static void testSQLConnection() {
-        SQLHelper sqlHelper = null;
-//        Server.finish();
-        try {
-            sqlHelper = SQLHelper.getInstance();
-
-            ArrayList<BaseDAO> entries = sqlHelper.getArrayListFor(Program.class);
-
-            try {
-                JSONArray jsonArray = sqlHelper.getJSONArrayFor(Program.class);
-
-                Protocol request1 = new Protocol(Protocol.RequestType.GET, entries);
-                Protocol request2 = new Protocol(Protocol.RequestType.GET, entries);
-                Protocol request3 = new Protocol(Protocol.RequestType.GET, entries);
-                Protocol request4 = new Protocol(Protocol.RequestType.GET, entries);
-
-                request1.setData(entries);
-                request2.setData(new JSONObject().put(Program.class.getName(), jsonArray).toString());
-                request3.setData(request1.getData());
-                request4.setData(request2.getData());
-
-                Logger.logInfo("Request1", request1.toString());
-                Logger.logInfo("Request2", request2.toString());
-                Logger.logInfo("Request3", request3.toString());
-                Logger.logInfo("Request4", request4.toString());
-
-                entries.clear();
-
-                entries.addAll(request1.getData());
-
-            } catch (SQLException | IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 }
