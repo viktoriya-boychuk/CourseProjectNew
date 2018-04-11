@@ -16,8 +16,8 @@ import java.util.List;
 public class AnnouncerWrapped  extends RecursiveTreeObject<AnnouncerWrapped> {
     private IntegerProperty id;
     private StringProperty name;
-    private IntegerProperty careerBeginYear;
-    private IntegerProperty careerEndYear;
+    private StringProperty careerBeginYear;
+    private StringProperty careerEndYear;
     private StringProperty birthDate;
     private StringProperty education;
     private StringProperty description;
@@ -30,8 +30,8 @@ public class AnnouncerWrapped  extends RecursiveTreeObject<AnnouncerWrapped> {
 
         this.id = new SimpleIntegerProperty(announcer.getId());
         this.name = new SimpleStringProperty(announcer.getName());
-        this.careerBeginYear = new SimpleIntegerProperty(announcer.getCareerBeginYear());
-        this.careerEndYear = new SimpleIntegerProperty(announcer.getCareerEndYear());
+        this.careerBeginYear = new SimpleStringProperty(Integer.toString(announcer.getCareerBeginYear()));
+        this.careerEndYear = new SimpleStringProperty(Integer.toString(announcer.getCareerEndYear()));
         this.birthDate = new SimpleStringProperty(announcer.getBirthDate().toString());
         this.education = new SimpleStringProperty(announcer.getEducation());
         this.description = new SimpleStringProperty(announcer.getDescription());
@@ -57,19 +57,19 @@ public class AnnouncerWrapped  extends RecursiveTreeObject<AnnouncerWrapped> {
         return name;
     }
 
-    public int getCareerBeginYear() {
+    public String getCareerBeginYear() {
         return careerBeginYear.get();
     }
 
-    public IntegerProperty careerBeginYearProperty() {
+    public StringProperty careerBeginYearProperty() {
         return careerBeginYear;
     }
 
-    public int getCareerEndYear() {
+    public String getCareerEndYear() {
         return careerEndYear.get();
     }
 
-    public IntegerProperty careerEndYearProperty() {
+    public StringProperty careerEndYearProperty() {
         return careerEndYear;
     }
 

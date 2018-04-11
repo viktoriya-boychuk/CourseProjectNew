@@ -7,11 +7,9 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 import utils.ChangeChecker;
@@ -32,6 +30,9 @@ public class HostingPaneController implements Initializable {
 
     @FXML
     private CustomPane hostingPane;
+
+    @FXML
+    private AnchorPane pane;
 
     @FXML
     private Label hostingLabel;
@@ -65,20 +66,25 @@ public class HostingPaneController implements Initializable {
 
     @FXML
     void checkAndCancel(MouseEvent event) {
-        if (cancel())
+        cancelCounter++;
+        if (cancel() || cancelCounter == 2)
             ((BorderPane) hostingPane.getParent()).setRight(null);
     }
 
     private static JFXSnackbar snackbar;
+
+    private int cancelCounter;
 
     private void setFieldsValues(BaseDAO baseDAO) {
         Hosting hosting = (Hosting) baseDAO;
 
         //announcer.setItems(hosting.getAnnouncerID());
         //program.setItems(hosting.getProgramID());
-        announcerGratuity.setText(hosting.getAnnouncerGratuity().toString());
+        if (!Double.toString(hosting.getAnnouncerGratuity()).equals(""))
+            announcerGratuity.setText(hosting.getAnnouncerGratuity().toString());
         contractBeginDate.setValue(hosting.getContractBeginDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        contractEndDate.setValue(hosting.getContractEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        if (!hosting.getContractEndDate().toString().equals(""))
+            contractEndDate.setValue(hosting.getContractEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
         ChangeChecker.hasChanged(false);
     }
@@ -104,28 +110,17 @@ public class HostingPaneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        snackbar = new JFXSnackbar();
+        snackbar = new JFXSnackbar(pane);
+        cancelCounter = 0;
+
+        btnSave.setTooltip(new Tooltip("Зберегти"));
+        btnCancel.setTooltip(new Tooltip("Скасувати"));
 
         Pattern pattern = Pattern.compile("[1-9]?|[1-9]\\d{0,5}|\\d+\\.\\d{0,2}");
         TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return pattern.matcher(change.getControlNewText()).matches() ? change : null;
         });
         announcerGratuity.setTextFormatter(formatter);
-
-        /*Callback<DatePicker, DateCell> dayCellFactoryBegin = new Callback<DatePicker, DateCell>() {
-            public DateCell call(final DatePicker datePicker) {
-                return new DateCell() {
-                    @Override
-                    public void updateItem(LocalDate item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (item.isAfter(LocalDate.now())) {
-                            this.setDisable(true);
-                        }
-                    }
-                };
-            }
-        };
-        contractBeginDate.setDayCellFactory(dayCellFactoryBegin);*/
 
         contractBeginDate.valueProperty().addListener(contractBeginDateListener);
 
@@ -159,9 +154,8 @@ public class HostingPaneController implements Initializable {
         if (ChangeChecker.hasChanged()) {
             save();
             return true;
-        }
-//        else
-//            snackbar.show("Запис не містить змін!", 2000);
+        } else
+            snackbar.show("Запис не містить змін!", 2000);
         return false;
     }
 
@@ -173,7 +167,7 @@ public class HostingPaneController implements Initializable {
 
     private boolean cancel() {
         if (ChangeChecker.hasChanged()) {
-            snackbar.show("Запис містить зміни! Збережіть їх!", 2000);
+            snackbar.show("Запис містить зміни! Збережіть їх або\nскасуйте, натиснувши ще раз \"Скасувати\"!", 2000);
             return false;
         }
         return true;

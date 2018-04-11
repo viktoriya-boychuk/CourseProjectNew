@@ -1,22 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainPane.MainController">
-   <center>
-      <BorderPane fx:id="centralPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eeeeee;" BorderPane.alignment="CENTER">
-         <top>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" BorderPane.alignment="CENTER">
-               <children>
-                  <JFXButton fx:id="buttonAudiencesTable" layoutX="24.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#audiencesButtonOnClick" text="Audiences" />
-                  <JFXButton fx:id="buttonAnnouncersTable" layoutX="107.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#announcersButtonOnClick" text="Announcers" />
-                  <JFXButton fx:id="buttonChannelsTable" layoutX="199.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#channelsButtonOnClick" text="Channels" />
-                  <JFXButton fx:id="buttonHostings" layoutX="274.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#hostingsButtonOnClick" text="Hostings" />
-                  <JFXButton fx:id="buttonProgramsTable" layoutX="347.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#programButtonOnClick" text="Programs" />
-                  <JFXButton fx:id="scheduleButton" layoutX="425.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#scheduleButtonOnClick" text="Schedules" />
-               </children></AnchorPane>
-         </top></BorderPane>
-   </center>
-</BorderPane>
+<AnchorPane fx:id="mainContainer" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainPane.MainController">
+    <BorderPane fx:id="mainPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+       <center>
+          <BorderPane fx:id="centralPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eeeeee;" BorderPane.alignment="CENTER">
+             <top>
+                <HBox alignment="CENTER" prefHeight="44.0" prefWidth="1000.0" style="-fx-background-color: #eeeeee;" BorderPane.alignment="CENTER">
+                   <children>
+                      <JFXButton fx:id="buttonAnnouncersTable" buttonType="RAISED" layoutX="107.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#announcersButtonOnClick" text="Ведучі">
+                        <font>
+                           <Font name="Arial Bold" size="14.0" />
+                        </font>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor></JFXButton>
+                      <JFXButton fx:id="buttonAudiencesTable" buttonType="RAISED" layoutX="24.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#audiencesButtonOnClick" stylesheets="@style.css" text="Аудиторії">
+                        <font>
+                           <Font name="Arial Bold" size="14.0" />
+                        </font>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor></JFXButton>
+                      <JFXButton fx:id="buttonChannelsTable" buttonType="RAISED" layoutX="160.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#channelsButtonOnClick" text="Телеканали">
+                        <font>
+                           <Font name="Arial Bold" size="14.0" />
+                        </font>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor></JFXButton>
+                      <JFXButton fx:id="buttonHostings" buttonType="RAISED" layoutX="262.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#hostingsButtonOnClick" text="Ведучі телепередач">
+                        <font>
+                           <Font name="Arial Bold" size="14.0" />
+                        </font>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor></JFXButton>
+                      <JFXButton fx:id="buttonProgramsTable" buttonType="RAISED" layoutX="429.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#programButtonOnClick" text="Телепередачі">
+                        <font>
+                           <Font name="Arial Bold" size="14.0" />
+                        </font>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor></JFXButton>
+                      <JFXButton fx:id="scheduleButton" buttonType="RAISED" layoutX="555.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#scheduleButtonOnClick" text="Розклад">
+                        <font>
+                           <Font name="Arial Bold" size="14.0" />
+                        </font>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor></JFXButton>
+                   </children></HBox>
+             </top></BorderPane>
+       </center>
+    </BorderPane>
+</AnchorPane>

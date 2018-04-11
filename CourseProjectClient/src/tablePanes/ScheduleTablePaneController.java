@@ -49,35 +49,30 @@ public class ScheduleTablePaneController implements Initializable, Receiver, Bas
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         idColumn = new JFXTreeTableColumn<>("№");
-        idColumn.setPrefWidth(100);
         idColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ScheduleWrapped, Integer> param) -> {
             if (idColumn.validateValue(param)) return param.getValue().getValue().idProperty().asObject();
             else return idColumn.getComputedValue(param);
         });
 
         dateColumn = new JFXTreeTableColumn<>("Дата");
-        //dateColumn.setPrefWidth(100);
         dateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ScheduleWrapped, String> param) -> {
             if (dateColumn.validateValue(param)) return param.getValue().getValue().dateProperty();
             else return dateColumn.getComputedValue(param);
         });
 
         timeColumn = new JFXTreeTableColumn<>("Час");
-        //timeColumn.setPrefWidth(100);
         timeColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ScheduleWrapped, String> param) -> {
             if (timeColumn.validateValue(param)) return param.getValue().getValue().timeProperty();
             else return timeColumn.getComputedValue(param);
         });
 
         channelIDColumn = new JFXTreeTableColumn<>("№ телеканалу");
-        //channelIDColumn.setPrefWidth(100);
         channelIDColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ScheduleWrapped, Integer> param) -> {
             if (channelIDColumn.validateValue(param)) return param.getValue().getValue().channelIDProperty().asObject();
             else return channelIDColumn.getComputedValue(param);
         });
 
         programIDColumn = new JFXTreeTableColumn<>("№ телепередачі");
-        //programIDColumn.setPrefWidth(100);
         programIDColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<ScheduleWrapped, Integer> param) -> {
             if (programIDColumn.validateValue(param)) return param.getValue().getValue().programIDProperty().asObject();
             else return programIDColumn.getComputedValue(param);

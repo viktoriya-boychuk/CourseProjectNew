@@ -68,10 +68,15 @@ public class TopPaneController implements Initializable {
     @FXML
     void maximizeWindow(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        if (!stage.isMaximized()) {
+        if (!stage.isMaximized())
             stage.setMaximized(true);
-        } else
+        else
             stage.setMaximized(false);
+
+        Double height = ((Node) event.getSource()).getScene().getWindow().getHeight();
+        Double width = ((Node) event.getSource()).getScene().getWindow().getWidth();
+        ((AnchorPane) topPane.getParent().getParent()).setPrefWidth(width);
+        ((AnchorPane) topPane.getParent().getParent()).setPrefHeight(height);
     }
 
     @FXML

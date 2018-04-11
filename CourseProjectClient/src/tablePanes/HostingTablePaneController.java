@@ -7,6 +7,7 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dao.Announcer;
 import dao.Hosting;
 import javafx.application.Platform;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -49,14 +50,12 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         idColumn = new JFXTreeTableColumn<>("№");
-        //idColumn.setPrefWidth(150);
         idColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, Integer> param) -> {
             if (idColumn.validateValue(param)) return param.getValue().getValue().idProperty().asObject();
             else return idColumn.getComputedValue(param);
         });
 
         announcerIDColumn = new JFXTreeTableColumn<>("№ ведучого");
-        //announcerIDColumn.setPrefWidth(150);
         announcerIDColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, Integer> param) -> {
             if (announcerIDColumn.validateValue(param))
                 return param.getValue().getValue().announcerIDProperty().asObject();
@@ -64,14 +63,12 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
         });
 
         programIDColumn = new JFXTreeTableColumn<>("№ програми");
-        //programIDColumn.setPrefWidth(150);
         programIDColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, Integer> param) -> {
             if (programIDColumn.validateValue(param)) return param.getValue().getValue().programIDProperty().asObject();
             else return programIDColumn.getComputedValue(param);
         });
 
         contractBeginDateColumn = new JFXTreeTableColumn<>("Початок контракту");
-        //contractBeginDateColumn.setPrefWidth(150);
         contractBeginDateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
             if (contractBeginDateColumn.validateValue(param))
                 return param.getValue().getValue().contractBeginDateProperty();
@@ -79,15 +76,16 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
         });
 
         contractEndDateColumn = new JFXTreeTableColumn<>("Кінець контракту");
-        //contractEndDateColumn.setPrefWidth(150);
         contractEndDateColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
-            if (contractEndDateColumn.validateValue(param))
-                return param.getValue().getValue().contractEndDateProperty();
+            if (contractEndDateColumn.validateValue(param)) {
+                StringProperty value = param.getValue().getValue().contractEndDateProperty();
+
+                return value;
+            }
             else return contractEndDateColumn.getComputedValue(param);
         });
 
         announcerGratuityColumn = new JFXTreeTableColumn<>("Винагорода (грн.)");
-        //announcerGratuityColumn.setPrefWidth(150);
         announcerGratuityColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
             if (announcerGratuityColumn.validateValue(param))
                 return param.getValue().getValue().announcerGratuityProperty();

@@ -1,26 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTimePicker?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import utils.CustomPane?>
 
-<AnchorPane fx:id="schedulePane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="218.0" prefWidth="241.0" styleClass="rightSidebarPane" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rightSidebarPane.SchedulePaneController">
-   <children>
-      <Label fx:id="scheduleLabel" layoutX="6.0" layoutY="6.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" text="Label" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <font>
-            <Font name="Arial Bold" size="14.0" />
-         </font>
-      </Label>
-      <JFXComboBox fx:id="channel" labelFloat="true" layoutX="14.0" layoutY="46.0" prefHeight="23.0" prefWidth="213.0" promptText="Телеканал" styleClass="fields" />
-      <JFXComboBox fx:id="program" labelFloat="true" layoutX="14.0" layoutY="88.0" prefHeight="23.0" prefWidth="213.0" promptText="Телепередача" styleClass="fields" />
-      <JFXDatePicker fx:id="date" editable="false" layoutX="14.0" layoutY="130.0" prefHeight="23.0" prefWidth="213.0" promptText="Дата" />
-      <JFXTimePicker fx:id="time" layoutX="14.0" layoutY="171.0" prefHeight="23.0" prefWidth="213.0" promptText="Час" />
-   </children>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
-</AnchorPane>
+<CustomPane fx:id="schedulePane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="241.0" style="-fx-background-color: #eae5ff;" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rightSidebarPane.SchedulePaneController">
+    <center>
+        <AnchorPane fx:id="pane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="218.0" prefWidth="241.0" styleClass="rightSidebarPane" stylesheets="@../mainPane/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+            <children>
+                <Label fx:id="scheduleLabel" layoutX="6.0" layoutY="6.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" text="Label" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <font>
+                        <Font name="Arial Bold" size="14.0" />
+                    </font>
+                </Label>
+                <JFXComboBox fx:id="channel" labelFloat="true" layoutX="14.0" layoutY="46.0" prefHeight="23.0" prefWidth="213.0" promptText="Телеканал" styleClass="fields" />
+                <JFXComboBox fx:id="program" labelFloat="true" layoutX="14.0" layoutY="88.0" prefHeight="23.0" prefWidth="213.0" promptText="Телепередача" styleClass="fields" />
+                <JFXDatePicker fx:id="date" editable="false" layoutX="14.0" layoutY="130.0" prefHeight="23.0" prefWidth="213.0" promptText="Дата" />
+                <JFXTimePicker fx:id="time" layoutX="14.0" layoutY="171.0" prefHeight="23.0" prefWidth="213.0" promptText="Час" />
+            </children>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </AnchorPane>
+    </center>
+    <bottom>
+        <AnchorPane fx:id="bottomPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="72.0" prefWidth="241.0" CustomPane.alignment="CENTER">
+            <children>
+                <JFXButton fx:id="btnSave" contentDisplay="GRAPHIC_ONLY" layoutX="24.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndSave" prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="10.0">
+                    <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/diskette.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+                <JFXButton fx:id="btnCancel" contentDisplay="GRAPHIC_ONLY" layoutX="152.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndCancel" prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="10.0">
+                    <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/close.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </JFXButton>
+            </children>
+        </AnchorPane>
+    </bottom>
+</CustomPane>

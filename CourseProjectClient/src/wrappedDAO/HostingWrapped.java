@@ -10,7 +10,10 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class HostingWrapped extends RecursiveTreeObject<HostingWrapped> {
@@ -27,11 +30,12 @@ public class HostingWrapped extends RecursiveTreeObject<HostingWrapped> {
     public HostingWrapped(BaseDAO baseDAO) {
         Hosting hosting = (Hosting) baseDAO;
         mHosting = hosting;
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
 
         this.id = new SimpleIntegerProperty(hosting.getId());
         this.name = new SimpleStringProperty(hosting.getName());
-        this.contractBeginDate = new SimpleStringProperty(hosting.getContractBeginDate().toString());
-        this.contractEndDate = new SimpleStringProperty(hosting.getContractEndDate().toString());
+        this.contractBeginDate = new SimpleStringProperty(formatter.format(hosting.getContractBeginDate()));
+        this.contractEndDate = new SimpleStringProperty((hosting.getContractEndDate().getYear() == 249) ? "" : formatter.format(hosting.getContractEndDate()));
         this.announcerGratuity = new SimpleStringProperty(String.valueOf(hosting.getAnnouncerGratuity()));
         this.announcerID = new SimpleIntegerProperty(hosting.getAnnouncerID());
         this.programID = new SimpleIntegerProperty(hosting.getProgramID());

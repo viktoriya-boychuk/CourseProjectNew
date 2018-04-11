@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
@@ -39,6 +40,9 @@ public class ChannelPaneController implements Initializable {
 
     @FXML
     private CustomPane channelPane;
+
+    @FXML
+    private AnchorPane pane;
 
     @FXML
     private Label channelLabel;
@@ -90,11 +94,14 @@ public class ChannelPaneController implements Initializable {
 
     @FXML
     void checkAndCancel(MouseEvent event) {
-        if (cancel())
+        cancelCounter++;
+        if (cancel() || cancelCounter == 2)
             ((BorderPane) channelPane.getParent()).setRight(null);
     }
 
     private static JFXSnackbar snackbar;
+
+    private int cancelCounter;
 
     private void setFieldsValues(BaseDAO baseDAO) {
         Channel channel = (Channel) baseDAO;
@@ -103,7 +110,8 @@ public class ChannelPaneController implements Initializable {
 
         name.setText(channel.getName());
         foundationDate.setValue(channel.getFoundationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        destructionDate.setValue(channel.getDestructionDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        if (!channel.getDestructionDate().toString().equals(""))
+            destructionDate.setValue(channel.getDestructionDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         owner.setText(channel.getOwner());
         try {
             logo.setImage(SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(raw)), null));
@@ -159,9 +167,13 @@ public class ChannelPaneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        snackbar = new JFXSnackbar();
+        snackbar = new JFXSnackbar(pane);
+        cancelCounter = 0;
 
-        Pattern namePattern = Pattern.compile("[0-9а-яА-яіІїЇєЄ\\-\\s'!+:]{0,45}");
+        btnSave.setTooltip(new Tooltip("Зберегти"));
+        btnCancel.setTooltip(new Tooltip("Скасувати"));
+
+        Pattern namePattern = Pattern.compile("[0-9a-zA-Zа-яА-яіІїЇєЄ\\-\\s'!+:]{0,45}");
         TextFormatter nameFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return namePattern.matcher(change.getControlNewText()).matches() ? change : null;
         });
@@ -277,8 +289,8 @@ public class ChannelPaneController implements Initializable {
                 save();
                 return true;
             }
-//            else
-//                snackbar.show("Запис не містить змін!", 2000);
+            else
+                snackbar.show("Запис не містить змін!", 2000);
         }
         return false;
     }
@@ -293,7 +305,7 @@ public class ChannelPaneController implements Initializable {
         if ((!channelPane.getType().equals(EDIT) && ChangeChecker.hasChanged()) ||
                 (channelPane.getType().equals(EDIT) && ChangeChecker.hasChanged() && (FieldsValidation.textFieldIsNotEmpty(name) || FieldsValidation.textFieldIsNotEmpty(owner) ||
                         FieldsValidation.textFieldIsNotEmpty(airtime) || FieldsValidation.textFieldIsNotEmpty(city) || FieldsValidation.textFieldIsNotEmpty(frequency)))) {
-            //snackbar.show("Запис містить зміни! Збережіть їх!", 2000);
+            snackbar.show("Запис містить зміни! Збережіть їх або\nскасуйте, натиснувши ще раз \"Скасувати\"!", 2000);
             return false;
         }
         return true;

@@ -8,6 +8,7 @@ import dao.Announcer;
 import dao.Audience;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,8 +35,8 @@ public class AnnouncerTablePaneController implements Initializable, Receiver, Ba
 
     private JFXTreeTableColumn<AnnouncerWrapped, Integer> idColumn;
     private JFXTreeTableColumn<AnnouncerWrapped, String> nameColumn;
-    private JFXTreeTableColumn<AnnouncerWrapped, Integer> careerBeginYearColumn;
-    private JFXTreeTableColumn<AnnouncerWrapped, Integer> careerEndYearColumn;
+    private JFXTreeTableColumn<AnnouncerWrapped, String> careerBeginYearColumn;
+    private JFXTreeTableColumn<AnnouncerWrapped, String> careerEndYearColumn;
     private JFXTreeTableColumn<AnnouncerWrapped, String> birthDateColumn;
     private JFXTreeTableColumn<AnnouncerWrapped, String> educationColumn;
     private JFXTreeTableColumn<AnnouncerWrapped, String> descriptionColumn;
@@ -69,16 +70,20 @@ public class AnnouncerTablePaneController implements Initializable, Receiver, Ba
         });
 
         careerBeginYearColumn = new JFXTreeTableColumn<>("Початок кар'єри");
-        careerBeginYearColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, Integer> param) -> {
+        careerBeginYearColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, String> param) -> {
             if (careerBeginYearColumn.validateValue(param))
-                return param.getValue().getValue().careerBeginYearProperty().asObject();
+                return param.getValue().getValue().careerBeginYearProperty();
             else return careerBeginYearColumn.getComputedValue(param);
         });
 
         careerEndYearColumn = new JFXTreeTableColumn<>("Кінець кар'єри");
-        careerEndYearColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, Integer> param) -> {
-            if (careerEndYearColumn.validateValue(param))
-                return param.getValue().getValue().careerEndYearProperty().asObject();
+        careerEndYearColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, String> param) -> {
+            if (careerEndYearColumn.validateValue(param)) {
+                StringProperty value = param.getValue().getValue().careerEndYearProperty();
+                if(value.get().equals("0")) {
+                    return new SimpleStringProperty("");
+                } else return value;
+            }
             else return careerEndYearColumn.getComputedValue(param);
         });
 

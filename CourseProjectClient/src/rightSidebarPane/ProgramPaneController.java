@@ -9,7 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import utils.ChangeChecker;
 import utils.CustomPane;
@@ -28,6 +30,9 @@ public class ProgramPaneController implements Initializable {
 
     @FXML
     private CustomPane programPane;
+
+    @FXML
+    private AnchorPane pane;
 
     @FXML
     private Label programLabel;
@@ -73,11 +78,14 @@ public class ProgramPaneController implements Initializable {
 
     @FXML
     void checkAndCancel(MouseEvent event) {
-        if (cancel())
+        cancelCounter++;
+        if (cancel() || cancelCounter == 2)
             ((BorderPane) programPane.getParent()).setRight(null);
     }
 
     private static JFXSnackbar snackbar;
+
+    private int cancelCounter;
 
     private void setFieldsValues(BaseDAO baseDAO){
         Program program = (Program) baseDAO;
@@ -97,7 +105,11 @@ public class ProgramPaneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        snackbar = new JFXSnackbar();
+        snackbar = new JFXSnackbar(pane);
+        cancelCounter = 0;
+
+        btnSave.setTooltip(new Tooltip("Зберегти"));
+        btnCancel.setTooltip(new Tooltip("Скасувати"));
 
         name.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
@@ -170,6 +182,7 @@ public class ProgramPaneController implements Initializable {
         author.textProperty().addListener(ChangeChecker.textListener);
         description.textProperty().addListener(ChangeChecker.textListener);
         ownIdea.textProperty().addListener(ChangeChecker.textListener);
+        ownIdea.selectedProperty().addListener(ChangeChecker.valueListener);
 
         ChangeChecker.hasChanged(false);
 
@@ -189,8 +202,8 @@ public class ProgramPaneController implements Initializable {
                 save();
                 return true;
             }
-//            else
-//                snackbar.show("Запис не містить змін!", 2000);
+            else
+                snackbar.show("Запис не містить змін!", 2000);
         }
         return false;
     }
@@ -205,7 +218,7 @@ public class ProgramPaneController implements Initializable {
         if ((!programPane.getType().equals(EDIT) && ChangeChecker.hasChanged()) ||
                 (programPane.getType().equals(EDIT) && ChangeChecker.hasChanged() && (FieldsValidation.textFieldIsNotEmpty(name) || FieldsValidation.textFieldIsNotEmpty(category) ||
                         FieldsValidation.textFieldIsNotEmpty(duration) || FieldsValidation.textFieldIsNotEmpty(country) || FieldsValidation.textFieldIsNotEmpty(author)))) {
-//            snackbar.show("Запис містить зміни! Збережіть їх!", 2000);
+            snackbar.show("Запис містить зміни! Збережіть їх або\nскасуйте, натиснувши ще раз \"Скасувати\"!", 2000);
             return false;
         }
         return true;

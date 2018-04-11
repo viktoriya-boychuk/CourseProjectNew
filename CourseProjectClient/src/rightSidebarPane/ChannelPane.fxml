@@ -27,8 +27,8 @@
                         <Font name="Arial Bold" size="31.0" />
                     </font>
                 </JFXTextField>
-                <JFXDatePicker fx:id="foundationDate" layoutX="14.0" layoutY="97.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Дата заснування" stylesheets="@../mainPane/style.css" />
-                <JFXDatePicker fx:id="destructionDate" layoutX="14.0" layoutY="140.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Дата закриття" stylesheets="@../mainPane/style.css" />
+                <JFXDatePicker fx:id="foundationDate" editable="false" layoutX="14.0" layoutY="97.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Дата заснування" stylesheets="@../mainPane/style.css" />
+                <JFXDatePicker fx:id="destructionDate" editable="false" layoutX="14.0" layoutY="140.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Дата закриття" stylesheets="@../mainPane/style.css" />
                 <JFXTextField fx:id="owner" labelFloat="true" layoutX="14.0" layoutY="182.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="213.0" promptText="Власник" styleClass="text-field" stylesheets="@../mainPane/style.css">
                     <font>
                         <Font name="Arial Bold" size="31.0" />
@@ -60,11 +60,7 @@
                         <Font name="Arial Bold" size="31.0" />
                     </font>
                 </JFXTextField>
-                <ImageView fx:id="logo" fitHeight="150.0" fitWidth="150.0" layoutX="46.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/close123.png" />
-                    </image>
-                </ImageView>
+                <ImageView fx:id="logo" fitHeight="150.0" fitWidth="150.0" layoutX="46.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true" />
             </children>
             <opaqueInsets>
                 <Insets />
@@ -74,7 +70,7 @@
     <bottom>
         <AnchorPane fx:id="bottomPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="72.0" prefWidth="241.0" CustomPane.alignment="CENTER">
             <children>
-                <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="24.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndSave" prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="10.0">
+                <JFXButton fx:id="btnSave" contentDisplay="GRAPHIC_ONLY" layoutX="24.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndSave" prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="10.0">
                     <graphic>
                         <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -86,7 +82,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </JFXButton>
-                <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="152.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndCancel" prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="10.0">
+                <JFXButton fx:id="btnCancel" contentDisplay="GRAPHIC_ONLY" layoutX="152.0" layoutY="26.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#checkAndCancel" prefHeight="52.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="10.0">
                     <graphic>
                         <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                             <image>

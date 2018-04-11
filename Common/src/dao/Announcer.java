@@ -26,7 +26,7 @@ public class Announcer extends BaseDAO {
     private String education;
     private String description;
 
-    private enum Sex {male, female;}
+    public enum Sex {MALE, FEMALE;}
 
     private Sex sex;
 
@@ -86,6 +86,10 @@ public class Announcer extends BaseDAO {
 
     public String getSex() {
         return this.sex.toString();
+    }
+
+    public Sex getSexEnum() {
+        return this.sex;
     }
 
     public void setSex(Sex sex) {
@@ -169,8 +173,8 @@ public class Announcer extends BaseDAO {
         this.setEducation(string2);
         this.setDescription((string3 != null) ? string3 : "");
         switch (string4) {
-            case "чоловіча": this.setSex(Sex.male);
-            case "жіноча": this.setSex(Sex.female);
+            case "чоловіча": this.setSex(Sex.MALE);
+            case "жіноча": this.setSex(Sex.FEMALE);
         }
     }
 }

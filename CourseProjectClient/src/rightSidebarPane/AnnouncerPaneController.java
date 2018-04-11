@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 import utils.ChangeChecker;
@@ -29,11 +30,13 @@ import java.util.regex.Pattern;
 
 import static utils.CustomPane.Type.EDIT;
 
-
 public class AnnouncerPaneController implements Initializable {
 
     @FXML
     private CustomPane announcerPane;
+
+    @FXML
+    private AnchorPane pane;
 
     @FXML
     private Label announcerLabel;
@@ -52,6 +55,12 @@ public class AnnouncerPaneController implements Initializable {
 
     @FXML
     private ToggleGroup sex;
+
+    @FXML
+    private JFXRadioButton sexMan;
+
+    @FXML
+    private JFXRadioButton sexWoman;
 
     @FXML
     private JFXTextArea education;
@@ -73,20 +82,28 @@ public class AnnouncerPaneController implements Initializable {
 
     @FXML
     void checkAndCancel(MouseEvent event) {
-        if (cancel())
+        cancelCounter++;
+        if (cancel() || cancelCounter == 2)
             ((BorderPane) announcerPane.getParent()).setRight(null);
     }
 
     private static JFXSnackbar snackbar;
+
+    private int cancelCounter;
 
     private void setFieldsValues(BaseDAO baseDAO){
         Announcer announcer = (Announcer) baseDAO;
 
         name.setText(announcer.getName());
         birthDate.setValue(announcer.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        careerBeginYear.setItems(getYearsList(announcer.getCareerBeginYear()));
-        careerEndYear.setItems(getYearsList(announcer.getCareerEndYear()));
-        sex = sex;//TODO: set sex
+        careerBeginYear.getSelectionModel().select(announcer.getCareerBeginYear() - birthDate.getValue().getYear());
+        if (!Integer.toString(announcer.getCareerEndYear()).equals(""))
+            careerEndYear.getSelectionModel().select(announcer.getCareerEndYear() - birthDate.getValue().getYear());
+        if (((Announcer) baseDAO).getSexEnum() == Announcer.Sex.MALE) {
+            sex.selectToggle(sexMan);
+        } else if (((Announcer) baseDAO).getSexEnum() == Announcer.Sex.FEMALE) {
+            sex.selectToggle(sexWoman);
+        }
         education.setText(announcer.getEducation());
         description.setText(announcer.getDescription());
 
@@ -97,7 +114,7 @@ public class AnnouncerPaneController implements Initializable {
         if (oldValue != newValue) {
             careerBeginYear.setItems(getYearsList(birthDate.getValue().getYear()));
             careerBeginYear.getSelectionModel().select(0);
-            //careerEndYear.setItems(getYearsList(birthDate.getValue().getYear()));
+            //careerEndYear.setItems(getYearsList(careerBeginYear.getSelectionModel().getSelectedIndex()));
         }
     };
 
@@ -110,7 +127,11 @@ public class AnnouncerPaneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) throws ClassCastException {
-        snackbar = new JFXSnackbar();
+        snackbar = new JFXSnackbar(pane);
+        cancelCounter = 0;
+
+        btnSave.setTooltip(new Tooltip("Зберегти"));
+        btnCancel.setTooltip(new Tooltip("Скасувати"));
 
         Pattern namePattern = Pattern.compile("[а-яА-яіІїЇєЄ\\-\\s']{0,45}");
         TextFormatter nameFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
@@ -183,8 +204,8 @@ public class AnnouncerPaneController implements Initializable {
                 save();
                 return true;
             }
-//            else
-//                snackbar.show("Запис не містить змін!", 2000);
+            else
+                snackbar.show("Запис не містить змін!", 2000);
         }
         return false;
     }
@@ -198,7 +219,7 @@ public class AnnouncerPaneController implements Initializable {
     private boolean cancel() {
         if ((!announcerPane.getType().equals(EDIT) && ChangeChecker.hasChanged()) ||
                 (announcerPane.getType().equals(EDIT) && ChangeChecker.hasChanged() && FieldsValidation.textFieldIsNotEmpty(name))) {
-//            snackbar.show("Запис містить зміни! Збережіть їх!", 2000);
+            snackbar.show("Запис містить зміни! Збережіть їх або\nскасуйте, натиснувши ще раз \"Скасувати\"!", 2000);
             return false;
         }
         return true;
