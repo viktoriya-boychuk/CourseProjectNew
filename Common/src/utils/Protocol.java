@@ -24,6 +24,15 @@ public class Protocol {
         this.mData = new ArrayList<>();
         this.mData.addAll(data);
         this.mDataType = data.get(0).getClass().getName();
+        this.setData(mData);
+        mRequestType = requestType;
+    }
+
+    public Protocol(RequestType requestType, BaseDAO data) {
+        this.mData = new ArrayList<>();
+        this.mData.add(data);
+        this.mDataType = data.getClass().getName();
+        this.setData(mData);
         mRequestType = requestType;
     }
 

@@ -4,6 +4,7 @@ import utils.Logger;
 import utils.Protocol;
 
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -38,16 +39,24 @@ public class RequestHandler implements Callable<ArrayList<BaseDAO>> {
                 break;
             case POST:
                 task = new Task(mFuture, mSocket, mRequest);
-                Server.addToWaitingList(task);
+//                Server.addToWaitingList(task);
 
                 try {
-                    mRequest.getData();
-                } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+                    SQLHelper.getInstance().insertArrayList(mRequest.getData());
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Logger.logInfo("POST", "This is post request");
                 break;
             case DELETE:
+                task = new Task(mFuture, mSocket, mRequest);
+//                Server.addToWaitingList(task);
+
+                try {
+                    SQLHelper.getInstance().deleteObject(mRequest.getData());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 Logger.logInfo("DELETE", "This is delete request");
                 break;
             case UPDATE:

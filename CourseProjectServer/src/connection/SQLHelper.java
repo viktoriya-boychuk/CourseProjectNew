@@ -55,9 +55,21 @@ public class SQLHelper {
         return jsonArray;
     }
 
-    public void insertArrayList(ArrayList<? extends BaseDAO> list) throws SQLException, IllegalAccessException, InstantiationException {
+    public void insertArrayList(ArrayList<? extends BaseDAO> list) throws SQLException {
         Statement statement = con.createStatement();
-        BaseDAO baseDAO = list.get(0);
-        statement.executeUpdate(baseDAO.getInsertQuery());
+
+        for (BaseDAO baseDAO : list) {
+            baseDAO = list.get(0);
+            statement.executeUpdate(baseDAO.getInsertQuery());
+        }
+    }
+
+    public void deleteObject(ArrayList<? extends BaseDAO> list) throws SQLException {
+        Statement statement = con.createStatement();
+
+        for (BaseDAO baseDAO : list) {
+            baseDAO = list.get(0);
+            statement.executeUpdate(baseDAO.getDeleteQuery());
+        }
     }
 }

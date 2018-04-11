@@ -1,16 +1,15 @@
 package dao;
 
-import javafx.scene.image.Image;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Blob;
-import java.util.Base64;
-import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
+import java.util.Date;
 
 public class Channel extends BaseDAO {
     private static final String KEY_ID = "ch_id";
@@ -146,6 +145,11 @@ public class Channel extends BaseDAO {
 
     @Override
     public String getInsertQuery() {
+        return null;
+    }
+
+    @Override
+    public String getDeleteQuery() {
         return null;
     }
 

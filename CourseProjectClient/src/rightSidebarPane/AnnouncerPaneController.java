@@ -14,12 +14,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
-import utils.ChangeChecker;
-import utils.CustomPane;
-import utils.FieldsValidation;
-import utils.Logger;
+import utils.*;
 
+import java.net.InetAddress;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ import java.util.regex.Pattern;
 
 import static utils.CustomPane.Type.EDIT;
 
-public class AnnouncerPaneController implements Initializable {
+public class AnnouncerPaneController implements Initializable, Receiver {
 
     @FXML
     private CustomPane announcerPane;
@@ -77,8 +76,27 @@ public class AnnouncerPaneController implements Initializable {
 
     @FXML
     void checkAndSave(MouseEvent event) {
-        if (check())
+        if (check()) {
             ((BorderPane) announcerPane.getParent()).setRight(null);
+            try {
+                ServerConnection serverConnection = new ServerConnection(InetAddress.getByName(ServerConnection.DEFAULT_IP), 28365);
+
+                Announcer announcer = new Announcer();
+
+                announcer.setId(15);
+                announcer.setName("test");
+                announcer.setBirthDate(Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                announcer.setCareerBeginYear(1995);
+                announcer.setCareerEndYear(1998);
+                announcer.setSex(Announcer.Sex.MALE);
+                announcer.setDescription("asdfasdfawe");
+                announcer.setEducation("asdfa");
+
+                serverConnection.pushData(Protocol.RequestType.POST, announcer, this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
@@ -92,7 +110,7 @@ public class AnnouncerPaneController implements Initializable {
 
     private int cancelCounter;
 
-    private void setFieldsValues(BaseDAO baseDAO){
+    private void setFieldsValues(BaseDAO baseDAO) {
         Announcer announcer = (Announcer) baseDAO;
 
         name.setText(announcer.getName());
@@ -199,8 +217,13 @@ public class AnnouncerPaneController implements Initializable {
         Platform.runLater(() -> {
             Logger.logInfo("String", announcerPane.getData().toString());
             switch (announcerPane.getType()) {
-                case EDIT: setFieldsValues(announcerPane.getData()); announcerLabel.setText("Редагувати ведучого");break;
-                default: announcerLabel.setText("Додати ведучого"); break;
+                case EDIT:
+                    setFieldsValues(announcerPane.getData());
+                    announcerLabel.setText("Редагувати ведучого");
+                    break;
+                default:
+                    announcerLabel.setText("Додати ведучого");
+                    break;
             }
         });
     }
@@ -218,8 +241,7 @@ public class AnnouncerPaneController implements Initializable {
             if (ChangeChecker.hasChanged()) {
                 save();
                 return true;
-            }
-            else
+            } else
                 snackbar.show("Запис не містить змін!", 2000);
         }
         return false;
@@ -227,6 +249,7 @@ public class AnnouncerPaneController implements Initializable {
 
     @FXML
     void saveButtonOnClick(MouseEvent event) {
+
 
     }
 
@@ -244,5 +267,10 @@ public class AnnouncerPaneController implements Initializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onReceive(Protocol request) {
+
     }
 }

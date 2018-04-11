@@ -46,6 +46,18 @@ public class ServerConnection {
         mTaskHandler.addToTaskPool(new RequestSender(request, caller));
     }
 
+    public void pushData(Protocol.RequestType requestType, BaseDAO baseDAO, Receiver caller) {
+        Protocol request = new Protocol(requestType, baseDAO);
+
+        mTaskHandler.addToTaskPool(new RequestSender(request, caller));
+    }
+
+    public void deleteData(BaseDAO baseDAO, Receiver caller) {
+        Protocol request = new Protocol(Protocol.RequestType.DELETE, baseDAO);
+
+        mTaskHandler.addToTaskPool(new RequestSender(request, caller));
+    }
+
     public class RequestSender implements Runnable {
         Protocol mRequest;
         Receiver mCaller;
