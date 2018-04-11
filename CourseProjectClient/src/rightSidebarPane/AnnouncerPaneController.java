@@ -81,16 +81,7 @@ public class AnnouncerPaneController implements Initializable, Receiver {
             try {
                 ServerConnection serverConnection = new ServerConnection(InetAddress.getByName(ServerConnection.DEFAULT_IP), 28365);
 
-                Announcer announcer = new Announcer();
-
-                announcer.setId(15);
-                announcer.setName("test");
-                announcer.setBirthDate(Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-                announcer.setCareerBeginYear(1995);
-                announcer.setCareerEndYear(1998);
-                announcer.setSex(Announcer.Sex.MALE);
-                announcer.setDescription("asdfasdfawe");
-                announcer.setEducation("asdfa");
+                Announcer announcer = getFieldsData();
 
                 serverConnection.pushData(Protocol.RequestType.POST, announcer, this);
             } catch (Exception e) {
@@ -132,10 +123,11 @@ public class AnnouncerPaneController implements Initializable, Receiver {
     private Announcer getFieldsData(){
         Announcer announcer = new Announcer();
 
+        announcer.setId(0);
         announcer.setName(name.getText());
         announcer.setBirthDate(Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         announcer.setCareerBeginYear(Integer.parseInt(careerBeginYear.getSelectionModel().getSelectedItem().toString()));
-        announcer.setCareerEndYear(careerEndYear.getSelectionModel().getSelectedItem() != null ? Integer.parseInt(careerEndYear.getSelectionModel().getSelectedItem().toString()) : null);
+        announcer.setCareerEndYear(careerEndYear.getSelectionModel().getSelectedItem() != null ? Integer.parseInt(careerEndYear.getSelectionModel().getSelectedItem().toString()) : 0);
         announcer.setSex(sexMan.isSelected() ? Announcer.Sex.MALE : Announcer.Sex.FEMALE);
         announcer.setEducation(education.getText());
         announcer.setDescription(description.getText());
