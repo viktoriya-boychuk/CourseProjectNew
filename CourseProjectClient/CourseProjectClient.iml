@@ -11,5 +11,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Common" />
     <orderEntry type="library" name="jfoenix-8.0.1" level="project" />
+    <orderEntry type="library" name="aspose-words-18.4-jdk16" level="project" />
   </component>
 </module>

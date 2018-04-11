@@ -103,7 +103,7 @@ public class Logger {
         }
     }
 
-    private static String getCurrentDate() {
+    public static String getCurrentDate() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD HH-mm-ss");
         Date date = new Date();
 

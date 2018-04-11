@@ -1,17 +1,16 @@
 package tablePanes;
 
-import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dao.Audience;
+import dao.BaseDAO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import rightSidebarPane.BaseTable;
@@ -22,6 +21,7 @@ import wrappedDAO.AudienceWrapped;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AudienceTablePaneController implements Initializable, Receiver, BaseTable {
@@ -85,6 +85,11 @@ public class AudienceTablePaneController implements Initializable, Receiver, Bas
     @Override
     public Audience getSelectedItem() {
         return audienceTable.getSelectionModel().getSelectedItem().getValue().getAudience();
+    }
+
+    @Override
+    public ArrayList<? extends BaseDAO> getCurrentList() {
+        return null;
     }
 
     @Override

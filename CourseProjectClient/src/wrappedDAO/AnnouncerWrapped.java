@@ -19,6 +19,7 @@ public class AnnouncerWrapped  extends RecursiveTreeObject<AnnouncerWrapped> {
     private StringProperty careerBeginYear;
     private StringProperty careerEndYear;
     private StringProperty birthDate;
+    private StringProperty sex;
     private StringProperty education;
     private StringProperty description;
 
@@ -33,6 +34,7 @@ public class AnnouncerWrapped  extends RecursiveTreeObject<AnnouncerWrapped> {
         this.careerBeginYear = new SimpleStringProperty(Integer.toString(announcer.getCareerBeginYear()));
         this.careerEndYear = new SimpleStringProperty(Integer.toString(announcer.getCareerEndYear()));
         this.birthDate = new SimpleStringProperty(announcer.getBirthDate().toString());
+        this.sex = new SimpleStringProperty(announcer.getSex());
         this.education = new SimpleStringProperty(announcer.getEducation());
         this.description = new SimpleStringProperty(announcer.getDescription());
     }
@@ -79,6 +81,14 @@ public class AnnouncerWrapped  extends RecursiveTreeObject<AnnouncerWrapped> {
 
     public StringProperty birthDateProperty() {
         return birthDate;
+    }
+
+    public String getSex() {
+        return sex.get();
+    }
+
+    public StringProperty sexProperty() {
+        return sex;
     }
 
     public String getEducation() {

@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import dao.BaseDAO;
 import dao.Channel;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import wrappedDAO.ChannelWrapped;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ChannelTablePaneController implements Initializable, Receiver, BaseTable {
@@ -128,6 +130,11 @@ public class ChannelTablePaneController implements Initializable, Receiver, Base
     @Override
     public Channel getSelectedItem() {
         return channelTable.getSelectionModel().getSelectedItem().getValue().getChannel();
+    }
+
+    @Override
+    public ArrayList<? extends BaseDAO> getCurrentList() {
+        return null;
     }
 
     @Override

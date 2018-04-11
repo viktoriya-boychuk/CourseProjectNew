@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import dao.Program;
+import dao.BaseDAO;
 import dao.Schedule;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -17,11 +17,11 @@ import rightSidebarPane.BaseTable;
 import utils.Protocol;
 import utils.Receiver;
 import utils.ServerConnection;
-import wrappedDAO.ProgramWrapped;
 import wrappedDAO.ScheduleWrapped;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ScheduleTablePaneController implements Initializable, Receiver, BaseTable {
@@ -92,6 +92,11 @@ public class ScheduleTablePaneController implements Initializable, Receiver, Bas
     @Override
     public Schedule getSelectedItem() {
         return scheduleTable.getSelectionModel().getSelectedItem().getValue().getSchedule();
+    }
+
+    @Override
+    public ArrayList<? extends BaseDAO> getCurrentList() {
+        return null;
     }
 
     @Override

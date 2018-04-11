@@ -19,7 +19,7 @@
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/close123.png" />
+                        <Image url="@../images/small_close.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -31,7 +31,7 @@
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/close123.png" />
+                        <Image url="@../images/minimize.png" />
                      </image>
                      <viewport>
                         <Rectangle2D />
@@ -46,7 +46,7 @@
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="32.0" onMouseClicked="#maximizeWindow" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/close123.png" />
+                        <Image url="@../images/maximize.png" />
                      </image>
                   </ImageView>
                </graphic>

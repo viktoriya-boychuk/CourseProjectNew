@@ -5,20 +5,17 @@ import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dao.Announcer;
-import dao.Audience;
+import dao.BaseDAO;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import rightSidebarPane.BaseTable;
-import utils.Logger;
 import utils.Protocol;
 import utils.Receiver;
 import utils.ServerConnection;
@@ -27,6 +24,7 @@ import wrappedDAO.AudienceWrapped;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AnnouncerTablePaneController implements Initializable, Receiver, BaseTable {
@@ -38,6 +36,7 @@ public class AnnouncerTablePaneController implements Initializable, Receiver, Ba
     private JFXTreeTableColumn<AnnouncerWrapped, String> careerBeginYearColumn;
     private JFXTreeTableColumn<AnnouncerWrapped, String> careerEndYearColumn;
     private JFXTreeTableColumn<AnnouncerWrapped, String> birthDateColumn;
+    private JFXTreeTableColumn<AnnouncerWrapped, String> sexColumn;
     private JFXTreeTableColumn<AnnouncerWrapped, String> educationColumn;
     private JFXTreeTableColumn<AnnouncerWrapped, String> descriptionColumn;
 
@@ -46,6 +45,8 @@ public class AnnouncerTablePaneController implements Initializable, Receiver, Ba
     public static ObservableList<AudienceWrapped> getWrappedData() {
         return mWrappedAnnouncers;
     }
+
+    private ArrayList<? extends BaseDAO> mAnnouncers;
 
     private ServerConnection mServerConnection;
 
@@ -93,6 +94,17 @@ public class AnnouncerTablePaneController implements Initializable, Receiver, Ba
             else return birthDateColumn.getComputedValue(param);
         });
 
+        sexColumn = new JFXTreeTableColumn<>("Стать");
+        sexColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, String> param) -> {
+            if (sexColumn.validateValue(param)) {
+                StringProperty value = param.getValue().getValue().sexProperty();
+                if (value.get().equals("MALE")) return new SimpleStringProperty("чоловіча");
+                else
+                return new SimpleStringProperty("жіноча");
+            }
+            else return sexColumn.getComputedValue(param);
+        });
+
         educationColumn = new JFXTreeTableColumn<>("Освіта");
         educationColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnnouncerWrapped, String> param) -> {
             if (educationColumn.validateValue(param)) return param.getValue().getValue().educationProperty();
@@ -129,6 +141,11 @@ public class AnnouncerTablePaneController implements Initializable, Receiver, Ba
     }
 
     @Override
+    public ArrayList<? extends BaseDAO> getCurrentList() {
+        return mAnnouncers;
+    }
+
+    @Override
     public void onPostInitialize(Runnable runnable) {
         Platform.runLater(runnable);
     }
@@ -138,6 +155,7 @@ public class AnnouncerTablePaneController implements Initializable, Receiver, Ba
         Platform.runLater(() -> {
             ObservableList<AnnouncerWrapped> announcers = null;
             try {
+                mAnnouncers = request.getData();
                 announcers = FXCollections.observableArrayList(AnnouncerWrapped.wrap(request.getData()));
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();
@@ -148,7 +166,7 @@ public class AnnouncerTablePaneController implements Initializable, Receiver, Ba
             announcerTable.setRoot(root);
             announcerTable.setShowRoot(false);
             announcerTable.setEditable(false);
-            announcerTable.getColumns().setAll(idColumn, nameColumn, careerBeginYearColumn, careerEndYearColumn, birthDateColumn, educationColumn, descriptionColumn);
+            announcerTable.getColumns().setAll(idColumn, nameColumn, sexColumn, birthDateColumn, careerBeginYearColumn, careerEndYearColumn, educationColumn, descriptionColumn);
 
             onPostInitialize(() -> {
                 announcerTable.getSelectionModel().select(0);

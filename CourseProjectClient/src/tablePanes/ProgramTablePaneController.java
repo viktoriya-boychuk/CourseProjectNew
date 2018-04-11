@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import dao.BaseDAO;
 import dao.Program;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import wrappedDAO.ProgramWrapped;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ProgramTablePaneController implements Initializable, Receiver, BaseTable {
@@ -124,6 +126,11 @@ public class ProgramTablePaneController implements Initializable, Receiver, Base
     @Override
     public Program getSelectedItem() {
         return programTable.getSelectionModel().getSelectedItem().getValue().getProgram();
+    }
+
+    @Override
+    public ArrayList<? extends BaseDAO> getCurrentList() {
+        return null;
     }
 
     @Override

@@ -7,16 +7,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import mainPane.MainController;
 import rightSidebarPane.BaseTable;
-import tablePanes.AnnouncerTablePaneController;
 import utils.CustomPane;
 import utils.Logger;
 
-import javax.swing.border.Border;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

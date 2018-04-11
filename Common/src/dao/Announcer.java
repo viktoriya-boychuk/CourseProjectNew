@@ -98,14 +98,7 @@ public class Announcer extends BaseDAO {
 
     @Override
     public String toString() {
-        return "Announcer{" +
-                "careerBeginYear=" + careerBeginYear +
-                ", careerEndYear=" + careerEndYear +
-                ", birthDate=" + birthDate +
-                ", education='" + education + '\'' +
-                ", description='" + description + '\'' +
-                ", sex=" + sex +
-                '}';
+        return this.toJSON().toString();
     }
 
     @Override
@@ -173,8 +166,10 @@ public class Announcer extends BaseDAO {
         this.setEducation(string2);
         this.setDescription((string3 != null) ? string3 : "");
         switch (string4) {
-            case "чоловіча": this.setSex(Sex.MALE);
-            case "жіноча": this.setSex(Sex.FEMALE);
+            case "MALE": this.setSex(Sex.MALE); break;
+            case "FEMALE": this.setSex(Sex.FEMALE); break;
+            case "чоловіча": this.setSex(Sex.MALE); break;
+            case "жіноча": this.setSex(Sex.FEMALE); break;
         }
     }
 }

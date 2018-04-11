@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import dao.Announcer;
+import dao.BaseDAO;
 import dao.Hosting;
 import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
@@ -23,6 +23,7 @@ import wrappedDAO.HostingWrapped;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class
@@ -111,6 +112,11 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
     @Override
     public Hosting getSelectedItem() {
         return hostingTable.getSelectionModel().getSelectedItem().getValue().getHosting();
+    }
+
+    @Override
+    public ArrayList<? extends BaseDAO> getCurrentList() {
+        return null;
     }
 
     @Override
