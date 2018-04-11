@@ -36,7 +36,7 @@ public class HostingWrapped extends RecursiveTreeObject<HostingWrapped> {
         this.name = new SimpleStringProperty(hosting.getName());
         this.contractBeginDate = new SimpleStringProperty(formatter.format(hosting.getContractBeginDate()));
         this.contractEndDate = new SimpleStringProperty((hosting.getContractEndDate().getYear() == 249) ? "" : formatter.format(hosting.getContractEndDate()));
-        this.announcerGratuity = new SimpleStringProperty(String.valueOf(hosting.getAnnouncerGratuity()));
+        this.announcerGratuity = new SimpleStringProperty((hosting.getAnnouncerGratuity() == 0.0) ? "" : String.valueOf(hosting.getAnnouncerGratuity()));
         this.announcerID = new SimpleIntegerProperty(hosting.getAnnouncerID());
         this.programID = new SimpleIntegerProperty(hosting.getProgramID());
     }

@@ -103,6 +103,22 @@ public class ProgramPaneController implements Initializable {
         ChangeChecker.hasChanged(false);
     }
 
+    private Program getFieldsData(){
+        Program program = new Program();
+
+        program.setName(name.getText());
+        program.setCategory(category.getText());
+        program.setGenre(genre.getText());
+        program.setDuration(Integer.valueOf(duration.getText()));
+        //program.setAudienceID();
+        program.setCountry(country.getText());
+        program.setAuthorOrProducer(author.getText());
+        program.setDescription(description.getText());
+        program.setOriginality(ownIdea.isSelected());
+
+        return program;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         snackbar = new JFXSnackbar(pane);

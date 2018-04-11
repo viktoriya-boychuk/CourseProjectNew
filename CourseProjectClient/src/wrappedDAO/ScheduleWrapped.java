@@ -10,6 +10,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +27,13 @@ public class ScheduleWrapped extends RecursiveTreeObject<ScheduleWrapped> {
     public ScheduleWrapped(BaseDAO baseDAO) {
         Schedule schedule = (Schedule) baseDAO;
         mSchedule = schedule;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.YYYY");
+        SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm");
 
         this.id = new SimpleIntegerProperty(schedule.getId());
         this.name = new SimpleStringProperty(schedule.getName());
-        this.date = new SimpleStringProperty(schedule.getDate().toString());
-        this.time = new SimpleStringProperty(schedule.getTime().toString());
+        this.date = new SimpleStringProperty(formatter.format(schedule.getDate()));
+        this.time = new SimpleStringProperty(formatterTime.format(schedule.getTime()));
         this.channelID = new SimpleIntegerProperty(schedule.getChannelID());
         this.programID = new SimpleIntegerProperty(schedule.getProgramID());
     }

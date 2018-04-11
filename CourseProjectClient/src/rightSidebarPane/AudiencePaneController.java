@@ -25,11 +25,14 @@ import utils.FieldsValidation;
 import utils.Logger;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -100,6 +103,30 @@ public class AudiencePaneController implements Initializable {
             }
 
         ChangeChecker.hasChanged(false);
+    }
+
+    private Audience getFieldsData(){
+        Audience audience = new Audience();
+
+        audience.setName(name.getText());
+        audience.setAgeCategory(ageCategory.getText());
+        audience.setDescription(description.getText());
+        if (emblem.getImage() == null)
+            audience.setEmblem(null);
+        else {
+            try {
+                BufferedImage bImage = SwingFXUtils.fromFXImage(emblem.getImage(), null);
+                ByteArrayOutputStream s = new ByteArrayOutputStream();
+                ImageIO.write(bImage, "png", s);
+                byte[] res = s.toByteArray();
+                s.close();
+                audience.setEmblem(Base64.getEncoder().encodeToString(res));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return audience;
     }
 
     @FXML

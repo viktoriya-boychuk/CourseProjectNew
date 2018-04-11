@@ -20,6 +20,7 @@ import utils.Logger;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -80,13 +81,25 @@ public class HostingPaneController implements Initializable {
 
         //announcer.setItems(hosting.getAnnouncerID());
         //program.setItems(hosting.getProgramID());
-        if (!Double.toString(hosting.getAnnouncerGratuity()).equals(""))
+        if (hosting.getAnnouncerGratuity() != 0.0)
             announcerGratuity.setText(hosting.getAnnouncerGratuity().toString());
         contractBeginDate.setValue(hosting.getContractBeginDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        if (!hosting.getContractEndDate().toString().equals(""))
+        if (hosting.getContractEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear() != 2149)
             contractEndDate.setValue(hosting.getContractEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
         ChangeChecker.hasChanged(false);
+    }
+
+    private Hosting getFieldsData(){
+        Hosting hosting = new Hosting();
+
+        //hosting.setAnnouncerID();
+        //hosting.setProgramID();
+        hosting.setAnnouncerGratuity(announcerGratuity.getText() == null ? null : Double.valueOf(announcerGratuity.getText()));
+        hosting.setContractBeginDate(Date.from(contractBeginDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        hosting.setContractEndDate(contractEndDate.getValue() != null ? Date.from(contractEndDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()) : null);
+
+        return hosting;
     }
 
     private ChangeListener contractBeginDateListener = (observable, oldValue, newValue) -> {

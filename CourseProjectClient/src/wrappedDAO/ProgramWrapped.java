@@ -34,12 +34,12 @@ public class ProgramWrapped extends RecursiveTreeObject<ProgramWrapped> {
         this.id = new SimpleIntegerProperty(program.getId());
         this.name = new SimpleStringProperty(program.getName());
         this.category = new SimpleStringProperty(program.getCategory());
-        this.genre = new SimpleStringProperty(program.getGenre());
+        this.genre = new SimpleStringProperty(program.getGenre().equals("null")? "" : program.getGenre());
         this.duration = new SimpleIntegerProperty(program.getDuration());
         this.country = new SimpleStringProperty(program.getCountry());
         this.authorOrProducer = new SimpleStringProperty(program.getAuthorOrProducer());
         this.description = new SimpleStringProperty(program.getDescription());
-        this.originality = new SimpleStringProperty(program.getOriginality() ? "Original" : "Not original");
+        this.originality = new SimpleStringProperty(program.getOriginality() ? "Власна ідея" : "Чужа ідея");
         this.audienceID = new SimpleIntegerProperty(program.getAudienceID());
     }
 

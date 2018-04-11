@@ -23,13 +23,16 @@ import utils.FieldsValidation;
 import utils.Logger;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -110,7 +113,7 @@ public class ChannelPaneController implements Initializable {
 
         name.setText(channel.getName());
         foundationDate.setValue(channel.getFoundationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        if (!channel.getDestructionDate().toString().equals(""))
+        if (channel.getDestructionDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear() != 2149)
             destructionDate.setValue(channel.getDestructionDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         owner.setText(channel.getOwner());
         try {
@@ -125,6 +128,36 @@ public class ChannelPaneController implements Initializable {
         satellite.setText((channel.getSatellite() != null) ? channel.getSatellite() : "");
 
         ChangeChecker.hasChanged(false);
+    }
+
+    private Channel getFieldsData(){
+        Channel channel = new Channel();
+
+        channel.setName(name.getText());
+        channel.setFoundationDate(Date.from(foundationDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        channel.setDestructionDate(destructionDate.getValue() != null ? Date.from(destructionDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()) : null);
+        channel.setOwner(owner.getText());
+        if (logo.getImage() == null)
+            channel.setLogo(null);
+        else {
+            try {
+                BufferedImage bImage = SwingFXUtils.fromFXImage(logo.getImage(), null);
+                ByteArrayOutputStream s = new ByteArrayOutputStream();
+                ImageIO.write(bImage, "png", s);
+                byte[] res = s.toByteArray();
+                s.close();
+                channel.setLogo(java.util.Base64.getEncoder().encodeToString(res));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        channel.setAirtime(airtime.getText());
+        channel.setCity(city.getText());
+        channel.setDescription(description.getText());
+        channel.setFrequency(frequency.getText());
+        channel.setSatellite(satellite.getText());
+
+        return channel;
     }
 
     @FXML
@@ -202,7 +235,7 @@ public class ChannelPaneController implements Initializable {
 
         foundationDate.valueProperty().addListener(foundationDateListener);
 
-        Pattern ownerPattern = Pattern.compile("[а-яА-яіІїЇєЄ\\-\\s']{0,45}");
+        Pattern ownerPattern = Pattern.compile("[а-яА-яіІїЇєЄ\\-\\s'.,]{0,45}");
         TextFormatter ownerFormatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return ownerPattern.matcher(change.getControlNewText()).matches() ? change : null;
         });

@@ -17,9 +17,11 @@ import utils.CustomPane;
 import utils.Logger;
 
 import java.net.URL;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import static utils.CustomPane.Type.EDIT;
@@ -79,6 +81,18 @@ public class SchedulePaneController implements Initializable {
         time.setValue(schedule.getTime().toLocalTime());
 
         ChangeChecker.hasChanged(false);
+    }
+
+    private Schedule getFieldsData(){
+        Schedule schedule = new Schedule();
+
+        schedule.setDate(Date.from(date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        schedule.setTime(Time.valueOf(time.getValue()));
+        //schedule.setProgramID();
+        //schedule.setChannelID();
+
+        return schedule;
+
     }
 
     @Override

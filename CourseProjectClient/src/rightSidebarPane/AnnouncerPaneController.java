@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -108,6 +109,20 @@ public class AnnouncerPaneController implements Initializable {
         description.setText(announcer.getDescription());
 
         ChangeChecker.hasChanged(false);
+    }
+
+    private Announcer getFieldsData(){
+        Announcer announcer = new Announcer();
+
+        announcer.setName(name.getText());
+        announcer.setBirthDate(Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        announcer.setCareerBeginYear(Integer.parseInt(careerBeginYear.getSelectionModel().getSelectedItem().toString()));
+        announcer.setCareerEndYear(careerEndYear.getSelectionModel().getSelectedItem() != null ? Integer.parseInt(careerEndYear.getSelectionModel().getSelectedItem().toString()) : null);
+        announcer.setSex(sexMan.isSelected() ? Announcer.Sex.MALE : Announcer.Sex.FEMALE);
+        announcer.setEducation(education.getText());
+        announcer.setDescription(description.getText());
+
+        return announcer;
     }
 
     private ChangeListener birthDateListener = (observable, oldValue, newValue) -> {
