@@ -1,7 +1,9 @@
 package bottomPane;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXSnackbar;
 import dao.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import mainPane.MainController;
 import rightSidebarPane.BaseTable;
+import topPane.TopPaneController;
 import utils.*;
 
 import java.io.IOException;
@@ -43,15 +46,24 @@ public class BottomPaneController implements Initializable, Receiver {
 
     @FXML
     void deleteEntry(MouseEvent event) {
-        try {
-            ServerConnection serverConnection = new ServerConnection(InetAddress.getByName(ServerConnection.DEFAULT_IP), 28365);
+        deleteCounter++;
+        if (deleteCounter == 2) {
+            try {
+                ServerConnection serverConnection = new ServerConnection(InetAddress.getByName(ServerConnection.DEFAULT_IP), 28365);
 
-            serverConnection.deleteData(((BaseTable) MainController.tableLoader.getController()).getSelectedItem(), this);
-        } catch (Exception e) {
-            e.printStackTrace();
+                serverConnection.deleteData(((BaseTable) MainController.tableLoader.getController()).getSelectedItem(), this);
+                ((BaseTable) MainController.tableLoader.getController()).reloadList();
+
+                snackbar.show("Запис успішно видалено!", 2000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
+        else snackbar.show("Ви впевнені, що бажаєте видалити запис?\nЯкщо так, натисніть ще раз \"Видалити\"!", 3000);
     }
+
+    private JFXSnackbar snackbar;
+    private int deleteCounter;
 
     private void openPane(CustomPane.Type type) {
         BaseTable baseTable = MainController.tableLoader.getController();
@@ -88,6 +100,8 @@ public class BottomPaneController implements Initializable, Receiver {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        snackbar = new JFXSnackbar(TopPaneController.getBottomPanel());
+        deleteCounter = 0;
         btnAdd.setTooltip(new Tooltip("Додати запис"));
         btnEdit.setTooltip(new Tooltip("Редагувати запис"));
         btnDelete.setTooltip(new Tooltip("Видалити запис"));

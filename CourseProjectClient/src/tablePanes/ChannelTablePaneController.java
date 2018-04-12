@@ -50,6 +50,12 @@ public class ChannelTablePaneController implements Initializable, Receiver, Base
 
     private ServerConnection mServerConnection;
 
+    private static Channel mSelectedChannel;
+
+    public static Channel getSelectedChannel() {
+        return mSelectedChannel;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         idColumn = new JFXTreeTableColumn<>("№");
@@ -112,15 +118,13 @@ public class ChannelTablePaneController implements Initializable, Receiver, Base
                 return param.getValue().getValue().satelliteProperty();
             else return satelliteColumn.getComputedValue(param);
         });
-        try {
-            mServerConnection = new ServerConnection(
-                    InetAddress.getByName(
-                            ServerConnection.DEFAULT_IP),
-                    ServerConnection.DEFAULT_PORT);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mServerConnection.requestData(Channel.class, this);
+
+        reloadList();
+
+        channelTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null)
+                mSelectedChannel = newSelection.getValue().getChannel();
+        });
     }
 
     @Override
@@ -136,6 +140,19 @@ public class ChannelTablePaneController implements Initializable, Receiver, Base
     @Override
     public void onPostInitialize(Runnable runnable) {
         Platform.runLater(runnable);
+    }
+
+    @Override
+    public void reloadList() {
+        try {
+            mServerConnection = new ServerConnection(
+                    InetAddress.getByName(
+                            ServerConnection.DEFAULT_IP),
+                    ServerConnection.DEFAULT_PORT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mServerConnection.requestData(Channel.class, this);
     }
 
     @Override

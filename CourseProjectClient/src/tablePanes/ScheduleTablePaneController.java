@@ -79,15 +79,13 @@ public class ScheduleTablePaneController implements Initializable, Receiver, Bas
             if (programIDColumn.validateValue(param)) return param.getValue().getValue().programIDProperty().asObject();
             else return programIDColumn.getComputedValue(param);
         });
-        try {
-            mServerConnection = new ServerConnection(
-                    InetAddress.getByName(
-                            ServerConnection.DEFAULT_IP),
-                    ServerConnection.DEFAULT_PORT);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mServerConnection.requestData(Schedule.class, this);
+
+        reloadList();
+
+        scheduleTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null)
+                mSelectedSchedule = newSelection.getValue().getSchedule();
+        });
 
     }
 
@@ -104,6 +102,19 @@ public class ScheduleTablePaneController implements Initializable, Receiver, Bas
     @Override
     public void onPostInitialize(Runnable runnable) {
         Platform.runLater(runnable);
+    }
+
+    @Override
+    public void reloadList() {
+        try {
+            mServerConnection = new ServerConnection(
+                    InetAddress.getByName(
+                            ServerConnection.DEFAULT_IP),
+                    ServerConnection.DEFAULT_PORT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mServerConnection.requestData(Schedule.class, this);
     }
 
     @Override

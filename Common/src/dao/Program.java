@@ -17,7 +17,9 @@ public class Program extends BaseDAO {
     private static final String KEY_DESCRIPTION = "pr_description";
     private static final String KEY_ORIGINALITY = "pr_own_idea";
     private static final String KEY_AUDIENCE_ID = "pr_au_id";
+
     private static final String SELECT_ALL = "SELECT * FROM programs";
+    private static final String DELETE = "DELETE FROM `tv_programs`.`programs` WHERE `programs`.`pr_id` = %d";
 
     private String category;
     private String genre;
@@ -134,7 +136,7 @@ public class Program extends BaseDAO {
 
     @Override
     public String getDeleteQuery() {
-        return null;
+        return String.format(DELETE, this.getId());
     }
 
     @Override

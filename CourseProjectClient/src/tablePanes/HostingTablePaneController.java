@@ -39,7 +39,6 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
     private JFXTreeTableColumn<HostingWrapped, String> contractEndDateColumn;
     private JFXTreeTableColumn<HostingWrapped, String> announcerGratuityColumn;
     private JFXTreeTableColumn<HostingWrapped, Integer> announcerIDColumn;
-    private JFXTreeTableColumn<HostingWrapped, String> announcerNameColumn;
     private JFXTreeTableColumn<HostingWrapped, Integer> programIDColumn;
 
     private static ObservableList<AnnouncerWrapped> mWrappedHostings;
@@ -85,16 +84,6 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
             else return announcerIDColumn.getComputedValue(param);
         });
 
-        announcerNameColumn = new JFXTreeTableColumn<>("Початок контракту");
-        announcerNameColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
-            for (Announcer announcer : mAnnouncers) {
-                if (param.getValue().getValue().getAnnouncerID() == announcer.getId())
-                    return new SimpleStringProperty(announcer.getName());
-
-            }
-            return null;
-        });
-
         programIDColumn = new JFXTreeTableColumn<>("№ програми");
         programIDColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, Integer> param) -> {
             if (programIDColumn.validateValue(param)) return param.getValue().getValue().programIDProperty().asObject();
@@ -123,8 +112,7 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
             else return announcerGratuityColumn.getComputedValue(param);
         });
 
-
-        mServerConnection.requestData(Hosting.class, this);
+        reloadList();
 
         hostingTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null)
@@ -148,6 +136,19 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
     }
 
     @Override
+    public void reloadList() {
+        try {
+            mServerConnection = new ServerConnection(
+                    InetAddress.getByName(
+                            ServerConnection.DEFAULT_IP),
+                    ServerConnection.DEFAULT_PORT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mServerConnection.requestData(Hosting.class, this);
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public void onReceive(Protocol request) {
         String dataType = request.getDataType();
@@ -168,36 +169,14 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
                 hostingTable.setEditable(false);
                 hostingTable.getColumns().setAll(idColumn,
                         announcerIDColumn,
-                        announcerNameColumn,
                         programIDColumn,
                         contractBeginDateColumn,
                         contractEndDateColumn,
                         announcerGratuityColumn);
 
-                onPostInitialize(() -> {
-                    hostingTable.getSelectionModel().select(0);
-                });
+            onPostInitialize(() -> {
+                hostingTable.getSelectionModel().select(0);
             });
-        } /*else if (dataType.equals("dao.Program")) {
-            try {
-                mPrograms = new ArrayList<>();
-
-                for (BaseDAO base : request.getData()) {
-                    mPrograms.add((Program) base);
-                }
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
-            }
-        } else if (dataType.equals("dao.Program")) {
-            try {
-                mAnnouncers = new ArrayList<>();
-
-                for (BaseDAO base : request.getData()) {
-                    mAnnouncers.add((Announcer) base);
-                }
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
-            }
-        }*/
+        });
     }
 }

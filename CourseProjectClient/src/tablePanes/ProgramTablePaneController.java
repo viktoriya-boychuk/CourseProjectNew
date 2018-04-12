@@ -114,15 +114,13 @@ public class ProgramTablePaneController implements Initializable, Receiver, Base
                 return param.getValue().getValue().audienceIDProperty().asObject();
             else return audienceIDColumn.getComputedValue(param);
         });
-        try {
-            mServerConnection = new ServerConnection(
-                    InetAddress.getByName(
-                            ServerConnection.DEFAULT_IP),
-                    ServerConnection.DEFAULT_PORT);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mServerConnection.requestData(Program.class, this);
+
+        reloadList();
+
+        programTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null)
+                mSelectedProgram = newSelection.getValue().getProgram();
+        });
     }
 
     @Override
@@ -138,6 +136,19 @@ public class ProgramTablePaneController implements Initializable, Receiver, Base
     @Override
     public void onPostInitialize(Runnable runnable) {
         Platform.runLater(runnable);
+    }
+
+    @Override
+    public void reloadList() {
+        try {
+            mServerConnection = new ServerConnection(
+                    InetAddress.getByName(
+                            ServerConnection.DEFAULT_IP),
+                    ServerConnection.DEFAULT_PORT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mServerConnection.requestData(Program.class, this);
     }
 
     @Override

@@ -16,7 +16,9 @@ public class Hosting extends BaseDAO {
     private static final String KEY_GRATUITY = "pha_announcer_gratuity";
     private static final String KEY_ANNOUNCER_ID = "pha_an_id";
     private static final String KEY_PROGRAM_ID = "pha_pr_id";
+
     private static final String SELECT_ALL = "SELECT * FROM programs_have_announcers";
+    private static final String DELETE = "DELETE FROM `tv_programs`.`programs_have_announcers` WHERE `programs_have_announcers`.`pha_id` = %d";
 
     private Date contractBeginDate;
     private Date contractEndDate;
@@ -117,10 +119,12 @@ public class Hosting extends BaseDAO {
 
     @Override
     public JSONObject toJSON() throws JSONException {
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(KEY_ID, this.getId());
-        jsonObject.put(KEY_CONTRACT_BEGIN, this.getContractBeginDate());
-        jsonObject.put(KEY_CONTRACT_END, (this.getContractEndDate() != null) ? this.getContractEndDate() : " ");
+        jsonObject.put(KEY_CONTRACT_BEGIN, formatter.format(this.getContractBeginDate()));
+        jsonObject.put(KEY_CONTRACT_END, (this.getContractEndDate() != null) ? formatter.format(this.getContractEndDate()) : " ");
         jsonObject.put(KEY_GRATUITY, this.getAnnouncerGratuity());
         jsonObject.put(KEY_ANNOUNCER_ID, this.getAnnouncerID());
         jsonObject.put(KEY_PROGRAM_ID, this.getProgramID());
@@ -144,7 +148,7 @@ public class Hosting extends BaseDAO {
 
     @Override
     public String getDeleteQuery() {
-        return null;
+        return String.format(DELETE, this.getId());
     }
 
     @Override
