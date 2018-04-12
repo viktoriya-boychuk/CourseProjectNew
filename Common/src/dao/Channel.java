@@ -23,7 +23,9 @@ public class Channel extends BaseDAO {
     private static final String KEY_DESCRIPTION = "ch_description";
     private static final String KEY_FREQUENCY = "ch_frequency";
     private static final String KEY_SATELLITE = "ch_satellite";
+
     private static final String SELECT_ALL = "SELECT * FROM channels";
+    private static final String DELETE = "DELETE FROM `tv_programs`.`channels` WHERE `channels`.`ch_id` = %d";
 
     private Date foundationDate;
     private Date destructionDate;
@@ -150,16 +152,18 @@ public class Channel extends BaseDAO {
 
     @Override
     public String getDeleteQuery() {
-        return null;
+        return String.format(DELETE, this.getId());
     }
 
     @Override
     public JSONObject toJSON() throws JSONException {
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(KEY_ID, this.getId());
         jsonObject.put(KEY_NAME, this.getName());
-        jsonObject.put(KEY_FOUNDATION, this.getFoundationDate());
-        jsonObject.put(KEY_DESTRUCTION, (this.getDestructionDate() != null) ? this.getDestructionDate() : " ");
+        jsonObject.put(KEY_FOUNDATION, formatter.format(this.getFoundationDate()));
+        jsonObject.put(KEY_DESTRUCTION, (this.getDestructionDate() != null) ? formatter.format(this.getDestructionDate()): " ");
         jsonObject.put(KEY_OWNER, this.getOwner());
         jsonObject.put(KEY_LOGO, this.getLogo());
         jsonObject.put(KEY_AIRTIME, this.getAirtime());

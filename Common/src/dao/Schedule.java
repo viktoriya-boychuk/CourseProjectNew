@@ -16,7 +16,9 @@ public class Schedule extends BaseDAO {
     private static final String KEY_TIME = "sc_time";
     private static final String KEY_CHANNEL_ID = "sc_ch_id";
     private static final String KEY_PROGRAM_ID = "sc_pr_id";
+
     private static final String SELECT_ALL = "SELECT * FROM schedule";
+    private static final String DELETE = "DELETE FROM `tv_programs`.`schedule` WHERE `schedule`.`sc_id` = %d";
 
     private Date date;
     private Time time;
@@ -87,15 +89,18 @@ public class Schedule extends BaseDAO {
 
     @Override
     public String getDeleteQuery() {
-        return null;
+        return String.format(DELETE, this.getId());
     }
 
     @Override
     public JSONObject toJSON() throws JSONException {
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(KEY_ID, this.getId());
-        jsonObject.put(KEY_DATE, this.getDate());
-        jsonObject.put(KEY_TIME, this.getTime());
+        jsonObject.put(KEY_DATE, formatter.format(this.getDate()));
+        jsonObject.put(KEY_TIME, format.format(this.getTime()));
         jsonObject.put(KEY_CHANNEL_ID, this.getChannelID());
         jsonObject.put(KEY_PROGRAM_ID, this.getProgramID());
         return jsonObject;

@@ -10,4 +10,5 @@ public interface BaseTable {
     ArrayList<? extends BaseDAO> getCurrentList();
 
     void onPostInitialize(Runnable runnable);
+    void reloadList();
 }

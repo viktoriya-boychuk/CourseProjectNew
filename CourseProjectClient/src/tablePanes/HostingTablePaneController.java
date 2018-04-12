@@ -94,15 +94,7 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
             else return announcerGratuityColumn.getComputedValue(param);
         });
 
-        try {
-            mServerConnection = new ServerConnection(
-                    InetAddress.getByName(
-                            ServerConnection.DEFAULT_IP),
-                    ServerConnection.DEFAULT_PORT);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mServerConnection.requestData(Hosting.class, this);
+        reloadList();
 
         hostingTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null)
@@ -123,6 +115,19 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
     @Override
     public void onPostInitialize(Runnable runnable) {
         Platform.runLater(runnable);
+    }
+
+    @Override
+    public void reloadList() {
+        try {
+            mServerConnection = new ServerConnection(
+                    InetAddress.getByName(
+                            ServerConnection.DEFAULT_IP),
+                    ServerConnection.DEFAULT_PORT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mServerConnection.requestData(Hosting.class, this);
     }
 
     @Override

@@ -14,7 +14,9 @@ public class Audience extends BaseDAO {
     private static final String KEY_CATEGORY = "au_age_category";
     private static final String KEY_DESCRIPTION = "au_description";
     private static final String KEY_EMBLEM = "au_emblem";
+
     private static final String SELECT_ALL = "SELECT * FROM audience";
+    private static final String DELETE = "DELETE FROM `tv_programs`.`audience` WHERE `audience`.`au_id` = %d";
 
     private String ageCategory;
     private String description;
@@ -76,7 +78,7 @@ public class Audience extends BaseDAO {
 
     @Override
     public String getDeleteQuery() {
-        return null;
+        return String.format(DELETE, this.getId());
     }
 
     @Override
