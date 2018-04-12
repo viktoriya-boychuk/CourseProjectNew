@@ -174,9 +174,10 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
                         contractEndDateColumn,
                         announcerGratuityColumn);
 
-            onPostInitialize(() -> {
-                hostingTable.getSelectionModel().select(0);
+                onPostInitialize(() -> {
+                    hostingTable.getSelectionModel().select(0);
+                });
             });
-        });
+        }
     }
 }
