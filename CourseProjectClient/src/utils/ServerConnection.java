@@ -10,10 +10,15 @@ public class ServerConnection {
     public static final String DEFAULT_IP = "127.0.0.1";
     public static final Integer DEFAULT_PORT = 28365;
     private TaskHandler mTaskHandler;
+    InetAddress mServerAddress;
+    int mServerPort;
+
     public Socket mSocket;
 
     public ServerConnection(InetAddress serverAddress, int serverPort) throws Exception {
-        this.mSocket = new Socket(serverAddress, serverPort);
+        mServerAddress = serverAddress;
+        mServerPort = serverPort;
+        this.mSocket = new Socket(mServerAddress, mServerPort);
 
         mTaskHandler = new TaskHandler("Client-Connection-Manager");
 
@@ -41,6 +46,13 @@ public class ServerConnection {
 //    }
 
     public void requestData(Class<? extends BaseDAO> type, Receiver caller) {
+        if(!mSocket.isConnected()) {
+            try {
+                this.mSocket = new Socket(mServerAddress, mServerPort);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         Protocol request = new Protocol(type);
 
         mTaskHandler.addToTaskPool(new RequestSender(request, caller));

@@ -22,6 +22,8 @@ public class Announcer extends BaseDAO {
     private static final String SELECT_ALL = "SELECT * FROM announcers";
     private static final String INSERT = "INSERT INTO `tv_programs`.`announcers` VALUES (null,'%s',%d,%d,'%s','%s','%s','%d')";
     private static final String DELETE = "DELETE FROM `tv_programs`.`announcers` WHERE `announcers`.`an_id` = %d";
+    private static final String UPDATE = "UPDATE `tv_programs`.`announcers` SET `an_id` = %d, `an_name` = '%s', " +
+            "`an_career_begin_year` = %d, `an_career_end_year` = %d, `an_birth_date` ='%s', `an_education` ='%s',`an_description` ='%s',  `an_sex` = %d WHERE `an_id` = %d; ";
 
     private Integer careerBeginYear;
     private Integer careerEndYear;
@@ -114,6 +116,25 @@ public class Announcer extends BaseDAO {
         SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
 
         Integer sex = 0;
+        sex = getIntegerSex(sex);
+        return String.format(INSERT,
+                this.getName(), this.getCareerBeginYear(), this.getCareerEndYear(),
+                formatter.format(this.getBirthDate()), this.getEducation(), this.getDescription(), sex);
+    }
+
+    @Override
+    public String getUpdateQuery() {
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+
+        Integer sex = 0;
+        sex = getIntegerSex(sex);
+        String string = String.format(UPDATE,
+                this.getId(), this.getName(), this.getCareerBeginYear(), this.getCareerEndYear(),
+                formatter.format(this.getBirthDate()), this.getEducation(), this.getDescription(), sex, this.getId());;
+        return string;
+    }
+
+    private Integer getIntegerSex(Integer sex) {
         switch (this.getSexEnum()) {
             case MALE:
                 sex = 1;
@@ -122,9 +143,7 @@ public class Announcer extends BaseDAO {
                 sex = 2;
                 break;
         }
-        return String.format(INSERT,
-                this.getName(), this.getCareerBeginYear(), this.getCareerEndYear(),
-                formatter.format(this.getBirthDate()), this.getEducation(), this.getDescription(), sex);
+        return sex;
     }
 
     @Override

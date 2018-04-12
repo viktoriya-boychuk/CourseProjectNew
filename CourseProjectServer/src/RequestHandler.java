@@ -38,7 +38,7 @@ public class RequestHandler implements Callable<ArrayList<BaseDAO>> {
                 }
                 break;
             case POST:
-                task = new Task(mFuture, mSocket, mRequest);
+//                task = new Task(mFuture, mSocket, mRequest);
 //                Server.addToWaitingList(task);
 
                 try {
@@ -48,7 +48,7 @@ public class RequestHandler implements Callable<ArrayList<BaseDAO>> {
                 }
                 break;
             case DELETE:
-                task = new Task(mFuture, mSocket, mRequest);
+//                task = new Task(mFuture, mSocket, mRequest);
 //                Server.addToWaitingList(task);
 
                 try {
@@ -60,7 +60,14 @@ public class RequestHandler implements Callable<ArrayList<BaseDAO>> {
                 Logger.logInfo("DELETE", "This is delete request");
                 break;
             case UPDATE:
-                Logger.logInfo("UPDATE", "This is update request");
+//                task = new Task(mFuture, mSocket, mRequest);
+//                Server.addToWaitingList(task);
+
+                try {
+                    SQLHelper.getInstance().updateArrayList(mRequest.getData());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 Logger.logInfo("NO-TYPE", "This request got no type");

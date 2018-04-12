@@ -154,6 +154,11 @@ public class Channel extends BaseDAO {
     }
 
     @Override
+    public String getUpdateQuery() {
+        return null;
+    }
+
+    @Override
     public JSONObject toJSON() throws JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(KEY_ID, this.getId());

@@ -4,9 +4,12 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import dao.Announcer;
 import dao.BaseDAO;
 import dao.Hosting;
+import dao.Program;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,11 +39,16 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
     private JFXTreeTableColumn<HostingWrapped, String> contractEndDateColumn;
     private JFXTreeTableColumn<HostingWrapped, String> announcerGratuityColumn;
     private JFXTreeTableColumn<HostingWrapped, Integer> announcerIDColumn;
+    private JFXTreeTableColumn<HostingWrapped, String> announcerNameColumn;
     private JFXTreeTableColumn<HostingWrapped, Integer> programIDColumn;
 
     private static ObservableList<AnnouncerWrapped> mWrappedHostings;
 
     private ArrayList<? extends BaseDAO> mHostings;
+
+    private ArrayList<Announcer> mAnnouncers;
+
+    private ArrayList<Program> mPrograms;
 
     private ServerConnection mServerConnection;
 
@@ -52,6 +60,18 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        try {
+            mServerConnection = new ServerConnection(
+                    InetAddress.getByName(
+                            ServerConnection.DEFAULT_IP),
+                    ServerConnection.DEFAULT_PORT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        mServerConnection.requestData(Program.class, this);
+//        mServerConnection.requestData(Hosting.class, this);
+
         idColumn = new JFXTreeTableColumn<>("№");
         idColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, Integer> param) -> {
             if (idColumn.validateValue(param)) return param.getValue().getValue().idProperty().asObject();
@@ -63,6 +83,16 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
             if (announcerIDColumn.validateValue(param))
                 return param.getValue().getValue().announcerIDProperty().asObject();
             else return announcerIDColumn.getComputedValue(param);
+        });
+
+        announcerNameColumn = new JFXTreeTableColumn<>("Початок контракту");
+        announcerNameColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<HostingWrapped, String> param) -> {
+            for (Announcer announcer : mAnnouncers) {
+                if (param.getValue().getValue().getAnnouncerID() == announcer.getId())
+                    return new SimpleStringProperty(announcer.getName());
+
+            }
+            return null;
         });
 
         programIDColumn = new JFXTreeTableColumn<>("№ програми");
@@ -83,8 +113,7 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
             if (contractEndDateColumn.validateValue(param)) {
                 StringProperty value = param.getValue().getValue().contractEndDateProperty();
                 return value;
-            }
-            else return contractEndDateColumn.getComputedValue(param);
+            } else return contractEndDateColumn.getComputedValue(param);
         });
 
         announcerGratuityColumn = new JFXTreeTableColumn<>("Винагорода (грн.)");
@@ -94,14 +123,7 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
             else return announcerGratuityColumn.getComputedValue(param);
         });
 
-        try {
-            mServerConnection = new ServerConnection(
-                    InetAddress.getByName(
-                            ServerConnection.DEFAULT_IP),
-                    ServerConnection.DEFAULT_PORT);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         mServerConnection.requestData(Hosting.class, this);
 
         hostingTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -128,30 +150,54 @@ HostingTablePaneController implements Initializable, Receiver, BaseTable {
     @Override
     @SuppressWarnings("unchecked")
     public void onReceive(Protocol request) {
-        Platform.runLater(() -> {
-            ObservableList<HostingWrapped> hostings = null;
+        String dataType = request.getDataType();
+        if (dataType.equals("dao.Hosting")) {
+            Platform.runLater(() -> {
+                ObservableList<HostingWrapped> hostings = null;
+                try {
+                    mHostings = request.getData();
+                    hostings = FXCollections.observableArrayList(HostingWrapped.wrap(request.getData()));
+                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+                    e.printStackTrace();
+                }
+                // build tree
+                final TreeItem<HostingWrapped> root = new RecursiveTreeItem<>(hostings, RecursiveTreeObject::getChildren);
+
+                hostingTable.setRoot(root);
+                hostingTable.setShowRoot(false);
+                hostingTable.setEditable(false);
+                hostingTable.getColumns().setAll(idColumn,
+                        announcerIDColumn,
+                        announcerNameColumn,
+                        programIDColumn,
+                        contractBeginDateColumn,
+                        contractEndDateColumn,
+                        announcerGratuityColumn);
+
+                onPostInitialize(() -> {
+                    hostingTable.getSelectionModel().select(0);
+                });
+            });
+        } /*else if (dataType.equals("dao.Program")) {
             try {
-                mHostings = request.getData();
-                hostings = FXCollections.observableArrayList(HostingWrapped.wrap(request.getData()));
+                mPrograms = new ArrayList<>();
+
+                for (BaseDAO base : request.getData()) {
+                    mPrograms.add((Program) base);
+                }
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();
             }
-            // build tree
-            final TreeItem<HostingWrapped> root = new RecursiveTreeItem<>(hostings, RecursiveTreeObject::getChildren);
+        } else if (dataType.equals("dao.Program")) {
+            try {
+                mAnnouncers = new ArrayList<>();
 
-            hostingTable.setRoot(root);
-            hostingTable.setShowRoot(false);
-            hostingTable.setEditable(false);
-            hostingTable.getColumns().setAll(idColumn,
-                    announcerIDColumn,
-                    programIDColumn,
-                    contractBeginDateColumn,
-                    contractEndDateColumn,
-                    announcerGratuityColumn);
-
-            onPostInitialize(() -> {
-                hostingTable.getSelectionModel().select(0);
-            });
-        });
+                for (BaseDAO base : request.getData()) {
+                    mAnnouncers.add((Announcer) base);
+                }
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+                e.printStackTrace();
+            }
+        }*/
     }
 }

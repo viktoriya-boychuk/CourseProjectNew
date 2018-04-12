@@ -18,7 +18,6 @@ import utils.*;
 
 import java.net.InetAddress;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -79,11 +78,15 @@ public class AnnouncerPaneController implements Initializable, Receiver {
         if (check()) {
             ((BorderPane) announcerPane.getParent()).setRight(null);
             try {
+                Protocol.RequestType type;
+                if (announcerPane.getType() == CustomPane.Type.ADD)
+                    type = Protocol.RequestType.POST;
+                else type = Protocol.RequestType.UPDATE;
                 ServerConnection serverConnection = new ServerConnection(InetAddress.getByName(ServerConnection.DEFAULT_IP), 28365);
 
                 Announcer announcer = getFieldsData();
 
-                serverConnection.pushData(Protocol.RequestType.POST, announcer, this);
+                serverConnection.pushData(type, announcer, this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -123,7 +126,7 @@ public class AnnouncerPaneController implements Initializable, Receiver {
     private Announcer getFieldsData(){
         Announcer announcer = new Announcer();
 
-        announcer.setId(0);
+        announcer.setId(announcerPane.getData().getId());
         announcer.setName(name.getText());
         announcer.setBirthDate(Date.from(birthDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         announcer.setCareerBeginYear(Integer.parseInt(careerBeginYear.getSelectionModel().getSelectedItem().toString()));
